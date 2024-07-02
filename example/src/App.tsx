@@ -1,38 +1,12 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { TextInputField } from '../../src/navigatorComponents';
-import { multiply } from 'sora-ui';
+import { ThemeProvider } from '../../src/theme/themeManagement';
+import Testing from './testingPage';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-  const [inputedText, setInputedText] = React.useState('');
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-      <Text>{inputedText}</Text>
-      <TextInputField
-        title="Text"
-        onTextChange={(set) => setInputedText(set)}
-      ></TextInputField>
-    </View>
+    <ThemeProvider>
+      <Testing></Testing>
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});

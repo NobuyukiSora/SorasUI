@@ -12,8 +12,9 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
       value={value}
       onChangeText={(text) => onTextChange(text)}
       placeholder={placeHolder}
+      multiline={true}
+      // Styling
       mode="outlined"
-      style={[{}]}
       activeOutlineColor="red"
       outlineStyle={Styles.outlineStyle}
       textColor="green"
