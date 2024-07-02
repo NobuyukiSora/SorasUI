@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TextInput } from 'react-native-paper';
 import type { PropsTextInput } from './props';
-import { StyleSheet } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import { StyleSheet } from 'react-native';
 
 const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
   const { title, value, placeHolder, onTextChange = () => {} } = props;
