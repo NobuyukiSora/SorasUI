@@ -17,7 +17,7 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
       activeOutlineColor="red"
       outlineStyle={Styles.outlineStyle}
       textColor="green"
-    ></TextInput>
+    />
   );
 };
 

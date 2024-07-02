@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import TextInputField from '../../src/TextInputField/index';
+import { TextInputField } from '../../src/navigatorComponents';
 import { multiply } from 'sora-ui';
 
 export default function App() {
