@@ -8,9 +8,10 @@ import React, {
 } from 'react';
 
 type ThemeContextType = {
-  theme: any;
+  theme: { themeSameAsSystem: boolean; isDark: boolean };
   customColors: any;
   toggleTheme: (data: any) => void;
+  toggleSystemTheme: (data: any, isDark: any) => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -40,22 +41,40 @@ const setThemeColors = (isDark: boolean, customColors: any) => {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState({
-    isDark: true,
+    themeSameAsSystem: false,
+    isDark: false,
   });
 
   useEffect(() => {
     const loadTheme = async () => {
-      const storedTheme = await AsyncStorage.getItem('APP_THEME');
-      if (storedTheme) {
-        setTheme({ isDark: storedTheme === 'true' ? true : false });
+      let storedTheme = { isDark: false, themeSameAsSystem: false };
+      await AsyncStorage.getItem('APP_THEME').then((value: any) => {
+        storedTheme = JSON.parse(value);
+      });
+      console.log('storedTheme', storedTheme);
+      if (!!storedTheme) {
+        setTheme(storedTheme);
       }
     };
+
     loadTheme();
   }, []);
 
   const toggleTheme = async (data: any) => {
-    setTheme(() => ({ isDark: !data }));
-    await AsyncStorage.setItem('APP_THEME', JSON.stringify(!data));
+    setTheme(() => ({ ...theme, isDark: !data }));
+    await AsyncStorage.setItem(
+      'APP_THEME',
+      JSON.stringify({ ...theme, isDark: !data })
+    );
+  };
+
+  const toggleSystemTheme = async (data: any, isDark: any) => {
+    console.log('same as system: ', !data, isDark);
+    setTheme({ isDark: isDark === 'dark', themeSameAsSystem: !data });
+    await AsyncStorage.setItem(
+      'APP_THEME',
+      JSON.stringify({ isDark: isDark === 'dark', themeSameAsSystem: !data })
+    );
   };
 
   const customColors = (getColors: any) => {
@@ -63,7 +82,9 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, customColors, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{ theme, customColors, toggleTheme, toggleSystemTheme }}
+    >
       {children}
     </ThemeContext.Provider>
   );

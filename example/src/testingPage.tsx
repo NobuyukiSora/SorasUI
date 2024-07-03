@@ -1,6 +1,13 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, Switch, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Switch,
+  ScrollView,
+  useColorScheme,
+} from 'react-native';
 import { TextInputField } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { multiply } from 'sora-ui';
@@ -9,7 +16,8 @@ import { themeColors } from '../../src/theme/themeManagement';
 export default function Testing() {
   const [result, setResult] = React.useState<number | undefined>();
   const [inputedText, setInputedText] = React.useState('');
-  let { theme, customColors, toggleTheme } = useTheme();
+  let { theme, customColors, toggleTheme, toggleSystemTheme } = useTheme();
+  const colorScheme = useColorScheme();
 
   customColors({
     background: theme.isDark ? 'red' : 'blue',
@@ -38,11 +46,22 @@ export default function Testing() {
         {/* THEME SWITCH */}
         <View style={styles.box}>
           <Text style={styles.title}>{'THEME SWITCH'}</Text>
+          <Text>{`systemTheme: ${colorScheme}`}</Text>
+          <Text>{`sameAsSystem: ${theme.themeSameAsSystem}`}</Text>
           <Text>{`isDarkMode: ${theme.isDark}`}</Text>
+          <Switch
+            value={theme.themeSameAsSystem}
+            onValueChange={() =>
+              toggleSystemTheme(theme.themeSameAsSystem, colorScheme)
+            }
+          />
+
           <Switch
             value={theme.isDark}
             onValueChange={() => toggleTheme(theme.isDark)}
+            disabled={theme.themeSameAsSystem}
           />
+
           <View
             style={{
               width: 100,
