@@ -6,6 +6,7 @@ import React, {
   useState,
   type ReactNode,
 } from 'react';
+import { Colors } from '../navigatorTheme';
 
 type ThemeContextType = {
   theme: { themeSameAsSystem: boolean; isDark: boolean };
@@ -29,12 +30,30 @@ type ThemeProviderProps = {
 };
 
 // For default colors
-export let themeColors = { background: '', text: '' };
+export let themeColors = {
+  background: Colors.lightCream,
+  backgroundSecondary: Colors.cream,
+  text: Colors.black,
+  textSecondary: Colors.grey,
+  active: Colors.brown,
+  inActive: Colors.darkCream,
+  navbarActive: Colors.lightBlue,
+  green: Colors.lightGreen,
+  red: Colors.red,
+};
 
 // If the color changed
 const setThemeColors = (isDark: boolean, customColors: any) => {
   themeColors = {
-    background: isDark ? 'black' : 'white',
+    background: isDark ? Colors.black : Colors.lightCream,
+    backgroundSecondary: isDark ? Colors.darkGrey : Colors.cream,
+    text: isDark ? Colors.lightCream : Colors.black,
+    textSecondary: isDark ? Colors.brown : Colors.grey,
+    active: isDark ? Colors.darkBlue : Colors.brown,
+    inActive: isDark ? Colors.lightBlue : Colors.darkCream,
+    navbarActive: isDark ? Colors.lightBlue : Colors.lightBlue,
+    green: Colors.lightGreen,
+    red: Colors.red,
     ...customColors,
   };
 };

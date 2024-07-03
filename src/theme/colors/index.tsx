@@ -7,6 +7,7 @@ export const Colors = {
 
   cream: '#DFD8C8',
   lightCream: '#F1F0E8',
+  darkCream: '#D6C0A0',
 
   red: '#CD5C7D',
 

@@ -1,16 +1,18 @@
 import * as React from 'react';
 
 import {
-  StyleSheet,
-  View,
-  Text,
-  Switch,
   ScrollView,
+  StyleSheet,
+  Switch,
+  View,
   useColorScheme,
 } from 'react-native';
-import { TextInputField } from '../../src/components/navigatorComponents';
-import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { multiply } from 'sora-ui';
+import {
+  TextInputField,
+  Typograph,
+} from '../../src/components/navigatorComponents';
+import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
 
 export default function Testing() {
@@ -19,9 +21,8 @@ export default function Testing() {
   let { theme, customColors, toggleTheme, toggleSystemTheme } = useTheme();
   const colorScheme = useColorScheme();
 
+  // Adding Custom Colors
   customColors({
-    background: theme.isDark ? 'red' : 'blue',
-    text: theme.isDark ? 'white' : 'black',
     line: theme.isDark ? 'black' : 'white',
   });
 
@@ -30,13 +31,17 @@ export default function Testing() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
+    <View
+      style={[styles.container, { backgroundColor: themeColors.background }]}
+    >
+      <Typograph>Result: {result}</Typograph>
       <ScrollView>
         {/* TEXT INPUT */}
         <View style={styles.box}>
-          <Text style={styles.title}>{'TEXT INPUT'}</Text>
-          <Text>{`Input: ${inputedText}`}</Text>
+          <Typograph customStyle={styles.title}>{'TEXT INPUT'}</Typograph>
+          <Typograph
+            customStyle={{ color: themeColors.text }}
+          >{`Input: ${inputedText}`}</Typograph>
           <TextInputField
             title="Text"
             onTextChange={(set) => setInputedText(set)}
@@ -45,10 +50,10 @@ export default function Testing() {
 
         {/* THEME SWITCH */}
         <View style={styles.box}>
-          <Text style={styles.title}>{'THEME SWITCH'}</Text>
-          <Text>{`systemTheme: ${colorScheme}`}</Text>
-          <Text>{`sameAsSystem: ${theme.themeSameAsSystem}`}</Text>
-          <Text>{`isDarkMode: ${theme.isDark}`}</Text>
+          <Typograph customStyle={styles.title}>{'THEME SWITCH'}</Typograph>
+          <Typograph>{`systemTheme: ${colorScheme}`}</Typograph>
+          <Typograph>{`sameAsSystem: ${theme.themeSameAsSystem}`}</Typograph>
+          <Typograph>{`isDarkMode: ${theme.isDark}`}</Typograph>
           <Switch
             value={theme.themeSameAsSystem}
             onValueChange={() =>
@@ -66,7 +71,7 @@ export default function Testing() {
             style={{
               width: 100,
               height: 100,
-              backgroundColor: themeColors.background,
+              backgroundColor: themeColors.active,
             }}
           ></View>
         </View>
@@ -78,10 +83,11 @@ export default function Testing() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: themeColors.background,
   },
   box: {
     padding: Metrics[16],
-    backgroundColor: 'grey',
+    backgroundColor: themeColors.backgroundSecondary,
     marginHorizontal: Metrics[16],
     borderRadius: Metrics[8],
     marginVertical: Metrics[8],
