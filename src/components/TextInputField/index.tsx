@@ -2,9 +2,23 @@ import * as React from 'react';
 import { TextInput } from 'react-native-paper';
 import type { PropsTextInput } from './props';
 import { StyleSheet } from 'react-native';
+import { themeColors } from '../../theme/themeManagement';
 
 const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
-  const { title, value, placeHolder, onTextChange = () => {} } = props;
+  const {
+    title,
+    value,
+    placeHolder,
+    onTextChange = () => {},
+    customStyle,
+    editable = true,
+    textAlign = 'left',
+    textColor = themeColors.text,
+    activeOutlineColor = themeColors.text,
+    inactiveOutlineColor = themeColors.inActive,
+    placeholderTextColor = themeColors.textThird,
+    backgroundColor = themeColors.background,
+  } = props;
 
   return (
     <TextInput
@@ -13,11 +27,19 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
       onChangeText={(text) => onTextChange(text)}
       placeholder={placeHolder}
       multiline={true}
+      editable={editable}
+      textAlign={textAlign}
       // Styling
       mode="outlined"
-      activeOutlineColor="red"
-      outlineStyle={Styles.outlineStyle}
-      textColor="green"
+      activeOutlineColor={activeOutlineColor}
+      outlineStyle={[
+        Styles.outlineStyle,
+        { borderColor: inactiveOutlineColor },
+      ]}
+      textColor={textColor}
+      style={[customStyle, { backgroundColor: backgroundColor }]}
+      placeholderTextColor={placeholderTextColor}
+      theme={{ colors: { onSurfaceVariant: themeColors.text } }}
     />
   );
 };
@@ -25,7 +47,6 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
 const Styles = StyleSheet.create({
   outlineStyle: {
     borderRadius: 10,
-    borderColor: 'blue',
   },
 });
 

@@ -30,21 +30,36 @@ export default function Testing() {
     multiply(3, 7).then(setResult);
   }, []);
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: themeColors.background,
+    },
+    box: {
+      padding: Metrics[16],
+      backgroundColor: themeColors.backgroundSecondary,
+      marginHorizontal: Metrics[16],
+      borderRadius: Metrics[8],
+      marginVertical: Metrics[8],
+    },
+    title: {
+      textAlign: 'center',
+      fontWeight: '800',
+    },
+  });
+
   return (
-    <View
-      style={[styles.container, { backgroundColor: themeColors.background }]}
-    >
+    <View style={styles.container}>
       <Typograph>Result: {result}</Typograph>
       <ScrollView>
         {/* TEXT INPUT */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'TEXT INPUT'}</Typograph>
-          <Typograph
-            customStyle={{ color: themeColors.text }}
-          >{`Input: ${inputedText}`}</Typograph>
+          <Typograph>{`Input: ${inputedText}`}</Typograph>
           <TextInputField
             title="Text"
             onTextChange={(set) => setInputedText(set)}
+            placeHolder="insert your text"
           ></TextInputField>
         </View>
 
@@ -79,21 +94,3 @@ export default function Testing() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: themeColors.background,
-  },
-  box: {
-    padding: Metrics[16],
-    backgroundColor: themeColors.backgroundSecondary,
-    marginHorizontal: Metrics[16],
-    borderRadius: Metrics[8],
-    marginVertical: Metrics[8],
-  },
-  title: {
-    textAlign: 'center',
-    fontWeight: '800',
-  },
-});

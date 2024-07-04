@@ -35,6 +35,7 @@ export let themeColors = {
   backgroundSecondary: Colors.cream,
   text: Colors.black,
   textSecondary: Colors.grey,
+  textThird: Colors.brown,
   active: Colors.brown,
   inActive: Colors.darkCream,
   navbarActive: Colors.lightBlue,
@@ -49,6 +50,7 @@ const setThemeColors = (isDark: boolean, customColors: any) => {
     backgroundSecondary: isDark ? Colors.darkGrey : Colors.cream,
     text: isDark ? Colors.lightCream : Colors.black,
     textSecondary: isDark ? Colors.brown : Colors.grey,
+    textThird: isDark ? Colors.grey : Colors.brown,
     active: isDark ? Colors.darkBlue : Colors.brown,
     inActive: isDark ? Colors.lightBlue : Colors.darkCream,
     navbarActive: isDark ? Colors.lightBlue : Colors.lightBlue,
@@ -70,7 +72,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       await AsyncStorage.getItem('APP_THEME').then((value: any) => {
         storedTheme = JSON.parse(value);
       });
-      console.log('storedTheme', storedTheme);
       if (!!storedTheme) {
         setTheme(storedTheme);
       }
@@ -88,7 +89,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   };
 
   const toggleSystemTheme = async (data: any, isDark: any) => {
-    console.log('same as system: ', !data, isDark);
     setTheme({ isDark: isDark === 'dark', themeSameAsSystem: !data });
     await AsyncStorage.setItem(
       'APP_THEME',
