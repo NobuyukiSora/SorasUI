@@ -14,12 +14,15 @@ import {
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function Testing() {
   const [result, setResult] = React.useState<number | undefined>();
   const [inputedText, setInputedText] = React.useState('');
-  let { theme, customColors, toggleTheme, toggleSystemTheme } = useTheme();
+
+  const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
+  let { theme, customColors, toggleTheme, toggleSystemTheme } = useTheme();
 
   // Adding Custom Colors
   customColors({
@@ -33,6 +36,7 @@ export default function Testing() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      paddingTop: insets.top,
       backgroundColor: themeColors.background,
     },
     box: {
