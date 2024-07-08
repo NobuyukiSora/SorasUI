@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { multiply } from 'sora-ui';
 import {
+  Button,
   TextInputField,
   Typograph,
 } from '../../src/components/navigatorComponents';
@@ -19,6 +20,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function Testing() {
   const [result, setResult] = React.useState<number | undefined>();
   const [inputedText, setInputedText] = React.useState('');
+  const [buttonTest, setButtonTest] = React.useState(0);
 
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
@@ -93,6 +95,16 @@ export default function Testing() {
               backgroundColor: themeColors.active,
             }}
           ></View>
+        </View>
+
+        {/* BUTTON */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Button'}</Typograph>
+          <Typograph>{`Button test: ${buttonTest}`}</Typograph>
+          <Button
+            title="Testing"
+            onPress={() => setButtonTest(buttonTest + 1)}
+          ></Button>
         </View>
       </ScrollView>
     </View>
