@@ -1,26 +1,29 @@
 import * as React from 'react';
 
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Switch,
   View,
   useColorScheme,
 } from 'react-native';
-import { multiply } from 'sora-ui';
+// import { multiply } from 'sora-ui';
 import {
   Button,
   TextInputField,
   Typograph,
+  Header,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+// import BackIcon from '../assets/Ico.Back.svg';
 
 export default function Testing() {
-  const [result, setResult] = React.useState<number | undefined>();
   const [inputedText, setInputedText] = React.useState('');
   const [buttonTest, setButtonTest] = React.useState(0);
+  const [headerBack, setHeaderBack] = React.useState(0);
 
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
@@ -30,10 +33,6 @@ export default function Testing() {
   customColors({
     line: theme.isDark ? 'black' : 'white',
   });
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
 
   const styles = StyleSheet.create({
     container: {
@@ -56,7 +55,19 @@ export default function Testing() {
 
   return (
     <View style={styles.container}>
-      <Typograph>Result: {result}</Typograph>
+      {/* Header */}
+      <Header
+        title="testing page"
+        onPress={() => setHeaderBack(headerBack + 1)}
+      >
+        <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
+          {/* <BackIcon/> */}
+          <Image source={require('../assets/Ico.Back.png')} />
+        </View>
+      </Header>
+      <View style={styles.box}>
+        <Typograph>{`Header back: ${headerBack}`}</Typograph>
+      </View>
       <ScrollView>
         {/* TEXT INPUT */}
         <View style={styles.box}>
