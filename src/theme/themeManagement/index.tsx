@@ -38,7 +38,7 @@ export let themeColors = {
   textThird: Colors.brown,
   active: Colors.brown,
   inActive: Colors.darkCream,
-  navbarActive: Colors.lightBlue,
+  button: Colors.lightBlue,
   green: Colors.lightGreen,
   red: Colors.red,
 };
@@ -53,7 +53,7 @@ const setThemeColors = (isDark: boolean, customColors: any) => {
     textThird: isDark ? Colors.grey : Colors.brown,
     active: isDark ? Colors.darkBlue : Colors.brown,
     inActive: isDark ? Colors.lightBlue : Colors.darkCream,
-    navbarActive: isDark ? Colors.lightBlue : Colors.lightBlue,
+    button: isDark ? Colors.lightBlue : Colors.lightCream,
     green: Colors.lightGreen,
     red: Colors.red,
     ...customColors,

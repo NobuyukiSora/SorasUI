@@ -10,14 +10,13 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
     value,
     placeHolder,
     onTextChange = () => {},
-    customStyle,
+    customStyle = { backgroundColor: themeColors.background },
     editable = true,
     textAlign = 'left',
     textColor = themeColors.text,
     activeOutlineColor = themeColors.text,
     inactiveOutlineColor = themeColors.inActive,
     placeholderTextColor = themeColors.textThird,
-    backgroundColor = themeColors.background,
   } = props;
 
   return (
@@ -37,7 +36,7 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
         { borderColor: inactiveOutlineColor },
       ]}
       textColor={textColor}
-      style={[customStyle, { backgroundColor: backgroundColor }]}
+      style={customStyle}
       placeholderTextColor={placeholderTextColor}
       theme={{ colors: { onSurfaceVariant: themeColors.text } }}
     />
