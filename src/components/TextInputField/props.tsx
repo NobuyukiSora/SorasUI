@@ -12,4 +12,5 @@ export interface PropsTextInput extends TextInputProps {
   activeOutlineColor?: string;
   inactiveOutlineColor?: string;
   placeholderTextColor?: string;
+  secureTextEntry?: boolean;
 }

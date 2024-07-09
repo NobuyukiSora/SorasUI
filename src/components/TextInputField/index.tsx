@@ -17,6 +17,7 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
     activeOutlineColor = themeColors.text,
     inactiveOutlineColor = themeColors.inActive,
     placeholderTextColor = themeColors.textThird,
+    secureTextEntry = false,
   } = props;
 
   return (
@@ -28,6 +29,7 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
       multiline={true}
       editable={editable}
       textAlign={textAlign}
+      secureTextEntry={secureTextEntry}
       // Styling
       mode="outlined"
       activeOutlineColor={activeOutlineColor}

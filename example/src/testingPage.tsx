@@ -18,7 +18,6 @@ import {
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-// import BackIcon from '../assets/Ico.Back.svg';
 
 export default function Testing() {
   const [inputedText, setInputedText] = React.useState('');
@@ -61,7 +60,6 @@ export default function Testing() {
         onPress={() => setHeaderBack(headerBack + 1)}
       >
         <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
-          {/* <BackIcon/> */}
           <Image source={require('../assets/Ico.Back.png')} />
         </View>
       </Header>
