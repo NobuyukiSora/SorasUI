@@ -14,6 +14,7 @@ import {
   TextInputField,
   Typograph,
   Header,
+  CheckBox,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
@@ -23,6 +24,7 @@ export default function Testing() {
   const [inputedText, setInputedText] = React.useState('');
   const [buttonTest, setButtonTest] = React.useState(0);
   const [headerBack, setHeaderBack] = React.useState(0);
+  const [checkBox, setCheckBox] = React.useState(false);
 
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
@@ -63,10 +65,12 @@ export default function Testing() {
           <Image source={require('../assets/Ico.Back.png')} />
         </View>
       </Header>
-      <View style={styles.box}>
-        <Typograph>{`Header back: ${headerBack}`}</Typograph>
-      </View>
-      <ScrollView>
+
+      <ScrollView contentContainerStyle={{ paddingBottom: Metrics[24] }}>
+        <View style={styles.box}>
+          <Typograph>{`Header back: ${headerBack}`}</Typograph>
+        </View>
+
         {/* TEXT INPUT */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'TEXT INPUT'}</Typograph>
@@ -114,6 +118,17 @@ export default function Testing() {
             title="Testing"
             onPress={() => setButtonTest(buttonTest + 1)}
           ></Button>
+        </View>
+
+        {/* CheckBox */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Check Box'}</Typograph>
+          <Typograph>{`Checked: ${checkBox}`}</Typograph>
+          <CheckBox
+            title={'CheckBox'}
+            value={checkBox}
+            onPress={() => setCheckBox(!checkBox)}
+          />
         </View>
       </ScrollView>
     </View>
