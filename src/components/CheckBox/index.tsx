@@ -30,6 +30,7 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
       width: Metrics[24],
     },
     iconColor = themeColors.text,
+    children,
     title,
     value,
     ...rest
@@ -49,7 +50,7 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
       <View style={boxStyles}>
         {value ? (
           <View style={activeBoxStyles}>
-            <IconCheck fill={iconColor} />
+            {!!children ? children : <IconCheck fill={iconColor} />}
           </View>
         ) : (
           <View style={inactiveBoxStyles}></View>

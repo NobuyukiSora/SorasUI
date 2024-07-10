@@ -4,4 +4,5 @@ export interface PropsHeader extends TouchableOpacityProps {
   title?: string;
   customStyleButton?: TextStyle;
   customStyleTitle?: TextStyle;
+  iconColor?: string;
 }

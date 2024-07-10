@@ -4,7 +4,7 @@ import { themeColors } from '../../theme/themeManagement';
 import { Typograph } from '../Typograph';
 import type { PropsHeader } from './props';
 import { Metrics } from '../../theme/metrics';
-
+import IconBack from '../../Icon/Ico-Back.svg';
 export const Header: React.FunctionComponent<PropsHeader> = (props) => {
   const {
     title,
@@ -20,6 +20,7 @@ export const Header: React.FunctionComponent<PropsHeader> = (props) => {
       color: themeColors.text,
       fontWeight: '800',
     },
+    iconColor = themeColors.text,
     children,
     ...rest
   } = props;
@@ -27,7 +28,13 @@ export const Header: React.FunctionComponent<PropsHeader> = (props) => {
     <View style={{ height: 50, justifyContent: 'center' }} {...rest}>
       {!!title ? <Typograph style={customStyleTitle}>{title}</Typograph> : null}
       <TouchableOpacity style={customStyleButton} onPress={onPress}>
-        {children}
+        {!!children ? (
+          children
+        ) : (
+          <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
+            <IconBack fill={iconColor} />
+          </View>
+        )}
       </TouchableOpacity>
     </View>
   );

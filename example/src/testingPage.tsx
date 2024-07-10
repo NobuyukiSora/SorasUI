@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {
-  Image,
+  // Image,
   ScrollView,
   StyleSheet,
   Switch,
@@ -25,6 +25,8 @@ export default function Testing() {
   const [buttonTest, setButtonTest] = React.useState(0);
   const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
+
+  const version = require('../../package.json').version;
 
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
@@ -52,6 +54,10 @@ export default function Testing() {
       textAlign: 'center',
       fontWeight: '800',
     },
+    versionContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   });
 
   return (
@@ -61,9 +67,9 @@ export default function Testing() {
         title="testing page"
         onPress={() => setHeaderBack(headerBack + 1)}
       >
-        <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
+        {/* <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
           <Image source={require('../assets/Ico.Back.png')} />
-        </View>
+        </View> */}
       </Header>
 
       <ScrollView contentContainerStyle={{ paddingBottom: Metrics[24] }}>
@@ -94,13 +100,11 @@ export default function Testing() {
               toggleSystemTheme(theme.themeSameAsSystem, colorScheme)
             }
           />
-
           <Switch
             value={theme.isDark}
             onValueChange={() => toggleTheme(theme.isDark)}
             disabled={theme.themeSameAsSystem}
           />
-
           <View
             style={{
               width: 100,
@@ -128,7 +132,16 @@ export default function Testing() {
             title={'CheckBox'}
             value={checkBox}
             onPress={() => setCheckBox(!checkBox)}
-          />
+          >
+            {/* <Image source={require('../assets/Ico.Back.png')} /> */}
+          </CheckBox>
+        </View>
+        <View style={styles.versionContainer}>
+          <Typograph
+            style={{ textAlign: 'center', color: themeColors.textThird }}
+          >
+            {`Soras UI - Version ${version}`}
+          </Typograph>
         </View>
       </ScrollView>
     </View>
