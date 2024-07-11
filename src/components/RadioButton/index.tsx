@@ -75,6 +75,7 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
             }}
             {...rest}
             style={styles.container}
+            key={item.id}
           >
             <View style={circleContainerStyles}>
               {selectedId === item.id ? (

@@ -12,30 +12,86 @@ npm install sora-ui
 yarn add sora-ui
 ```
 
-## Usage
+## Components
 
-- Adding new library 
-    ```sh
-    /src/[newfolder]/index.tsx | props.tsx | style.tsx 
+<div style="
+    background-color: #6B7C8E; 
+    border-radius: 10px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    padding: 16px"
+>
+    <table>
+    <tr>
+        <td>Name</td>
+        <td>Image</td>
+        <td>Desciption</td>
+    </tr>
+    <tr>
+        <td>Button</td>
+        <td><img src="./image/button.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>CheckBox</td>
+        <td><img src="./image/checkbox.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"></td>
+        <td>can change the icon using the child</td>
+    </tr>
+    <tr>
+        <td>Header</td>
+        <td><img src="./image/header.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"></td>
+        <td>can change the icon using the child</td>
+    </tr>
+    <tr>
+        <td>RadioButton</td>
+        <td><img src="./image/radiobutton-column.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"><img src="./image/radiobutton-row.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"></td>
+        <td>can change the icon using the child</td>
+    </tr>
+    <tr>
+        <td>TextInputFiled</td>
+        <td><img src="./image/textInput.png" alt="Profile 1" style="width: 300px; border-radius: 10px;"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Typograph</td>
+        <td></td>
+        <td></td>
+    </tr>
+    </table>
+</div>
 
-    add the new component to src/navigatorComponents.tsx 
-    ```
-- Trying the package
-    ```sh
-    /src/example/page/index.tsx | style.tsx 
+---
+---
 
-    call the component from src/navigatorComponents.tsx
-    ```
-- Commit
-    ```sh
-    the massage should using an appropriate:
-        - feat: New feature
-        - fix: Bug fix
-        - chore: Maintenance tasks
-        - docs: Documentation changes
-        - style: Code style/formatting changes
-        - test: Adding or modifying tests
-    ```
+## Tools
+
+<div style="
+background-color: #6B7C8E; 
+border-radius: 10px; 
+display: flex; 
+justify-content: center; 
+align-items: center;
+padding: 20px;">
+    <table>
+    <tr>
+        <td>Name</td>
+        <td>Usage</td>
+    </tr>
+    <tr>
+        <td>themeManagement</td>
+        <td>change theme: [Dark, Light, Same as system]</td>
+    </tr>
+    <tr>
+        <td>metrics</td>
+        <td>measurements</td>
+    </tr>
+    <tr>
+        <td>colors</td>
+        <td>color list by default</td>
+    </tr>
+    </table>
+</div>
 
 ## Contributing
 
