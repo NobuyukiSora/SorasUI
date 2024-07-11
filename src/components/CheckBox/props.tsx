@@ -6,6 +6,6 @@ export interface PropsCheckBox extends TouchableOpacityProps {
   value: boolean;
   activeBoxStyles?: TextStyle;
   inactiveBoxStyles?: TextStyle;
-  boxStyles?: TextStyle;
+  boxContainerStyles?: TextStyle;
   iconColor?: string;
 }

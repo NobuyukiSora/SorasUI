@@ -15,6 +15,7 @@ import {
   Typograph,
   Header,
   CheckBox,
+  RadioButton,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
@@ -25,6 +26,18 @@ export default function Testing() {
   const [buttonTest, setButtonTest] = React.useState(0);
   const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
+  const [selectedRadioButton, setSelectedRadioButton] = React.useState({
+    id: '000',
+    title: 'Radio 0',
+    value: 'radio 0',
+  });
+
+  const radioData = [
+    { id: '001', title: 'Row', value: 'row' },
+    { id: '002', title: 'Column', value: 'column' },
+    { id: '003', title: 'Radio 3', value: 'radio 3' },
+    { id: '004', title: 'Radio 4', value: 'radio 4' },
+  ];
 
   const version = require('../../package.json').version;
 
@@ -136,6 +149,22 @@ export default function Testing() {
             {/* <Image source={require('../assets/Ico.Back.png')} /> */}
           </CheckBox>
         </View>
+
+        {/* RADIO BUTTON */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Radio Button'}</Typograph>
+          <Typograph>{`Selected: ${selectedRadioButton.id}`}</Typograph>
+
+          <RadioButton
+            data={radioData}
+            onPress={(set) => setSelectedRadioButton(set)}
+            selectedId={selectedRadioButton.id}
+            directionMode={{ direction: selectedRadioButton.value.toString() }}
+          >
+            {/* <Image source={require('../assets/Ico.Back.png')} /> */}
+          </RadioButton>
+        </View>
+
         <View style={styles.versionContainer}>
           <Typograph
             style={{ textAlign: 'center', color: themeColors.textThird }}

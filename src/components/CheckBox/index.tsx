@@ -23,7 +23,7 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
       width: Metrics[24],
       borderRadius: Metrics[4],
     },
-    boxStyles = {
+    boxContainerStyles = {
       justifyContent: 'center',
       alignItems: 'center',
       height: Metrics[24],
@@ -47,7 +47,7 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
 
   return (
     <TouchableOpacity {...rest} onPress={onPress} style={styles.container}>
-      <View style={boxStyles}>
+      <View style={boxContainerStyles}>
         {value ? (
           <View style={activeBoxStyles}>
             {!!children ? children : <IconCheck fill={iconColor} />}
