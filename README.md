@@ -30,27 +30,27 @@ yarn add sora-ui
     </tr>
     <tr>
         <td>Button</td>
-        <td><img src="./image/button.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"></td>
+        <td><img src="./image/button.png" alt="Button" ></td>
         <td></td>
     </tr>
     <tr>
         <td>CheckBox</td>
-        <td><img src="./image/checkbox.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"></td>
+        <td><img src="./image/checkbox.png" alt="CheckBox" ></td>
         <td>can change the icon using the child</td>
     </tr>
     <tr>
         <td>Header</td>
-        <td><img src="./image/header.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"></td>
+        <td><img src="./image/header.png" alt="Header"></td>
         <td>can change the icon using the child</td>
     </tr>
     <tr>
         <td>RadioButton</td>
-        <td><img src="./image/radiobutton-column.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"><img src="./image/radiobutton-row.png" alt="Profile 1" style="width: 300px; height: 50px; object-fit: contain; border-radius: 10px;"></td>
+        <td><img src="./image/radiobutton-column.png" alt="RadioButton-column" style="width: 80px;"><img src="./image/radiobutton-row.png" alt="RadioButton-row"></td>
         <td>can change the icon using the child</td>
     </tr>
     <tr>
         <td>TextInputFiled</td>
-        <td><img src="./image/textInput.png" alt="Profile 1" style="width: 300px; border-radius: 10px;"></td>
+        <td><img src="./image/textInput.png" alt="TextInputFiled"></td>
         <td></td>
     </tr>
     <tr>
