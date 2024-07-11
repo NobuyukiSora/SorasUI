@@ -4,7 +4,6 @@ import {
   // Image,
   ScrollView,
   StyleSheet,
-  Switch,
   View,
   useColorScheme,
 } from 'react-native';
@@ -16,6 +15,7 @@ import {
   Header,
   CheckBox,
   RadioButton,
+  Switch,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
@@ -109,13 +109,13 @@ export default function Testing() {
           <Typograph>{`isDarkMode: ${theme.isDark}`}</Typograph>
           <Switch
             value={theme.themeSameAsSystem}
-            onValueChange={() =>
+            onPress={() =>
               toggleSystemTheme(theme.themeSameAsSystem, colorScheme)
             }
           />
           <Switch
             value={theme.isDark}
-            onValueChange={() => toggleTheme(theme.isDark)}
+            onPress={() => toggleTheme(theme.isDark)}
             disabled={theme.themeSameAsSystem}
           />
           <View
