@@ -45,6 +45,10 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
   const springValue = useSharedValue(0);
   const squishValue = useSharedValue(1);
 
+  React.useEffect(() => {
+    springValue.value = withSpring(!value ? 0 : 20);
+  }, [value, springValue]);
+
   const onPressInSwitch = () => {
     squishValue.value = withTiming(0.9, { easing: Easing.inOut(Easing.ease) });
   };
