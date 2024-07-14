@@ -31,12 +31,17 @@ yarn add sora-ui
     <tr>
         <td>Button</td>
         <td><img src="./image/button.png" alt="Button" ></td>
-        <td></td>
+        <td>you can customize using children or just use text as in the image</td>
     </tr>
     <tr>
         <td>CheckBox</td>
         <td><img src="./image/checkbox.png" alt="CheckBox" ></td>
         <td>can change the icon using the child</td>
+    </tr>
+    <tr>
+        <td>DaynamicScrollView</td>
+        <td><img src="./image/daynamicScrollView.png" alt="DaynamicScrollView" ></td>
+        <td>this component can help you to wrap the content inside</td>
     </tr>
     <tr>
         <td>Header</td>
@@ -48,6 +53,11 @@ yarn add sora-ui
         <td><img src="./image/radiobutton-column.png" alt="RadioButton-column" style="width: 80px;"><img src="./image/radiobutton-row.png" alt="RadioButton-row"></td>
         <td>can change the icon using the child</td>
     </tr>
+     <tr>
+        <td>Switch</td>
+        <td><img src="./image/switch.png" alt="Switch"></td>
+        <td>you can add icon using children</td>
+    </tr>
     <tr>
         <td>TextInputFiled</td>
         <td><img src="./image/textInput.png" alt="TextInputFiled"></td>
@@ -56,7 +66,7 @@ yarn add sora-ui
     <tr>
         <td>Typograph</td>
         <td></td>
-        <td></td>
+        <td>a text component that can follow the theme</td>
     </tr>
     </table>
 </div>
@@ -80,7 +90,7 @@ padding: 20px;">
     </tr>
     <tr>
         <td>themeManagement</td>
-        <td>change theme: [Dark, Light, Same as system]</td>
+        <td>change theme: [Dark, Light, or Same as system]</td>
     </tr>
     <tr>
         <td>metrics</td>
