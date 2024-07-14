@@ -21,12 +21,17 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
       textAlign: 'center',
       color: Colors.black,
     },
+    children,
     ...rest
   } = props;
   return (
     <TouchableOpacity onPress={onPress} {...rest}>
       <View style={customStyleButton}>
-        <Typograph style={customStyleTitle}>{title}</Typograph>
+        {children ? (
+          children
+        ) : (
+          <Typograph style={customStyleTitle}>{title}</Typograph>
+        )}
       </View>
     </TouchableOpacity>
   );

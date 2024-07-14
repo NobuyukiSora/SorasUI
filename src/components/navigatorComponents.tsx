@@ -5,6 +5,7 @@ import { Header } from './Header';
 import { CheckBox } from './CheckBox';
 import { RadioButton } from './RadioButton';
 import { Switch } from './Switch';
+import { DynamicScrollView } from './DynamicScrollView';
 
 export {
   TextInputField,
@@ -14,4 +15,5 @@ export {
   CheckBox,
   RadioButton,
   Switch,
+  DynamicScrollView,
 };

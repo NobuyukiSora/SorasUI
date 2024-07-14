@@ -16,6 +16,7 @@ import {
   CheckBox,
   RadioButton,
   Switch,
+  DynamicScrollView,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
@@ -26,6 +27,7 @@ export default function Testing() {
   const [buttonTest, setButtonTest] = React.useState(0);
   const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
+  const [valueViewScrollView, setValueViewScrollView] = React.useState(0);
   const [selectedRadioButton, setSelectedRadioButton] = React.useState({
     id: '000',
     title: 'Radio 0',
@@ -44,6 +46,26 @@ export default function Testing() {
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
   let { theme, customColors, toggleTheme, toggleSystemTheme } = useTheme();
+
+  const loopViewScrollView = () => {
+    const views = [];
+    for (let loop = 1; loop <= valueViewScrollView; loop++) {
+      views.push(
+        <View style={styles.boxScrollView}>
+          <Typograph
+            style={{
+              color: themeColors.text,
+              textAlign: 'center',
+              fontSize: Metrics[24],
+            }}
+          >
+            {loop}
+          </Typograph>
+        </View>
+      );
+    }
+    return views;
+  };
 
   // Adding Custom Colors
   customColors({
@@ -70,6 +92,20 @@ export default function Testing() {
     versionContainer: {
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    boxScrollView: {
+      backgroundColor: themeColors.active,
+      height: 100,
+      width: 100,
+      margin: Metrics[2],
+      borderRadius: Metrics[8],
+      justifyContent: 'center',
+    },
+    switchThemeContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      margin: Metrics[2],
     },
   });
 
@@ -105,26 +141,23 @@ export default function Testing() {
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'THEME SWITCH'}</Typograph>
           <Typograph>{`systemTheme: ${colorScheme}`}</Typograph>
-          <Typograph>{`sameAsSystem: ${theme.themeSameAsSystem}`}</Typograph>
-          <Typograph>{`isDarkMode: ${theme.isDark}`}</Typograph>
-          <Switch
-            value={theme.themeSameAsSystem}
-            onPress={() =>
-              toggleSystemTheme(theme.themeSameAsSystem, colorScheme)
-            }
-          />
-          <Switch
-            value={theme.isDark}
-            onPress={() => toggleTheme(theme.isDark)}
-            disabled={theme.themeSameAsSystem}
-          />
-          <View
-            style={{
-              width: 100,
-              height: 100,
-              backgroundColor: themeColors.active,
-            }}
-          ></View>
+          <View style={styles.switchThemeContainer}>
+            <Typograph>{`sameAsSystem: ${theme.themeSameAsSystem}`}</Typograph>
+            <Switch
+              value={theme.themeSameAsSystem}
+              onPress={() =>
+                toggleSystemTheme(theme.themeSameAsSystem, colorScheme)
+              }
+            />
+          </View>
+          <View style={styles.switchThemeContainer}>
+            <Typograph>{`isDarkMode: ${theme.isDark}`}</Typograph>
+            <Switch
+              value={theme.isDark}
+              onPress={() => toggleTheme(theme.isDark)}
+              disabled={theme.themeSameAsSystem}
+            />
+          </View>
         </View>
 
         {/* BUTTON */}
@@ -133,7 +166,10 @@ export default function Testing() {
           <Typograph>{`Button test: ${buttonTest}`}</Typograph>
           <Button
             title="Testing"
-            onPress={() => setButtonTest(buttonTest + 1)}
+            onPress={() => {
+              setButtonTest(buttonTest + 1);
+              setValueViewScrollView(valueViewScrollView + 1);
+            }}
           ></Button>
         </View>
 
@@ -163,6 +199,33 @@ export default function Testing() {
           >
             {/* <Image source={require('../assets/Ico.Back.png')} /> */}
           </RadioButton>
+        </View>
+
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>
+            {'DaynamicScrollView'}
+          </Typograph>
+          <Typograph>{`Boxes: ${valueViewScrollView}`}</Typograph>
+          <View style={{ marginBottom: Metrics[4], flexDirection: 'row' }}>
+            <Button
+              title="+"
+              onPress={() => {
+                setValueViewScrollView(valueViewScrollView + 1);
+              }}
+              style={{ height: 50, width: 50, marginHorizontal: Metrics[2] }}
+            ></Button>
+            <Button
+              title="-"
+              onPress={() => {
+                setValueViewScrollView(valueViewScrollView - 1);
+              }}
+              style={{ height: 50, width: 50, marginHorizontal: Metrics[2] }}
+            ></Button>
+          </View>
+
+          <DynamicScrollView directionMode={{ direction: 'row' }}>
+            {loopViewScrollView()}
+          </DynamicScrollView>
         </View>
 
         <View style={styles.versionContainer}>
