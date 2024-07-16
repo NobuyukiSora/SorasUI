@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { PropsSwitch } from './props';
 import { Metrics } from '../../theme/metrics';
@@ -17,28 +17,9 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
     value = false,
     onPress = () => {},
     disabled = false,
-    trackStyle = {
-      height: Metrics[30],
-      width: Metrics[50],
-      borderRadius: 100,
-      backgroundColor: themeColors.active,
-    },
-    thumbStyle = {
-      height: Metrics[26],
-      width: Metrics[26],
-      backgroundColor: themeColors.button,
-      borderRadius: 100,
-      elevation: 3,
-      shadowColor: 'black',
-      shadowOpacity: 0.12,
-      shadowOffset: {
-        height: Metrics[2],
-        width: Metrics[2],
-      },
-      position: 'absolute',
-      marginHorizontal: 2,
-    },
-    children,
+    customTrackStyles,
+    customThumbStyles,
+    icon,
     ...rest
   } = props;
 
@@ -66,6 +47,30 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
     ],
   }));
 
+  const styles = StyleSheet.create({
+    thumb: {
+      height: Metrics[26],
+      width: Metrics[26],
+      backgroundColor: themeColors.button,
+      borderRadius: 100,
+      elevation: 3,
+      shadowColor: 'black',
+      shadowOpacity: 0.12,
+      shadowOffset: {
+        height: Metrics[2],
+        width: Metrics[2],
+      },
+      position: 'absolute',
+      marginHorizontal: 2,
+    },
+    track: {
+      height: Metrics[30],
+      width: Metrics[50],
+      borderRadius: 100,
+      backgroundColor: themeColors.active,
+    },
+  });
+
   return (
     <TouchableOpacity
       style={{
@@ -77,9 +82,9 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
       {...rest}
       disabled={disabled}
     >
-      <View style={trackStyle} />
-      <Animated.View style={[thumbStyle, animatedCircle]}>
-        {children}
+      <View style={[styles.track, customTrackStyles]} />
+      <Animated.View style={[styles.thumb, customThumbStyles, animatedCircle]}>
+        {icon}
       </Animated.View>
     </TouchableOpacity>
   );

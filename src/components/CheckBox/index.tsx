@@ -9,28 +9,11 @@ import { Metrics } from '../../theme/metrics';
 export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
   const {
     onPress = () => {},
-    activeBoxStyles = {
-      backgroundColor: themeColors.inActive,
-      height: Metrics[20],
-      width: Metrics[20],
-      borderRadius: Metrics[4],
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    inactiveBoxStyles = {
-      backgroundColor: themeColors.inActive,
-      height: Metrics[24],
-      width: Metrics[24],
-      borderRadius: Metrics[4],
-    },
-    boxContainerStyles = {
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: Metrics[24],
-      width: Metrics[24],
-    },
+    activeBoxStyles,
+    inactiveBoxStyles,
+    customBoxContainerStyles,
+    icon,
     iconColor = themeColors.text,
-    children,
     title,
     value,
     ...rest
@@ -43,17 +26,37 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
       gap: Metrics[8],
       height: Metrics[24],
     },
+    boxContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: Metrics[24],
+      width: Metrics[24],
+    },
+    inactiveBox: {
+      backgroundColor: themeColors.inActive,
+      height: Metrics[24],
+      width: Metrics[24],
+      borderRadius: Metrics[4],
+    },
+    activeBox: {
+      backgroundColor: themeColors.inActive,
+      height: Metrics[20],
+      width: Metrics[20],
+      borderRadius: Metrics[4],
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   });
 
   return (
     <TouchableOpacity {...rest} onPress={onPress} style={styles.container}>
-      <View style={boxContainerStyles}>
+      <View style={[styles.boxContainer, customBoxContainerStyles]}>
         {value ? (
-          <View style={activeBoxStyles}>
-            {!!children ? children : <IconCheck fill={iconColor} />}
+          <View style={[styles.activeBox, activeBoxStyles]}>
+            {!!icon ? icon : <IconCheck fill={iconColor} />}
           </View>
         ) : (
-          <View style={inactiveBoxStyles}></View>
+          <View style={[styles.inactiveBox, inactiveBoxStyles]}></View>
         )}
       </View>
       <View>

@@ -1,8 +1,10 @@
+import { ReactNode } from 'react';
 import type { TextStyle, TouchableOpacityProps } from 'react-native';
 
 export interface PropsHeader extends TouchableOpacityProps {
   title?: string;
-  customStyleButton?: TextStyle;
-  customStyleTitle?: TextStyle;
+  customButtonStyles?: TextStyle;
+  customTitleStyles?: TextStyle;
   iconColor?: string;
+  icon?: ReactNode;
 }

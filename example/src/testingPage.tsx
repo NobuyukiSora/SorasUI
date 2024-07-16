@@ -116,11 +116,13 @@ export default function Testing() {
       <Header
         title="testing page"
         onPress={() => setHeaderBack(headerBack + 1)}
-      >
-        {/* <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
-          <Image source={require('../assets/Ico.Back.png')} />
-        </View> */}
-      </Header>
+        // customButtonStyles={{backgroundColor: 'red'}}
+        // icon={(
+        // <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
+        //   <Image source={require('../assets/Ico.Back.png')} />
+        // </View>
+        // )}
+      ></Header>
 
       <ScrollView contentContainerStyle={{ paddingBottom: Metrics[24] }}>
         <View style={styles.box}>
@@ -147,6 +149,7 @@ export default function Testing() {
             onTextChange={(set) => setInputedText(set)}
             placeHolder="insert your text"
             value={inputedText}
+            // customContainerStyles={{backgroundColor: 'red'}}
           ></TextInputField>
           <TextInputField
             title="Text"
@@ -189,6 +192,7 @@ export default function Testing() {
               setButtonTest(buttonTest + 1);
               setValueViewScrollView(valueViewScrollView + 1);
             }}
+            // customStyleButton={{backgroundColor: 'red'}}
           ></Button>
         </View>
 
@@ -200,9 +204,12 @@ export default function Testing() {
             title={'CheckBox'}
             value={checkBox}
             onPress={() => setCheckBox(!checkBox)}
-          >
-            {/* <Image source={require('../assets/Ico.Back.png')} /> */}
-          </CheckBox>
+            // icon={(
+            //   <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
+            //     <Image source={require('../assets/Ico.Back.png')} />
+            //   </View>
+            //   )}
+          ></CheckBox>
         </View>
 
         {/* RADIO BUTTON */}
@@ -215,9 +222,12 @@ export default function Testing() {
             onPress={(set) => setSelectedRadioButton(set)}
             selectedId={selectedRadioButton.id}
             directionMode={{ direction: selectedRadioButton.value.toString() }}
-          >
-            {/* <Image source={require('../assets/Ico.Back.png')} /> */}
-          </RadioButton>
+            // icon={(
+            //   <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
+            //     <Image source={require('../assets/Ico.Back.png')} />
+            //   </View>
+            //   )}
+          ></RadioButton>
         </View>
 
         <View style={styles.box}>

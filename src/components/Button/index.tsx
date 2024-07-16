@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { themeColors } from '../../theme/themeManagement';
 import { Typograph } from '../Typograph';
 import type { PropsButton } from './props';
@@ -10,27 +10,39 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
   const {
     title,
     onPress = () => {},
-    customStyleButton = {
+    customStyleButton = {},
+    customStyleTitle = {},
+    children,
+    ...rest
+  } = props;
+
+  const styles = StyleSheet.create({
+    title: {
+      fontWeight: '800',
+      textAlign: 'center',
+      color: Colors.black,
+    },
+    button: {
       backgroundColor: themeColors.button,
       borderRadius: Metrics[8],
       justifyContent: 'center',
       padding: Metrics[16],
     },
-    customStyleTitle = {
-      fontWeight: '800',
-      textAlign: 'center',
-      color: Colors.black,
-    },
-    children,
-    ...rest
-  } = props;
+  });
+
   return (
-    <TouchableOpacity onPress={onPress} {...rest}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.button, customStyleButton]}
+      {...rest}
+    >
       <View style={customStyleButton}>
         {children ? (
           children
         ) : (
-          <Typograph style={customStyleTitle}>{title}</Typograph>
+          <Typograph style={[styles.title, customStyleTitle]}>
+            {title}
+          </Typograph>
         )}
       </View>
     </TouchableOpacity>

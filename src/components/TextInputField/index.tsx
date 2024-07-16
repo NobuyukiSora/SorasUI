@@ -19,15 +19,11 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
     editable = true,
     secureTextEntry = false,
     multiline = true,
-    customStyles = {
-      height: 50,
-      backgroundColor: themeColors.background,
-      activeOutlineColor: themeColors.active,
-      inactiveOutlineColor: themeColors.inActive,
-      textColor: themeColors.text,
-      textAlign: 'left',
-      placeholderTextColor: themeColors.textThird,
-    },
+    align = 'left',
+    height = 50,
+    customTextinputStyles,
+    customContainerStyles,
+    customTitleSyle,
     ...rest
   } = props;
   const [isFocus, setIsFocus] = React.useState(false);
@@ -41,10 +37,8 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
     } else {
       setThePlaceHolder('');
     }
-    springValue.value = withSpring(
-      value || isFocus ? customStyles.height / 2 - customStyles.height : 0
-    );
-  }, [isFocus, value, springValue, placeHolder, customStyles]);
+    springValue.value = withSpring(value || isFocus ? height / 2 - height : 0);
+  }, [isFocus, value, springValue, placeHolder, height]);
 
   const animatedTitle = useAnimatedStyle(() => ({
     transform: [{ translateY: springValue.value }],
@@ -55,31 +49,37 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
       position: 'absolute',
       paddingHorizontal: Metrics[4],
       marginHorizontal: Metrics[4],
-      backgroundColor: customStyles.backgroundColor,
+      backgroundColor: themeColors.background,
       borderRadius: Metrics[2],
     },
     mainContainer: {
       borderWidth: 1,
       borderRadius: Metrics[8],
       alignItems:
-        customStyles.textAlign === 'left'
-          ? 'flex-start'
-          : customStyles.textAlign === 'right'
+        align === 'center'
+          ? 'center'
+          : align === 'right'
             ? 'flex-end'
-            : 'center',
+            : 'flex-start',
       justifyContent: 'center',
       marginVertical: Metrics[8],
-      borderColor: isFocus
-        ? customStyles.activeOutlineColor
-        : customStyles.inactiveOutlineColor,
+      borderColor: isFocus ? themeColors.active : themeColors.inActive,
       backgroundColor: themeColors.background,
-      height: customStyles.height,
+      height: height,
     },
   });
 
   return (
-    <View style={[styles.mainContainer, styles.mainContainer]}>
-      <Animated.View style={[styles.containerTitle, animatedTitle]}>
+    <View
+      style={[
+        styles.mainContainer,
+        styles.mainContainer,
+        customContainerStyles,
+      ]}
+    >
+      <Animated.View
+        style={[styles.containerTitle, animatedTitle, customTitleSyle]}
+      >
         <Typograph>{title}</Typograph>
       </Animated.View>
       <TextInput
@@ -88,16 +88,19 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
         value={value}
         onChangeText={onTextChange}
         placeholder={thePlaceHolder}
-        placeholderTextColor={customStyles.placeholderTextColor}
-        textAlign={customStyles.textAlign}
+        placeholderTextColor={themeColors.textThird}
+        textAlign={align}
         multiline={multiline}
         secureTextEntry={secureTextEntry}
-        style={{
-          color: themeColors.text,
-          padding: Metrics[8],
-          fontSize: Metrics[16],
-          width: '100%',
-        }}
+        style={[
+          {
+            color: themeColors.text,
+            padding: Metrics[8],
+            fontSize: Metrics[16],
+            width: '100%',
+          },
+          customTextinputStyles,
+        ]}
         editable={editable}
         {...rest}
       />

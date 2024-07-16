@@ -12,32 +12,12 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
     data,
     onPress = () => {},
     selectedId,
-    activeCircleStyles = {
-      backgroundColor: themeColors.inActive,
-      height: Metrics[24],
-      width: Metrics[24],
-      borderRadius: Metrics[20],
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    inactiveCircleStyles = {
-      backgroundColor: themeColors.inActive,
-      height: Metrics[24],
-      width: Metrics[24],
-      borderRadius: Metrics[20],
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    circleContainerStyles = {
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: Metrics[24],
-      width: Metrics[24],
-    },
+    activeCircleStyles,
+    inactiveCircleStyles,
+    circleContainerStyles,
+    icon,
     iconColor = themeColors.active,
     directionMode = { direction: 'column', width: Metrics.screenWidth },
-    children,
-
     ...rest
   } = props;
 
@@ -55,6 +35,28 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
       height: Metrics[24],
       marginVertical: Metrics[2],
       marginHorizontal: directionMode.direction === 'row' ? Metrics[4] : 0,
+    },
+    activeCircle: {
+      backgroundColor: themeColors.inActive,
+      height: Metrics[24],
+      width: Metrics[24],
+      borderRadius: Metrics[20],
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    inactiveCircle: {
+      backgroundColor: themeColors.inActive,
+      height: Metrics[24],
+      width: Metrics[24],
+      borderRadius: Metrics[20],
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    circleContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: Metrics[24],
+      width: Metrics[24],
     },
   });
 
@@ -77,17 +79,13 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
             style={styles.container}
             key={item.id}
           >
-            <View style={circleContainerStyles}>
+            <View style={[styles.circleContainer, circleContainerStyles]}>
               {selectedId === item.id ? (
-                <View style={inactiveCircleStyles}>
-                  {!!children ? (
-                    children
-                  ) : (
-                    <View style={styles.circleIcon}></View>
-                  )}
+                <View style={[styles.inactiveCircle, inactiveCircleStyles]}>
+                  {!!icon ? icon : <View style={styles.circleIcon}></View>}
                 </View>
               ) : (
-                <View style={activeCircleStyles}></View>
+                <View style={[styles.activeCircle, activeCircleStyles]}></View>
               )}
             </View>
             <View>

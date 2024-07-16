@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import type { TextStyle, TouchableOpacityProps } from 'react-native';
 
 export interface PropsRadioButton extends TouchableOpacityProps {
@@ -14,4 +15,5 @@ export interface PropsRadioButton extends TouchableOpacityProps {
     direction: 'column' | 'row' | string;
     width?: number;
   };
+  icon?: ReactNode;
 }
