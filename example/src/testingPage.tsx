@@ -136,6 +136,12 @@ export default function Testing() {
             placeHolder="insert your text"
             value={inputedText}
           ></TextInputField>
+          <TextInputField
+            title="Text"
+            onTextChange={(set) => setInputedText(set)}
+            placeHolder="insert your text"
+            value={inputedText}
+          ></TextInputField>
         </View>
 
         {/* THEME SWITCH */}

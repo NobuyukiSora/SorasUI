@@ -96,6 +96,7 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
           color: themeColors.text,
           padding: Metrics[8],
           fontSize: Metrics[16],
+          width: '100%',
         }}
         editable={editable}
         {...rest}

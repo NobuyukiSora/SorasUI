@@ -6,7 +6,7 @@ export interface PropsTextInput extends TextInputProps {
   onTextChange: (text: string) => void;
   placeHolder?: string;
   customStyles?: {
-    height?: number;
+    height: number;
     backgroundColor?: string;
     activeOutlineColor?: string;
     inactiveOutlineColor?: string;
