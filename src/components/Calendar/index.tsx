@@ -5,6 +5,7 @@ import { themeColors } from '../../theme/themeManagement';
 import { DynamicScrollView } from '../DynamicScrollView';
 import { Typograph } from '../Typograph';
 import { PropsCalendar } from './props';
+import moment from 'moment';
 
 export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const {
@@ -20,9 +21,26 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const [currentYear, setCurrentYear] = React.useState(
     new Date().getFullYear()
   );
+  const [startDate, setStartDate] = React.useState('');
+  const [startData, setStartData] = React.useState<{
+    day: number;
+    month: number;
+    year: number;
+  } | null>();
+  const [endData, setEndData] = React.useState<{
+    day: number;
+    month: number;
+    year: number;
+  } | null>();
+  const [endDate, setEndDate] = React.useState('');
+  const [isSelectedStart, setIsSelectedStart] = React.useState(false);
 
   const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+
+  const datesArray = Array.from({ length: lastDate }, (_, index) => index + 1);
+  let getSundays = firstDay == 0 ? firstDay + 1 : 7 - firstDay + 1;
+  let dotInRange = false;
 
   const months = [
     'January',
@@ -62,6 +80,22 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       setCurrentMonth(0);
     }
   }, [currentMonth, currentYear]);
+
+  React.useEffect(() => {
+    const dateStart = moment(startDate, 'D/M/YYYY');
+    setStartData({
+      day: Number(dateStart.format('D')),
+      month: Number(dateStart.format('M')),
+      year: Number(dateStart.format('YYYY')),
+    });
+
+    const dateEnd = moment(endDate, 'D/M/YYYY');
+    setEndData({
+      day: Number(dateEnd.format('D')),
+      month: Number(dateEnd.format('M')),
+      year: Number(dateEnd.format('YYYY')),
+    });
+  }, [startDate, endDate]);
 
   const daysLoop = () => {
     let daysCount = 0;
@@ -111,34 +145,72 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     return datesView;
   };
 
-  const datesLoop = () => {
-    let datesCount = customStyles.showLastNextDate ? 1 : 1 - firstDay;
-    let getSundays = firstDay == 0 ? firstDay + 1 : 7 - firstDay + 1;
-    const datesView = [];
-    do {
-      datesView.push(
-        <View style={styles.daysContainer} key={datesCount}>
+  const selectedStartandEnd = (item: number) => {
+    if (!isSelectedStart) {
+      setStartDate(`${item}/${currentMonth + 1}/${currentYear}`);
+      setIsSelectedStart(true);
+    } else {
+      setEndDate(`${item}/${currentMonth + 1}/${currentYear}`);
+      setIsSelectedStart(false);
+    }
+  };
+
+  const isDaysRange = (day: number) => {
+    const dotStart =
+      day === startData?.day &&
+      currentMonth + 1 === startData?.month &&
+      currentYear == startData?.year;
+    const dotEnd =
+      day === endData?.day &&
+      currentMonth + 1 === endData?.month &&
+      currentYear == endData?.year;
+
+    if (dotStart) {
+      dotInRange = !dotInRange;
+    } else if (dotEnd) {
+      dotInRange = !dotInRange;
+    }
+
+    return dotStart ? (
+      <View style={[styles.selectedDot]} />
+    ) : dotEnd ? (
+      <View style={[styles.selectedDot]} />
+    ) : (
+      dotInRange && (
+        <View
+          style={[styles.selectedDot, { borderRadius: 0, width: '100%' }]}
+        />
+      )
+    );
+  };
+
+  const datesLoop = () =>
+    datesArray.map((item) => {
+      if (item - 1 == getSundays) {
+        getSundays = getSundays + 7;
+      }
+      return (
+        <TouchableOpacity
+          style={styles.daysContainer}
+          key={item}
+          onPress={() => {
+            selectedStartandEnd(item);
+          }}
+        >
+          {isDaysRange(item)}
           <Typograph
             style={[
               styles.daysText,
               {
-                color:
-                  datesCount == getSundays ? themeColors.red : themeColors.text,
+                color: item == getSundays ? themeColors.red : themeColors.text,
               },
             ]}
           >
-            {datesCount >= 1 ? datesCount : null}
+            {item >= 1 ? item : null}
           </Typograph>
-        </View>
+        </TouchableOpacity>
       );
-      if (datesCount == getSundays) {
-        getSundays = getSundays + 7;
-      }
-      datesCount++;
-    } while (datesCount <= lastDate);
-
-    return datesView;
-  };
+    });
 
   const nextMonthDatesLoop = () => {
     const datesView = [];
@@ -173,6 +245,8 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     daysContainer: {
       height: customStyles.daysHeight,
       width: width / 7,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     dateContainer: {
       width: width,
@@ -193,11 +267,21 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       textAlign: 'center',
       fontSize: Metrics[16],
     },
+    selectedDot: {
+      borderRadius: Metrics[16],
+      height: 25,
+      width: 25,
+      backgroundColor: themeColors.red,
+      padding: Metrics[4],
+      position: 'absolute',
+    },
   });
 
   return (
     <View style={styles.calendarContainer}>
       {/* <Typograph>{`${currentMonth}\n${currentYear}\n${lastDate}\n${firstDay}\n${startDayName}\n${7 - ((lastDate + firstDay) % 7)}`}</Typograph> */}
+      <Typograph>{startDate}</Typograph>
+      <Typograph>{endDate}</Typograph>
       <View style={styles.titleContainer}>
         <TouchableOpacity onPress={() => setCurrentMonth(currentMonth - 1)}>
           <Typograph>{'<'}</Typograph>
