@@ -1,54 +1,107 @@
 import * as React from 'react';
-import { TextInput } from 'react-native-paper';
 import type { PropsTextInput } from './props';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import { themeColors } from '../../theme/themeManagement';
+import { Typograph } from '../Typograph';
+import { Metrics } from '../../theme/metrics';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
 const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
   const {
     title,
     value,
-    placeHolder,
+    placeHolder = '',
     onTextChange = () => {},
-    customStyle = { backgroundColor: themeColors.background },
     editable = true,
-    textAlign = 'left',
-    textColor = themeColors.text,
-    activeOutlineColor = themeColors.text,
-    inactiveOutlineColor = themeColors.inActive,
-    placeholderTextColor = themeColors.textThird,
     secureTextEntry = false,
+    multiline = true,
+    customStyles = {
+      height: 50,
+      backgroundColor: themeColors.background,
+      activeOutlineColor: themeColors.active,
+      inactiveOutlineColor: themeColors.inActive,
+      textColor: themeColors.text,
+      textAlign: 'left',
+      placeholderTextColor: themeColors.textThird,
+    },
+    ...rest
   } = props;
+  const [isFocus, setIsFocus] = React.useState(false);
+  const [thePlaceHolder, setThePlaceHolder] = React.useState('');
+
+  const springValue = useSharedValue(0);
+
+  React.useEffect(() => {
+    if (isFocus) {
+      setThePlaceHolder(placeHolder);
+    } else {
+      setThePlaceHolder('');
+    }
+    springValue.value = withSpring(
+      value || isFocus ? customStyles.height / 2 - customStyles.height : 0
+    );
+  }, [isFocus, value, springValue, placeHolder, customStyles]);
+
+  const animatedTitle = useAnimatedStyle(() => ({
+    transform: [{ translateY: springValue.value }],
+  }));
+
+  const styles = StyleSheet.create({
+    containerTitle: {
+      position: 'absolute',
+      paddingHorizontal: Metrics[4],
+      marginHorizontal: Metrics[4],
+      backgroundColor: customStyles.backgroundColor,
+      borderRadius: Metrics[2],
+    },
+    mainContainer: {
+      borderWidth: 1,
+      borderRadius: Metrics[8],
+      alignItems:
+        customStyles.textAlign === 'left'
+          ? 'flex-start'
+          : customStyles.textAlign === 'right'
+            ? 'flex-end'
+            : 'center',
+      justifyContent: 'center',
+      marginVertical: Metrics[8],
+      borderColor: isFocus
+        ? customStyles.activeOutlineColor
+        : customStyles.inactiveOutlineColor,
+      backgroundColor: themeColors.background,
+      height: customStyles.height,
+    },
+  });
 
   return (
-    <TextInput
-      label={title}
-      value={value}
-      onChangeText={(text) => onTextChange(text)}
-      placeholder={placeHolder}
-      multiline={true}
-      editable={editable}
-      textAlign={textAlign}
-      secureTextEntry={secureTextEntry}
-      // Styling
-      mode="outlined"
-      activeOutlineColor={activeOutlineColor}
-      outlineStyle={[
-        Styles.outlineStyle,
-        { borderColor: inactiveOutlineColor },
-      ]}
-      textColor={textColor}
-      style={customStyle}
-      placeholderTextColor={placeholderTextColor}
-      theme={{ colors: { onSurfaceVariant: themeColors.text } }}
-    />
+    <View style={[styles.mainContainer, styles.mainContainer]}>
+      <Animated.View style={[styles.containerTitle, animatedTitle]}>
+        <Typograph>{title}</Typograph>
+      </Animated.View>
+      <TextInput
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        value={value}
+        onChangeText={onTextChange}
+        placeholder={thePlaceHolder}
+        placeholderTextColor={customStyles.placeholderTextColor}
+        textAlign={customStyles.textAlign}
+        multiline={multiline}
+        secureTextEntry={secureTextEntry}
+        style={{
+          color: themeColors.text,
+          padding: Metrics[8],
+          fontSize: Metrics[16],
+        }}
+        editable={editable}
+        {...rest}
+      />
+    </View>
   );
 };
-
-const Styles = StyleSheet.create({
-  outlineStyle: {
-    borderRadius: 10,
-  },
-});
 
 export default TextInputField;

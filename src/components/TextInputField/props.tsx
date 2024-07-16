@@ -1,16 +1,19 @@
-import type { TextInputProps, TextStyle } from 'react-native';
+import type { TextInputProps } from 'react-native';
 
 export interface PropsTextInput extends TextInputProps {
   title: string;
   value?: string;
   onTextChange: (text: string) => void;
   placeHolder?: string;
-  customStyle?: TextStyle;
+  customStyles?: {
+    height: number;
+    backgroundColor: string;
+    activeOutlineColor: string;
+    inactiveOutlineColor: string;
+    textColor: string;
+    textAlign: 'left' | 'center' | 'right' | undefined;
+    placeholderTextColor: string;
+  };
   editable?: boolean;
-  textAlign?: 'left' | 'center' | 'right' | undefined;
-  textColor?: string;
-  activeOutlineColor?: string;
-  inactiveOutlineColor?: string;
-  placeholderTextColor?: string;
   secureTextEntry?: boolean;
 }

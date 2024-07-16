@@ -134,6 +134,7 @@ export default function Testing() {
             title="Text"
             onTextChange={(set) => setInputedText(set)}
             placeHolder="insert your text"
+            value={inputedText}
           ></TextInputField>
         </View>
 
