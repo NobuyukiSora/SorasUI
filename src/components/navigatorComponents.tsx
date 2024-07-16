@@ -6,6 +6,7 @@ import { CheckBox } from './CheckBox';
 import { RadioButton } from './RadioButton';
 import { Switch } from './Switch';
 import { DynamicScrollView } from './DynamicScrollView';
+import { Calendar } from './Calendar';
 
 export {
   TextInputField,
@@ -16,4 +17,5 @@ export {
   RadioButton,
   Switch,
   DynamicScrollView,
+  Calendar,
 };

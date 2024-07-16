@@ -17,6 +17,7 @@ import {
   RadioButton,
   Switch,
   DynamicScrollView,
+  Calendar,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
@@ -124,6 +125,17 @@ export default function Testing() {
       <ScrollView contentContainerStyle={{ paddingBottom: Metrics[24] }}>
         <View style={styles.box}>
           <Typograph>{`Header back: ${headerBack}`}</Typograph>
+        </View>
+
+        <View style={styles.box}>
+          <Calendar
+            width={300}
+            customStyles={{
+              daysType: 'short',
+              daysHeight: 30,
+              showLastNextDate: true,
+            }}
+          ></Calendar>
         </View>
 
         {/* TEXT INPUT */}
