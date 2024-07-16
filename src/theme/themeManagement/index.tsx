@@ -41,6 +41,8 @@ export let themeColors = {
   button: Colors.lightBlue,
   green: Colors.lightGreen,
   red: Colors.red,
+  black: Colors.black,
+  white: Colors.lightCream,
 };
 
 // If the color changed
@@ -56,6 +58,8 @@ const setThemeColors = (isDark: boolean, customColors: any) => {
     button: isDark ? Colors.lightBlue : Colors.lightCream,
     green: Colors.lightGreen,
     red: Colors.red,
+    black: Colors.black,
+    white: Colors.lightCream,
     ...customColors,
   };
 };

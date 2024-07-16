@@ -10,6 +10,8 @@ import moment from 'moment';
 export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const {
     width = 300,
+    // getDatesRange = true,
+    dateRangeValue = () => {},
     customStyles = {
       daysType: 'short',
       daysHeight: 30,
@@ -82,6 +84,10 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   }, [currentMonth, currentYear]);
 
   React.useEffect(() => {
+    dateRangeValue({ start: startDate, end: endDate });
+  }, [startDate, endDate, dateRangeValue]);
+
+  React.useEffect(() => {
     const dateStart = moment(startDate, 'D/M/YYYY');
     setStartData({
       day: Number(dateStart.format('D')),
@@ -103,7 +109,12 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     do {
       daysView.push(
         <View style={styles.daysContainer} key={daysCount}>
-          <Typograph style={styles.daysText}>
+          <Typograph
+            style={[
+              styles.daysText,
+              { color: daysCount == 0 ? themeColors.red : themeColors.text },
+            ]}
+          >
             {customStyles.daysType === 'short'
               ? daysOfWeek.short[daysCount]
               : customStyles.daysType === 'supaShort'
@@ -165,22 +176,52 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       currentMonth + 1 === endData?.month &&
       currentYear == endData?.year;
 
-    if (dotStart) {
+    if (dotStart && !!startDate && !!endDate) {
       dotInRange = !dotInRange;
-    } else if (dotEnd) {
+    } else if (dotEnd && !!startDate && !!endDate) {
       dotInRange = !dotInRange;
     }
 
-    return dotStart ? (
-      <View style={[styles.selectedDot]} />
-    ) : dotEnd ? (
-      <View style={[styles.selectedDot]} />
+    return dotStart || dotEnd ? (
+      <View style={[styles.selectedDot]}>
+        <Typograph
+          style={[
+            styles.daysText,
+            {
+              color: themeColors.white,
+            },
+          ]}
+        >
+          {day}
+        </Typograph>
+      </View>
+    ) : dotInRange ? (
+      <View style={styles.daysContainer}>
+        <View style={styles.rangeDot}></View>
+        <Typograph
+          style={[
+            styles.daysText,
+            {
+              color: day == getSundays ? themeColors.red : themeColors.text,
+            },
+          ]}
+        >
+          {day}
+        </Typograph>
+      </View>
     ) : (
-      dotInRange && (
-        <View
-          style={[styles.selectedDot, { borderRadius: 0, width: '100%' }]}
-        />
-      )
+      <View>
+        <Typograph
+          style={[
+            styles.daysText,
+            {
+              color: day == getSundays ? themeColors.red : themeColors.text,
+            },
+          ]}
+        >
+          {day}
+        </Typograph>
+      </View>
     );
   };
 
@@ -198,16 +239,6 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
           }}
         >
           {isDaysRange(item)}
-          <Typograph
-            style={[
-              styles.daysText,
-              {
-                color: item == getSundays ? themeColors.red : themeColors.text,
-              },
-            ]}
-          >
-            {item >= 1 ? item : null}
-          </Typograph>
         </TouchableOpacity>
       );
     });
@@ -273,6 +304,11 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       width: 25,
       backgroundColor: themeColors.red,
       padding: Metrics[4],
+    },
+    rangeDot: {
+      width: 25,
+      height: 2,
+      backgroundColor: themeColors.red,
       position: 'absolute',
     },
   });
@@ -280,8 +316,8 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   return (
     <View style={styles.calendarContainer}>
       {/* <Typograph>{`${currentMonth}\n${currentYear}\n${lastDate}\n${firstDay}\n${startDayName}\n${7 - ((lastDate + firstDay) % 7)}`}</Typograph> */}
-      <Typograph>{startDate}</Typograph>
-      <Typograph>{endDate}</Typograph>
+      <Typograph>{`start: ${startDate}`}</Typograph>
+      <Typograph>{`end: ${endDate}`}</Typograph>
       <View style={styles.titleContainer}>
         <TouchableOpacity onPress={() => setCurrentMonth(currentMonth - 1)}>
           <Typograph>{'<'}</Typograph>

@@ -28,6 +28,7 @@ export default function Testing() {
   const [buttonTest, setButtonTest] = React.useState(0);
   const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
+  const [calendarDateRange, setCalendarDateRange] = React.useState({});
   const [valueViewScrollView, setValueViewScrollView] = React.useState(0);
   const [selectedRadioButton, setSelectedRadioButton] = React.useState({
     id: '000',
@@ -68,6 +69,9 @@ export default function Testing() {
     return views;
   };
 
+  React.useEffect(() => {
+    console.log('parent: ', calendarDateRange);
+  });
   // Adding Custom Colors
   customColors({
     line: theme.isDark ? 'black' : 'white',
@@ -137,6 +141,7 @@ export default function Testing() {
               daysHeight: 30,
               showLastNextDate: true,
             }}
+            dateRangeValue={(date) => setCalendarDateRange(date)}
           ></Calendar>
         </View>
 
