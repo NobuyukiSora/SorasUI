@@ -6,13 +6,13 @@ export interface PropsTextInput extends TextInputProps {
   onTextChange: (text: string) => void;
   placeHolder?: string;
   customStyles?: {
-    height: number;
-    backgroundColor: string;
-    activeOutlineColor: string;
-    inactiveOutlineColor: string;
-    textColor: string;
-    textAlign: 'left' | 'center' | 'right' | undefined;
-    placeholderTextColor: string;
+    height?: number;
+    backgroundColor?: string;
+    activeOutlineColor?: string;
+    inactiveOutlineColor?: string;
+    textColor?: string;
+    textAlign?: 'left' | 'center' | 'right' | undefined;
+    placeholderTextColor?: string;
   };
   editable?: boolean;
   secureTextEntry?: boolean;
