@@ -241,14 +241,26 @@ export default function Testing() {
               onPress={() => {
                 setValueViewScrollView(valueViewScrollView + 1);
               }}
-              style={{ height: 50, width: 50, marginHorizontal: Metrics[2] }}
+              customStyleButton={{
+                height: 50,
+                width: 50,
+                marginHorizontal: Metrics[2],
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             ></Button>
             <Button
               title="-"
               onPress={() => {
                 setValueViewScrollView(valueViewScrollView - 1);
               }}
-              style={{ height: 50, width: 50, marginHorizontal: Metrics[2] }}
+              customStyleButton={{
+                height: 50,
+                width: 50,
+                marginHorizontal: Metrics[2],
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             ></Button>
           </View>
 
