@@ -37,7 +37,7 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
       {...rest}
     >
       <View style={customStyleButton}>
-        {children ? (
+        {!!children ? (
           children
         ) : (
           <Typograph style={[styles.title, customStyleTitle]}>

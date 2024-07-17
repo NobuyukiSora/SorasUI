@@ -28,7 +28,12 @@ export default function Testing() {
   const [buttonTest, setButtonTest] = React.useState(0);
   const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
-  const [calendarDateRange, setCalendarDateRange] = React.useState({});
+  const [calendarType, setCalendarType] = React.useState(false);
+  const [calendarDateRange, setCalendarDateRange] = React.useState({
+    start: '',
+    end: '',
+  });
+  const [calendarDate, setCalendarDate] = React.useState('');
   const [valueViewScrollView, setValueViewScrollView] = React.useState(0);
   const [selectedRadioButton, setSelectedRadioButton] = React.useState({
     id: '000',
@@ -69,9 +74,6 @@ export default function Testing() {
     return views;
   };
 
-  React.useEffect(() => {
-    console.log('parent: ', calendarDateRange);
-  });
   // Adding Custom Colors
   customColors({
     line: theme.isDark ? 'black' : 'white',
@@ -134,6 +136,19 @@ export default function Testing() {
         </View>
 
         <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Calendar'}</Typograph>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Typograph>{'getRange: '}</Typograph>
+            <Button
+              onPress={() => setCalendarType(!calendarType)}
+              title={`${calendarType}`}
+              customStyleButton={{ height: 10 }}
+              customStyleTitle={{ fontSize: 10 }}
+            ></Button>
+          </View>
+          <Typograph>{`getDate: ${calendarDate}`}</Typograph>
+          <Typograph>{`getRangeStart: ${calendarDateRange.start}`}</Typograph>
+          <Typograph>{`getRangeEnd: ${calendarDateRange.end}`}</Typograph>
           <Calendar
             width={300}
             customStyles={{
@@ -142,6 +157,8 @@ export default function Testing() {
               showLastNextDate: true,
             }}
             dateRangeValue={(date) => setCalendarDateRange(date)}
+            onPressDate={(date) => setCalendarDate(date)}
+            getDatesRange={calendarType}
           ></Calendar>
         </View>
 

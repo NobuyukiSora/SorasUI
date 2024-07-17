@@ -10,8 +10,9 @@ import moment from 'moment';
 export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const {
     width = 300,
-    // getDatesRange = true,
+    getDatesRange = false,
     dateRangeValue = () => {},
+    onPressDate = () => {},
     customStyles = {
       daysType: 'short',
       daysHeight: 30,
@@ -82,10 +83,6 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       setCurrentMonth(0);
     }
   }, [currentMonth, currentYear]);
-
-  React.useEffect(() => {
-    dateRangeValue({ start: startDate, end: endDate });
-  }, [startDate, endDate, dateRangeValue]);
 
   React.useEffect(() => {
     const dateStart = moment(startDate, 'D/M/YYYY');
@@ -159,9 +156,22 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const selectedStartandEnd = (item: number) => {
     if (!isSelectedStart) {
       setStartDate(`${item}/${currentMonth + 1}/${currentYear}`);
-      setIsSelectedStart(true);
+      if (getDatesRange) {
+        dateRangeValue({
+          start: `${item}/${currentMonth + 1}/${currentYear}`,
+          end: endDate,
+        });
+        setIsSelectedStart(true);
+      } else {
+        onPressDate(`${item}/${currentMonth + 1}/${currentYear}`);
+        setEndDate('');
+      }
     } else {
       setEndDate(`${item}/${currentMonth + 1}/${currentYear}`);
+      dateRangeValue({
+        start: startDate,
+        end: `${item}/${currentMonth + 1}/${currentYear}`,
+      });
       setIsSelectedStart(false);
     }
   };
@@ -315,9 +325,6 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
 
   return (
     <View style={styles.calendarContainer}>
-      {/* <Typograph>{`${currentMonth}\n${currentYear}\n${lastDate}\n${firstDay}\n${startDayName}\n${7 - ((lastDate + firstDay) % 7)}`}</Typograph> */}
-      <Typograph>{`start: ${startDate}`}</Typograph>
-      <Typograph>{`end: ${endDate}`}</Typograph>
       <View style={styles.titleContainer}>
         <TouchableOpacity onPress={() => setCurrentMonth(currentMonth - 1)}>
           <Typograph>{'<'}</Typograph>
