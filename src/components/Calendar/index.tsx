@@ -10,12 +10,20 @@ import moment from 'moment';
 export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const {
     width = 300,
+    height = 300,
     getDatesRange = false,
+    setYearPosition = 0,
+    setMonthPosition = -1,
     dateRangeValue = () => {},
     onPressDate = () => {},
+    customSelectedDot,
+    customRangeDot,
+    customizeSelectedTextStyles,
+    customWeekTextStyles,
+    customDateTextStyles,
+    customTitleHeader,
     customStyles = {
-      daysType: 'short',
-      daysHeight: 30,
+      weekType: 'short',
       showLastNextDate: true,
     },
   } = props;
@@ -38,8 +46,16 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const [endDate, setEndDate] = React.useState('');
   const [isSelectedStart, setIsSelectedStart] = React.useState(false);
 
-  const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const lastDate = new Date(
+    !!setYearPosition ? setYearPosition : currentYear,
+    (setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1,
+    0
+  ).getDate();
+  const firstDay = new Date(
+    !!setYearPosition ? setYearPosition : currentYear,
+    setMonthPosition >= 0 ? setMonthPosition : currentMonth,
+    1
+  ).getDay();
 
   const datesArray = Array.from({ length: lastDate }, (_, index) => index + 1);
   let getSundays = firstDay == 0 ? firstDay + 1 : 7 - firstDay + 1;
@@ -100,37 +116,46 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     });
   }, [startDate, endDate]);
 
-  const daysLoop = () => {
-    let daysCount = 0;
-    const daysView = [];
+  const weekLoop = () => {
+    let weekCount = 0;
+    const weekView = [];
     do {
-      daysView.push(
-        <View style={styles.daysContainer} key={daysCount}>
+      weekView.push(
+        <View style={styles.daysContainer} key={weekCount}>
           <Typograph
             style={[
               styles.daysText,
-              { color: daysCount == 0 ? themeColors.red : themeColors.text },
+              { color: weekCount == 0 ? themeColors.red : themeColors.text },
+              customWeekTextStyles,
             ]}
           >
-            {customStyles.daysType === 'short'
-              ? daysOfWeek.short[daysCount]
-              : customStyles.daysType === 'supaShort'
-                ? daysOfWeek.supaShort[daysCount]
-                : daysOfWeek.long[daysCount]}
+            {customStyles.weekType === 'short'
+              ? daysOfWeek.short[weekCount]
+              : customStyles.weekType === 'supaShort'
+                ? daysOfWeek.supaShort[weekCount]
+                : daysOfWeek.long[weekCount]}
           </Typograph>
         </View>
       );
-      daysCount++;
-    } while (daysCount < daysOfWeek.long.length);
-    return daysView;
+      weekCount++;
+    } while (weekCount < daysOfWeek.long.length);
+    return weekView;
   };
 
   const lastMonthDatesLoop = () => {
     const datesView = [];
 
     if (customStyles.showLastNextDate) {
-      const lastMonth = currentMonth - 1 < 0 ? 11 : currentMonth - 1;
-      const getYear = currentMonth - 1 < 0 ? currentYear - 1 : currentYear;
+      const lastMonth =
+        (setMonthPosition >= 0 ? setMonthPosition : currentMonth) - 1 < 0
+          ? 11
+          : (setMonthPosition >= 0 ? setMonthPosition : currentMonth) - 1;
+      const getYear =
+        (setMonthPosition >= 0 ? setMonthPosition : currentMonth) - 1 < 0
+          ? (!!setYearPosition ? setYearPosition : currentYear) - 1
+          : !!setYearPosition
+            ? setYearPosition
+            : currentYear;
       const lastMonthDates = new Date(getYear, lastMonth + 1, 0).getDate();
       let lastMonthDatesCount =
         new Date(getYear, lastMonth + 1, 0).getDate() - (firstDay - 1);
@@ -148,6 +173,16 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
           lastMonthDatesCount++;
         } while (lastMonthDatesCount <= lastMonthDates);
       }
+    } else {
+      let lastMonthDatesCount = 1;
+      if (firstDay != 0) {
+        do {
+          datesView.push(
+            <View style={styles.daysContainer} key={lastMonthDatesCount} />
+          );
+          lastMonthDatesCount++;
+        } while (lastMonthDatesCount <= firstDay);
+      }
     }
 
     return datesView;
@@ -155,22 +190,28 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
 
   const selectedStartandEnd = (item: number) => {
     if (!isSelectedStart) {
-      setStartDate(`${item}/${currentMonth + 1}/${currentYear}`);
+      setStartDate(
+        `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`
+      );
       if (getDatesRange) {
         dateRangeValue({
-          start: `${item}/${currentMonth + 1}/${currentYear}`,
+          start: `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`,
           end: endDate,
         });
         setIsSelectedStart(true);
       } else {
-        onPressDate(`${item}/${currentMonth + 1}/${currentYear}`);
+        onPressDate(
+          `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`
+        );
         setEndDate('');
       }
     } else {
-      setEndDate(`${item}/${currentMonth + 1}/${currentYear}`);
+      setEndDate(
+        `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`
+      );
       dateRangeValue({
         start: startDate,
-        end: `${item}/${currentMonth + 1}/${currentYear}`,
+        end: `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`,
       });
       setIsSelectedStart(false);
     }
@@ -179,12 +220,14 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const isDaysRange = (day: number) => {
     const dotStart =
       day === startData?.day &&
-      currentMonth + 1 === startData?.month &&
-      currentYear == startData?.year;
+      (setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1 ===
+        startData?.month &&
+      (!!setYearPosition ? setYearPosition : currentYear) == startData?.year;
     const dotEnd =
       day === endData?.day &&
-      currentMonth + 1 === endData?.month &&
-      currentYear == endData?.year;
+      (setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1 ===
+        endData?.month &&
+      (!!setYearPosition ? setYearPosition : currentYear) == endData?.year;
 
     if (dotStart && !!startDate && !!endDate) {
       dotInRange = !dotInRange;
@@ -193,13 +236,22 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     }
 
     return dotStart || dotEnd ? (
-      <View style={[styles.selectedDot]}>
+      <View style={styles.daysContainer}>
+        <View style={{ position: 'absolute' }}>
+          {!!customSelectedDot ? (
+            customSelectedDot
+          ) : (
+            <View style={styles.selectedDot}></View>
+          )}
+        </View>
         <Typograph
           style={[
             styles.daysText,
             {
               color: themeColors.white,
             },
+            customDateTextStyles,
+            customizeSelectedTextStyles,
           ]}
         >
           {day}
@@ -207,13 +259,20 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       </View>
     ) : dotInRange ? (
       <View style={styles.daysContainer}>
-        <View style={styles.rangeDot}></View>
+        <View style={{ position: 'absolute' }}>
+          {!!customRangeDot ? (
+            customRangeDot
+          ) : (
+            <View style={styles.rangeDot}></View>
+          )}
+        </View>
         <Typograph
           style={[
             styles.daysText,
             {
               color: day == getSundays ? themeColors.red : themeColors.text,
             },
+            customDateTextStyles,
           ]}
         >
           {day}
@@ -227,6 +286,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
             {
               color: day == getSundays ? themeColors.red : themeColors.text,
             },
+            customDateTextStyles,
           ]}
         >
           {day}
@@ -284,7 +344,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       textAlign: 'center',
     },
     daysContainer: {
-      height: customStyles.daysHeight,
+      height: (height - 50) / 7,
       width: width / 7,
       justifyContent: 'center',
       alignItems: 'center',
@@ -293,8 +353,8 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       width: width,
     },
     calendarContainer: {
-      alignItems: 'center',
-      padding: Metrics[4],
+      width: width,
+      height: height,
     },
     titleContainer: {
       flexDirection: 'row',
@@ -303,10 +363,12 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       marginBottom: Metrics[4],
       alignItems: 'center',
       paddingHorizontal: Metrics[4],
+      height: 50,
     },
     titleText: {
       textAlign: 'center',
       fontSize: Metrics[16],
+      color: themeColors.text,
     },
     selectedDot: {
       borderRadius: Metrics[16],
@@ -319,32 +381,35 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       width: 25,
       height: 2,
       backgroundColor: themeColors.red,
-      position: 'absolute',
     },
   });
 
   return (
     <View style={styles.calendarContainer}>
-      <View style={styles.titleContainer}>
-        <TouchableOpacity onPress={() => setCurrentMonth(currentMonth - 1)}>
-          <Typograph>{'<'}</Typograph>
-        </TouchableOpacity>
-        <View>
-          <Typograph style={[styles.titleText, { fontWeight: '800' }]}>
-            {months[currentMonth]}
-          </Typograph>
-          <Typograph style={[styles.titleText, { fontSize: Metrics[12] }]}>
-            {currentYear}
-          </Typograph>
+      {!!customTitleHeader ? (
+        customTitleHeader
+      ) : (
+        <View style={styles.titleContainer}>
+          <TouchableOpacity onPress={() => setCurrentMonth(currentMonth - 1)}>
+            <Typograph>{'<'}</Typograph>
+          </TouchableOpacity>
+          <View>
+            <Typograph style={[styles.titleText, { fontWeight: '800' }]}>
+              {months[currentMonth]}
+            </Typograph>
+            <Typograph style={[styles.titleText, { fontSize: Metrics[12] }]}>
+              {currentYear}
+            </Typograph>
+          </View>
+          <TouchableOpacity onPress={() => setCurrentMonth(currentMonth + 1)}>
+            <Typograph>{'>'}</Typograph>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => setCurrentMonth(currentMonth + 1)}>
-          <Typograph>{'>'}</Typograph>
-        </TouchableOpacity>
-      </View>
+      )}
 
       <View style={styles.dateContainer}>
         <DynamicScrollView directionMode={{ direction: 'row' }}>
-          {daysLoop()}
+          {weekLoop()}
           {lastMonthDatesLoop()}
           {datesLoop()}
           {nextMonthDatesLoop()}

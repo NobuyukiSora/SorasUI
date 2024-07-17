@@ -8,32 +8,27 @@ import {
   useColorScheme,
 } from 'react-native';
 // import { multiply } from 'sora-ui';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Button,
-  TextInputField,
-  Typograph,
-  Header,
   CheckBox,
+  DynamicScrollView,
+  Header,
   RadioButton,
   Switch,
-  DynamicScrollView,
-  Calendar,
+  TextInputField,
+  Typograph,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CalendarTesting } from './CalendarTesting';
 
 export default function Testing() {
   const [inputedText, setInputedText] = React.useState('');
   const [buttonTest, setButtonTest] = React.useState(0);
   const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
-  const [calendarType, setCalendarType] = React.useState(false);
-  const [calendarDateRange, setCalendarDateRange] = React.useState({
-    start: '',
-    end: '',
-  });
-  const [calendarDate, setCalendarDate] = React.useState('');
+
   const [valueViewScrollView, setValueViewScrollView] = React.useState(0);
   const [selectedRadioButton, setSelectedRadioButton] = React.useState({
     id: '000',
@@ -137,29 +132,8 @@ export default function Testing() {
 
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Calendar'}</Typograph>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Typograph>{'getRange: '}</Typograph>
-            <Button
-              onPress={() => setCalendarType(!calendarType)}
-              title={`${calendarType}`}
-              customStyleButton={{ height: 10 }}
-              customStyleTitle={{ fontSize: 10 }}
-            ></Button>
-          </View>
-          <Typograph>{`getDate: ${calendarDate}`}</Typograph>
-          <Typograph>{`getRangeStart: ${calendarDateRange.start}`}</Typograph>
-          <Typograph>{`getRangeEnd: ${calendarDateRange.end}`}</Typograph>
-          <Calendar
-            width={300}
-            customStyles={{
-              daysType: 'short',
-              daysHeight: 30,
-              showLastNextDate: true,
-            }}
-            dateRangeValue={(date) => setCalendarDateRange(date)}
-            onPressDate={(date) => setCalendarDate(date)}
-            getDatesRange={calendarType}
-          ></Calendar>
+
+          <CalendarTesting />
         </View>
 
         {/* TEXT INPUT */}
