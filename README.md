@@ -36,7 +36,12 @@ yarn add sora-ui
     <tr>
         <td>CheckBox</td>
         <td><img src="./image/checkbox.png" alt="CheckBox" ></td>
-        <td>can change the icon using the child</td>
+        <td>can change the icon using the icon command</td>
+    </tr>
+    <tr>
+        <td>Calendar</td>
+        <td><img src="./image/calendar.png" alt="calendar" ></td>
+        <td>you can get selected date or you can get range dates, and you can modify the calendar how ever you want </td>
     </tr>
     <tr>
         <td>DaynamicScrollView</td>
@@ -46,17 +51,17 @@ yarn add sora-ui
     <tr>
         <td>Header</td>
         <td><img src="./image/header.png" alt="Header"></td>
-        <td>can change the icon using the child</td>
+        <td>can change the icon using the icon command</td>
     </tr>
     <tr>
         <td>RadioButton</td>
         <td><img src="./image/radiobutton-column.png" alt="RadioButton-column" style="width: 80px;"><img src="./image/radiobutton-row.png" alt="RadioButton-row"></td>
-        <td>can change the icon using the child</td>
+        <td>can change the icon using the icon command</td>
     </tr>
      <tr>
         <td>Switch</td>
         <td><img src="./image/switch.png" alt="Switch"></td>
-        <td>you can add icon using children</td>
+        <td>you can add icon using icon command</td>
     </tr>
     <tr>
         <td>TextInputFiled</td>
