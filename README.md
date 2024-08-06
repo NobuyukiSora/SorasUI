@@ -34,14 +34,14 @@ yarn add sora-ui
         <td>you can customize using children or just use text as in the image</td>
     </tr>
     <tr>
+        <td>Calendar</td>
+        <td><img src="./image/calendar.png" alt="calendar" ></td>
+        <td>you can get selected date or you can get range dates, and you can modify the calendar as you like </td>
+    </tr>
+    <tr>
         <td>CheckBox</td>
         <td><img src="./image/checkbox.png" alt="CheckBox" ></td>
         <td>can change the icon using the icon command</td>
-    </tr>
-    <tr>
-        <td>Calendar</td>
-        <td><img src="./image/calendar.png" alt="calendar" ></td>
-        <td>you can get selected date or you can get range dates, and you can modify the calendar how ever you want </td>
     </tr>
     <tr>
         <td>DaynamicScrollView</td>
