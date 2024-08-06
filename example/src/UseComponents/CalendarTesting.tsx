@@ -5,8 +5,8 @@ import {
   Button,
   Calendar,
   Typograph,
-} from '../../src/components/navigatorComponents';
-import { themeColors } from '../../src/theme/themeManagement';
+} from '../../../src/components/navigatorComponents';
+import { themeColors } from '../../../src/theme/themeManagement';
 
 export const CalendarTesting = () => {
   const [calendarType, setCalendarType] = React.useState(false);

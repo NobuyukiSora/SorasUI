@@ -16,15 +16,14 @@ import {
   Header,
   RadioButton,
   Switch,
-  TextInputField,
   Typograph,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
-import { CalendarTesting } from './CalendarTesting';
+import { CalendarTesting } from './UseComponents/CalendarTesting';
+import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 
 export default function Testing() {
-  const [inputedText, setInputedText] = React.useState('');
   const [buttonTest, setButtonTest] = React.useState(0);
   const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
@@ -113,7 +112,7 @@ export default function Testing() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      {/* HEADER */}
       <Header
         title="testing page"
         onPress={() => setHeaderBack(headerBack + 1)}
@@ -130,29 +129,16 @@ export default function Testing() {
           <Typograph>{`Header back: ${headerBack}`}</Typograph>
         </View>
 
+        {/* CALENDAR */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Calendar'}</Typograph>
-
           <CalendarTesting />
         </View>
 
         {/* TEXT INPUT */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'TEXT INPUT'}</Typograph>
-          <Typograph>{`Input: ${inputedText}`}</Typograph>
-          <TextInputField
-            title="Text"
-            onTextChange={(set) => setInputedText(set)}
-            placeHolder="insert your text"
-            value={inputedText}
-            // customContainerStyles={{backgroundColor: 'red'}}
-          ></TextInputField>
-          <TextInputField
-            title="Text"
-            onTextChange={(set) => setInputedText(set)}
-            placeHolder="insert your text"
-            value={inputedText}
-          ></TextInputField>
+          <TextInputFieldTesting />
         </View>
 
         {/* THEME SWITCH */}
@@ -192,7 +178,7 @@ export default function Testing() {
           ></Button>
         </View>
 
-        {/* CheckBox */}
+        {/* CHECKBOX */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Check Box'}</Typograph>
           <Typograph>{`Checked: ${checkBox}`}</Typograph>
