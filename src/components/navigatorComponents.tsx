@@ -7,6 +7,8 @@ import { RadioButton } from './RadioButton';
 import { Switch } from './Switch';
 import { DynamicScrollView } from './DynamicScrollView';
 import { Calendar } from './Calendar';
+import { InfinitScrolling } from './InfiniteScrolling';
+import { SnackBar } from './SnackBar';
 
 export {
   TextInputField,
@@ -18,4 +20,6 @@ export {
   Switch,
   DynamicScrollView,
   Calendar,
+  InfinitScrolling,
+  SnackBar,
 };
