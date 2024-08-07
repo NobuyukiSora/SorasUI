@@ -14,14 +14,17 @@ import {
   CheckBox,
   DynamicScrollView,
   Header,
+  InfinitScrolling,
   RadioButton,
-  Switch,
+  SnackBar,
   Typograph,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
 import { CalendarTesting } from './UseComponents/CalendarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
+import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
+import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 
 export default function Testing() {
   const [buttonTest, setButtonTest] = React.useState(0);
@@ -46,7 +49,7 @@ export default function Testing() {
 
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
-  let { theme, customColors, toggleTheme, toggleSystemTheme } = useTheme();
+  let { theme, customColors } = useTheme();
 
   const loopViewScrollView = () => {
     const views = [];
@@ -145,23 +148,18 @@ export default function Testing() {
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'THEME SWITCH'}</Typograph>
           <Typograph>{`systemTheme: ${colorScheme}`}</Typograph>
-          <View style={styles.switchThemeContainer}>
-            <Typograph>{`sameAsSystem: ${theme.themeSameAsSystem}`}</Typograph>
-            <Switch
-              value={theme.themeSameAsSystem}
-              onPress={() =>
-                toggleSystemTheme(theme.themeSameAsSystem, colorScheme)
-              }
-            />
-          </View>
-          <View style={styles.switchThemeContainer}>
-            <Typograph>{`isDarkMode: ${theme.isDark}`}</Typograph>
-            <Switch
-              value={theme.isDark}
-              onPress={() => toggleTheme(theme.isDark)}
-              disabled={theme.themeSameAsSystem}
-            />
-          </View>
+          <ThemeSwitchTesting />
+        </View>
+
+        {/* THEME SWITCH */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'SnackBar'}</Typograph>
+          <SnackBarTesting />
+        </View>
+        <View style={{ gap: Metrics[8] }}>
+          <SnackBar type="success" />
+          <SnackBar type="warning" />
+          <SnackBar type="error" />
         </View>
 
         {/* BUTTON */}
@@ -249,6 +247,27 @@ export default function Testing() {
           <DynamicScrollView directionMode={{ direction: 'row' }}>
             {loopViewScrollView()}
           </DynamicScrollView>
+        </View>
+
+        {/* InfinityScrolling */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Radio Button'}</Typograph>
+          <Typograph>{`Selected: ${selectedRadioButton.id}`}</Typograph>
+
+          <InfinitScrolling width={Metrics.screenWidth}>
+            <View style={{ flexDirection: 'row' }}>
+              <Typograph>{` Soras-UI ${version} `}</Typograph>
+              <Typograph>{` Soras-UI ${version} `}</Typograph>
+              <Typograph>{` Soras-UI ${version} `}</Typograph>
+              <Typograph>{` Soras-UI ${version} `}</Typograph>
+            </View>
+          </InfinitScrolling>
+          <View style={{ flexDirection: 'row' }}>
+            <Typograph>{` Soras-UI ${version} `}</Typograph>
+            <Typograph>{` Soras-UI ${version} `}</Typograph>
+            <Typograph>{` Soras-UI ${version} `}</Typograph>
+            <Typograph>{` Soras-UI ${version} `}</Typograph>
+          </View>
         </View>
 
         <View style={styles.versionContainer}>
