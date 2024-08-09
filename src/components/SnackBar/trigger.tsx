@@ -3,6 +3,10 @@ import React, { createContext, ReactNode, useContext, useState } from 'react';
 interface TriggerContextType {
   trigger: () => void;
   setTrigger: (fn: () => void) => void;
+  snackBarType: string;
+  setSnackBarType: (type: string) => void;
+  snackBarTitle: string;
+  setSnackBarTitle: (type: string) => void;
 }
 
 const TriggerContext = createContext<TriggerContextType | undefined>(undefined);
@@ -15,9 +19,20 @@ export const TriggerProvider: React.FunctionComponent<TriggerProviderProps> = ({
   children,
 }) => {
   const [trigger, setTrigger] = useState<() => void>(() => () => {});
+  const [snackBarType, setSnackBarType] = useState<string>('');
+  const [snackBarTitle, setSnackBarTitle] = useState<string>('');
 
   return (
-    <TriggerContext.Provider value={{ trigger, setTrigger }}>
+    <TriggerContext.Provider
+      value={{
+        trigger,
+        setTrigger,
+        snackBarType,
+        setSnackBarType,
+        snackBarTitle,
+        setSnackBarTitle,
+      }}
+    >
       {children}
     </TriggerContext.Provider>
   );

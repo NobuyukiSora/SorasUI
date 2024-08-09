@@ -1,24 +1,57 @@
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { themeColors } from '../../theme/themeManagement';
-import { Typograph } from '../Typograph';
-import { Metrics } from '../../theme/metrics';
-import { PropsSnackBar } from './props';
-import IconUndo from '../../Icon/Ico-Undo.svg';
-import IconWarning from '../../Icon/Ico-Warning.svg';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import IconClose from '../../Icon/Ico-Close.svg';
 import IconCloseBold from '../../Icon/Ico-CloseBold.svg';
 import IconSuccess from '../../Icon/Ico-Success.svg';
+import IconUndo from '../../Icon/Ico-Undo.svg';
+import IconWarning from '../../Icon/Ico-Warning.svg';
 import { Colors } from '../../theme/colors';
+import { Metrics } from '../../theme/metrics';
+import { themeColors } from '../../theme/themeManagement';
+import { Typograph } from '../Typograph';
+import { PropsSnackBar } from './props';
+import { useTrigger } from './trigger';
 
 export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
   const {
-    type,
-    // triggered = () => {},
+    delay = 4000,
+    animatedHeight = 100,
     onUndo = () => {},
     onClose = () => {},
     ...rest
   } = props;
+
+  const { setTrigger, snackBarType, snackBarTitle } = useTrigger();
+  const springValue = useSharedValue(0);
+
+  const animatedSnackBar = useAnimatedStyle(() => ({
+    transform: [{ translateY: springValue.value }],
+  }));
+
+  const isTriggeredClose = React.useCallback(() => {
+    springValue.value = withSpring(0, {
+      stiffness: 50,
+      damping: 10,
+      mass: 1,
+    });
+  }, [springValue]);
+
+  const isTriggered = React.useCallback(() => {
+    springValue.value = withSpring(animatedHeight - animatedHeight * 2);
+
+    setTimeout(() => {
+      isTriggeredClose();
+    }, delay);
+  }, [animatedHeight, delay, isTriggeredClose, springValue]);
+
+  React.useEffect(() => {
+    setTrigger(() => isTriggered);
+  }, [setTrigger, isTriggered]);
 
   const styles = StyleSheet.create({
     container: {
@@ -29,6 +62,10 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
       paddingHorizontal: Metrics[12],
       flexDirection: 'row',
       justifyContent: 'space-between',
+      position: 'absolute',
+      bottom: -50,
+      right: 0,
+      left: 0,
     },
     IconBox: {
       height: 50,
@@ -44,7 +81,7 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
   });
 
   const getIcon = () => {
-    switch (type) {
+    switch (snackBarType) {
       case 'success':
         return (
           <View style={{ flexDirection: 'row' }}>
@@ -52,7 +89,7 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
               <IconSuccess fill={Colors.lightGreen} />
             </View>
             <View style={styles.centerItem}>
-              <Typograph>{'Success'}</Typograph>
+              <Typograph>{snackBarTitle}</Typograph>
             </View>
           </View>
         );
@@ -65,7 +102,7 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
               <IconWarning fill={Colors.yellow} />
             </View>
             <View style={styles.centerItem}>
-              <Typograph>{'Warning'}</Typograph>
+              <Typograph>{snackBarTitle}</Typograph>
             </View>
           </View>
         );
@@ -76,25 +113,37 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
               <IconCloseBold fill={Colors.red} />
             </View>
             <View style={styles.centerItem}>
-              <Typograph>{'Error'}</Typograph>
+              <Typograph>{snackBarTitle}</Typograph>
             </View>
           </View>
         );
       default:
-        break;
+        return (
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.centerItem}>
+              <Typograph>{'Hellow There'}</Typograph>
+            </View>
+          </View>
+        );
     }
   };
   return (
-    <View style={styles.container} {...rest}>
+    <Animated.View style={[styles.container, animatedSnackBar]} {...rest}>
       {getIcon()}
       <View style={{ flexDirection: 'row', gap: Metrics[8] }}>
         <TouchableOpacity style={styles.centerItem} onPress={onUndo}>
           <IconUndo width={20} fill={themeColors.text} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.centerItem} onPress={onClose}>
+        <TouchableOpacity
+          style={styles.centerItem}
+          onPress={() => {
+            isTriggeredClose();
+            onClose();
+          }}
+        >
           <IconClose height={15} fill={themeColors.text} />
         </TouchableOpacity>
       </View>
-    </View>
+    </Animated.View>
   );
 };

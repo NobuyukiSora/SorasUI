@@ -16,15 +16,14 @@ import {
   Header,
   InfinitScrolling,
   RadioButton,
-  SnackBar,
   Typograph,
 } from '../../src/components/navigatorComponents';
 import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
 import { themeColors } from '../../src/theme/themeManagement';
 import { CalendarTesting } from './UseComponents/CalendarTesting';
+import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
-import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 
 export default function Testing() {
   const [buttonTest, setButtonTest] = React.useState(0);
@@ -155,11 +154,6 @@ export default function Testing() {
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'SnackBar'}</Typograph>
           <SnackBarTesting />
-        </View>
-        <View style={{ gap: Metrics[8] }}>
-          <SnackBar type="success" />
-          <SnackBar type="warning" />
-          <SnackBar type="error" />
         </View>
 
         {/* BUTTON */}

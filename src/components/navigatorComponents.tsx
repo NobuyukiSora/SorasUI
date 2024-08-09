@@ -9,6 +9,7 @@ import { DynamicScrollView } from './DynamicScrollView';
 import { Calendar } from './Calendar';
 import { InfinitScrolling } from './InfiniteScrolling';
 import { SnackBar } from './SnackBar';
+import { TriggerProvider } from './SnackBar/trigger';
 
 export {
   TextInputField,
@@ -22,4 +23,5 @@ export {
   Calendar,
   InfinitScrolling,
   SnackBar,
+  TriggerProvider,
 };
