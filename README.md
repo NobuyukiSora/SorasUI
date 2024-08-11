@@ -44,7 +44,7 @@ yarn add sora-ui
         <td>can change the icon using the icon command</td>
     </tr>
     <tr>
-        <td>DaynamicScrollView</td>
+        <td>DynamicScrollView</td>
         <td><img src="./image/daynamicScrollView.png" alt="DaynamicScrollView" ></td>
         <td>this component can help you to wrap the content inside</td>
     </tr>
@@ -57,6 +57,12 @@ yarn add sora-ui
         <td>RadioButton</td>
         <td><img src="./image/radiobutton-column.png" alt="RadioButton-column" style="width: 80px;"><img src="./image/radiobutton-row.png" alt="RadioButton-row"></td>
         <td>can change the icon using the icon command</td>
+    </tr>
+    <tr>
+        <td>SnackBar</td>
+        <td><img src="./image/snackBar.png" alt="SnackBar"></td>
+        <td>You can run the snackbar using trigger, customize using setSnackBarType and setSnackBarTitle from useTrigger()
+        </td>
     </tr>
      <tr>
         <td>Switch</td>
@@ -77,6 +83,7 @@ yarn add sora-ui
 </div>
 
 ---
+
 ---
 
 ## Tools
