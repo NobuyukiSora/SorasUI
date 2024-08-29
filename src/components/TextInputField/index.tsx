@@ -10,7 +10,9 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
+export const TextInputField: React.FunctionComponent<PropsTextInput> = (
+  props
+) => {
   const {
     title,
     value,
@@ -107,5 +109,3 @@ const TextInputField: React.FunctionComponent<PropsTextInput> = (props) => {
     </View>
   );
 };
-
-export default TextInputField;

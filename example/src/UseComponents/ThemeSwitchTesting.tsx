@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, useColorScheme, View } from 'react-native';
 // import { multiply } from 'sora-ui';
-import { Switch, Typograph } from '../../../src/components/navigatorComponents';
-import { Metrics, useTheme } from '../../../src/theme/navigatorTheme';
+import { Switch, Typograph } from '../../../src/components';
+import { Metrics, useTheme } from '../../../src/theme';
 
 export const ThemeSwitchTesting = () => {
   const colorScheme = useColorScheme();

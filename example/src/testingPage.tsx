@@ -17,8 +17,8 @@ import {
   InfinitScrolling,
   RadioButton,
   Typograph,
-} from '../../src/components/navigatorComponents';
-import { Metrics, useTheme } from '../../src/theme/navigatorTheme';
+} from '../../src/components';
+import { Metrics, useTheme } from '../../src/theme';
 import { themeColors } from '../../src/theme/themeManagement';
 import { CalendarTesting } from './UseComponents/CalendarTesting';
 import { SnackBarTesting } from './UseComponents/SnackBarTesting';

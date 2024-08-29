@@ -6,7 +6,7 @@ import React, {
   useState,
   type ReactNode,
 } from 'react';
-import { Colors } from '../navigatorTheme';
+import { Colors } from '..';
 
 type ThemeContextType = {
   theme: { themeSameAsSystem: boolean; isDark: boolean };

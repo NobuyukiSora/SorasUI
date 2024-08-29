@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 // import { multiply } from 'sora-ui';
-import {
-  Button,
-  Calendar,
-  Typograph,
-} from '../../../src/components/navigatorComponents';
+import { Button, Calendar, Typograph } from '../../../src/components';
 import { themeColors } from '../../../src/theme/themeManagement';
 
 export const CalendarTesting = () => {

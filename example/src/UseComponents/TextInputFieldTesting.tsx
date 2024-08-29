@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 // import { multiply } from 'sora-ui';
-import {
-  TextInputField,
-  Typograph,
-} from '../../../src/components/navigatorComponents';
+import { TextInputField, Typograph } from '../../../src/components';
 
 export const TextInputFieldTesting = () => {
   const [inputedText, setInputedText] = React.useState('');
