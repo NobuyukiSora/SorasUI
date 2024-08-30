@@ -73,13 +73,18 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   useEffect(() => {
     const loadTheme = async () => {
       let storedTheme = { isDark: false, themeSameAsSystem: false };
-      await AsyncStorage.getItem('APP_THEME')
-        .then((value: any) => {
-          storedTheme = JSON.parse(value);
-        })
-        .catch(() => {
-          storedTheme = { isDark: false, themeSameAsSystem: false };
-        });
+      try {
+        await AsyncStorage.getItem('APP_THEME')
+          .then((value: any) => {
+            storedTheme = JSON.parse(value);
+          })
+          .catch(() => {
+            storedTheme = { isDark: false, themeSameAsSystem: false };
+          });
+      } catch (error) {
+        storedTheme = { isDark: false, themeSameAsSystem: false };
+      }
+
       if (!!storedTheme) {
         setTheme(storedTheme);
       }
