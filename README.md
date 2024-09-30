@@ -7,9 +7,9 @@ https://github.com/NobuyukiSora
 ## Installation
 
 ```sh
-npm install sora-ui
+npm install sora-ui @react-native-async-storage/async-storage react-native-reanimated
 
-yarn add sora-ui
+yarn add sora-ui @react-native-async-storage/async-storage react-native-reanimated
 ```
 
 ## Components
