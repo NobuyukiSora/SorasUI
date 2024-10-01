@@ -5,6 +5,11 @@ import { TextInputField, Typograph } from '../../../src/components';
 
 export const TextInputFieldTesting = () => {
   const [inputedText, setInputedText] = React.useState('');
+  const [inputedTextn, setInputedTextn] = React.useState(0);
+
+  // React.useEffect(() => {
+  //   console.log(inputedTextn, inputedText);
+  // }, [inputedTextn, inputedText]);
 
   return (
     <View>
@@ -18,9 +23,9 @@ export const TextInputFieldTesting = () => {
       ></TextInputField>
       <TextInputField
         title="Text"
-        onTextChange={(set) => setInputedText(set)}
+        onTextChange={(set) => setInputedTextn(Number(set))}
         placeHolder="insert your text"
-        value={inputedText}
+        value={inputedTextn}
       ></TextInputField>
     </View>
   );
