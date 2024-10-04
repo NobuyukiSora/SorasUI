@@ -24,10 +24,25 @@ import { CalendarTesting } from './UseComponents/CalendarTesting';
 import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export default function Testing() {
+type RootStackParamList = {
+  Home: undefined;
+  secondScreen: undefined;
+};
+
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
+type Props = {
+  navigation: HomeScreenNavigationProp;
+};
+
+export default function Testing({ navigation }: Props) {
   const [buttonTest, setButtonTest] = React.useState(0);
-  const [headerBack, setHeaderBack] = React.useState(0);
+  // const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
 
   const [valueViewScrollView, setValueViewScrollView] = React.useState(0);
@@ -117,7 +132,7 @@ export default function Testing() {
       {/* HEADER */}
       <Header
         title="testing page"
-        onPress={() => setHeaderBack(headerBack + 1)}
+        onPress={() => navigation.navigate('secondScreen')}
         // customButtonStyles={{backgroundColor: 'red'}}
         // icon={(
         // <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
@@ -127,9 +142,7 @@ export default function Testing() {
       ></Header>
 
       <ScrollView contentContainerStyle={{ paddingBottom: Metrics[24] }}>
-        <View style={styles.box}>
-          <Typograph>{`Header back: ${headerBack}`}</Typograph>
-        </View>
+        <View style={styles.box}></View>
 
         {/* CALENDAR */}
         <View style={styles.box}>
@@ -150,7 +163,7 @@ export default function Testing() {
           <ThemeSwitchTesting />
         </View>
 
-        {/* THEME SWITCH */}
+        {/* SNACK BAR */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'SnackBar'}</Typograph>
           <SnackBarTesting />
@@ -166,8 +179,7 @@ export default function Testing() {
               setButtonTest(buttonTest + 1);
               setValueViewScrollView(valueViewScrollView + 1);
             }}
-            // customStyleButton={{backgroundColor: 'red'}}
-          ></Button>
+          />
         </View>
 
         {/* CHECKBOX */}
