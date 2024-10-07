@@ -46,7 +46,6 @@ export const CalendarTesting = () => {
         <Button
           onPress={() => setCalendarType(!calendarType)}
           title={`${calendarType}`}
-          customStyleButton={{ height: 10 }}
           customStyleTitle={{ fontSize: 10 }}
         ></Button>
       </View>
@@ -55,7 +54,6 @@ export const CalendarTesting = () => {
         <Button
           onPress={() => setShowLastNextDates(!showLastNextDates)}
           title={`${showLastNextDates}`}
-          customStyleButton={{ height: 10 }}
           customStyleTitle={{ fontSize: 10 }}
         ></Button>
       </View>
@@ -130,15 +128,13 @@ export const CalendarTesting = () => {
                 <Button
                   onPress={() => setMonthPosition(monthPosition - 1)}
                   title={`-`}
-                  customStyleButton={{ height: 10 }}
                   customStyleTitle={{ fontSize: 10 }}
                 ></Button>
                 <Button
                   onPress={() => setMonthPosition(monthPosition + 1)}
                   title={`+`}
-                  customStyleButton={{ height: 10 }}
                   customStyleTitle={{ fontSize: 10 }}
-                ></Button>
+                />
               </View>
             </View>
           }

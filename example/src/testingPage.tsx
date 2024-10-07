@@ -25,6 +25,7 @@ import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ModalTesting } from './UseComponents/ModalTest';
 
 type RootStackParamList = {
   Home: undefined;
@@ -214,6 +215,12 @@ export default function Testing({ navigation }: Props) {
             //   </View>
             //   )}
           ></RadioButton>
+        </View>
+
+        {/* MODAL */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Modal'}</Typograph>
+          <ModalTesting />
         </View>
 
         <View style={styles.box}>

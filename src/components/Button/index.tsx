@@ -36,7 +36,7 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
       style={[styles.button, customStyleButton]}
       {...rest}
     >
-      <View style={customStyleButton}>
+      <View>
         {!!children ? (
           children
         ) : (
