@@ -5,12 +5,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Colors } from '../../theme/colors';
 import { Metrics } from '../../theme/metrics';
 import { themeColors } from '../../theme/themeManagement';
-import { propsModal } from './props';
-import { Typograph } from '../Typograph';
 import { Button } from '../Button';
+import { Typograph } from '../Typograph';
+import { propsModal } from './props';
+import { BlurView } from '@react-native-community/blur';
 
 export const Modal: React.FunctionComponent<propsModal> = (props) => {
   const {
@@ -27,7 +27,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
     title: {
       fontWeight: '800',
       textAlign: 'center',
-      color: Colors.black,
+      color: themeColors.text,
     },
     absoluteBack: {
       position: 'absolute',
@@ -41,7 +41,9 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       justifyContent: 'flex-end',
     },
     centerStyle: {
-      borderRadius: Metrics[12],
+      flex: 1,
+      justifyContent: 'center',
+      alignContent: 'center',
     },
     customButton: {
       position: 'absolute',
@@ -52,10 +54,11 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
     containerBottom: {
       borderTopLeftRadius: Metrics[12],
       borderTopRightRadius: Metrics[12],
+      width: Metrics.screenWidth,
     },
     containerCenter: {
-      borderTopLeftRadius: Metrics[12],
-      borderTopRightRadius: Metrics[12],
+      borderRadius: Metrics[12],
+      margin: Metrics[16],
     },
   });
 
@@ -72,31 +75,33 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
         <TouchableOpacity
           style={styles.absoluteBack}
           onPress={() => onPressClose(!isPopUp)}
-        />
-        {/* <BlurView
-        style={styles.absolute}
-        blurType="light"
-        blurAmount={10}
-        reducedTransparencyFallbackColor="white"
-      /> */}
+        >
+          <BlurView
+            style={{ flex: 1, display: 'flex' }}
+            blurType="light"
+            blurAmount={10}
+            reducedTransparencyFallbackColor="white"
+          />
+        </TouchableOpacity>
         <View
           style={[
             type === 'bottom' ? styles.containerBottom : styles.containerCenter,
             {
-              height: 100,
-              width: Metrics.screenWidth,
               backgroundColor: themeColors.backgroundSecondary,
             },
             customStyleModal,
           ]}
         >
-          <View style={{ paddingTop: Metrics[16] }}>
+          <View style={{ paddingTop: Metrics[16], height: 60 }}>
             <Typograph style={styles.title}>{title}</Typograph>
             <Button
               title="X"
               onPress={() => onPressClose(!isPopUp)}
               customStyleButton={styles.customButton}
             ></Button>
+          </View>
+          <View>
+            <Typograph>{'sdadasda'}</Typograph>
           </View>
           {children}
         </View>

@@ -11,9 +11,10 @@ export const ModalTesting = () => {
         onPress={() => getModalVisible(!modalVisible)}
       />
       <Modal
-        type="bottom"
+        type="center"
         isPopUp={modalVisible}
         onPressClose={getModalVisible}
+        title="kjnajsdn"
       />
     </View>
   );
