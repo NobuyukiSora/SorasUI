@@ -10,7 +10,6 @@ import { themeColors } from '../../theme/themeManagement';
 import { Button } from '../Button';
 import { Typograph } from '../Typograph';
 import { propsModal } from './props';
-import { BlurView } from '@react-native-community/blur';
 
 export const Modal: React.FunctionComponent<propsModal> = (props) => {
   const {
@@ -30,6 +29,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       color: themeColors.text,
     },
     absoluteBack: {
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
       position: 'absolute',
       top: 0,
       left: 0,
@@ -75,14 +75,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
         <TouchableOpacity
           style={styles.absoluteBack}
           onPress={() => onPressClose(!isPopUp)}
-        >
-          <BlurView
-            style={{ flex: 1, display: 'flex' }}
-            blurType="light"
-            blurAmount={10}
-            reducedTransparencyFallbackColor="white"
-          />
-        </TouchableOpacity>
+        />
         <View
           style={[
             type === 'bottom' ? styles.containerBottom : styles.containerCenter,
