@@ -8,6 +8,7 @@ import {
   useColorScheme,
 } from 'react-native';
 // import { multiply } from 'sora-ui';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Button,
@@ -15,6 +16,7 @@ import {
   DynamicScrollView,
   Header,
   InfinitScrolling,
+  Modal,
   RadioButton,
   Typograph,
 } from '../../src/components';
@@ -24,8 +26,6 @@ import { CalendarTesting } from './UseComponents/CalendarTesting';
 import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ModalTesting } from './UseComponents/ModalTest';
 
 type RootStackParamList = {
   Home: undefined;
@@ -42,6 +42,8 @@ type Props = {
 };
 
 export default function Testing({ navigation }: Props) {
+  const [modalVisibleCenter, getModalVisibleCenter] = React.useState(false);
+  const [modalVisibleBottom, getModalVisibleBottom] = React.useState(false);
   const [buttonTest, setButtonTest] = React.useState(0);
   // const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
@@ -220,7 +222,16 @@ export default function Testing({ navigation }: Props) {
         {/* MODAL */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Modal'}</Typograph>
-          <ModalTesting />
+          <Button
+            title="Modal Trigger center"
+            onPress={() => getModalVisibleCenter(!modalVisibleCenter)}
+            customStyleButton={{ marginBottom: Metrics[8] }}
+          />
+          <Button
+            title="Modal Trigger bottom"
+            onPress={() => getModalVisibleBottom(!modalVisibleBottom)}
+            customStyleButton={{ marginBottom: Metrics[8] }}
+          />
         </View>
 
         <View style={styles.box}>
@@ -291,6 +302,19 @@ export default function Testing({ navigation }: Props) {
           </Typograph>
         </View>
       </ScrollView>
+
+      <Modal
+        type="center"
+        isPopUp={modalVisibleCenter}
+        onPressClose={getModalVisibleCenter}
+        title="Test"
+      />
+      <Modal
+        type="bottom"
+        isPopUp={modalVisibleBottom}
+        onPressClose={getModalVisibleBottom}
+        title="Test"
+      />
     </View>
   );
 }

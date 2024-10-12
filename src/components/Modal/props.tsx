@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import type { TextStyle, TouchableOpacityProps } from 'react-native';
 
 export interface propsModal extends TouchableOpacityProps {
@@ -6,4 +7,5 @@ export interface propsModal extends TouchableOpacityProps {
   onPressClose: (text: boolean) => void;
   title?: string;
   customStyleModal?: TextStyle;
+  customHeader?: ReactNode;
 }
