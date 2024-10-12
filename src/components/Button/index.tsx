@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
+import { Colors } from '../../theme/colors';
+import { Metrics } from '../../theme/metrics';
 import { themeColors } from '../../theme/themeManagement';
 import { Typograph } from '../Typograph';
 import type { PropsButton } from './props';
-import { Metrics } from '../../theme/metrics';
-import { Colors } from '../../theme/colors';
 
 export const Button: React.FunctionComponent<PropsButton> = (props) => {
   const {
@@ -15,6 +20,27 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
     children,
     ...rest
   } = props;
+
+  const scale = useSharedValue(1);
+
+  const animatedStyleOnPress = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    };
+  });
+
+  const onPressIn = (type: string) => {
+    scale.value = withSpring(0.9);
+    if (type === 'onPress') {
+      setTimeout(() => {
+        onPressOut();
+      }, 400);
+    }
+  };
+
+  const onPressOut = () => {
+    scale.value = withSpring(1);
+  };
 
   const styles = StyleSheet.create({
     title: {
@@ -32,11 +58,17 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
 
   return (
     <TouchableOpacity
-      onPress={onPress}
-      style={[styles.button, customStyleButton]}
+      onPress={(set) => {
+        onPress(set);
+        onPressIn('onPress');
+      }}
+      onLongPress={() => onPressIn('onLongPress')}
+      onPressOut={onPressOut}
       {...rest}
     >
-      <View>
+      <Animated.View
+        style={[styles.button, customStyleButton, animatedStyleOnPress]}
+      >
         {!!children ? (
           children
         ) : (
@@ -44,7 +76,7 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
             {title}
           </Typograph>
         )}
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   );
 };
