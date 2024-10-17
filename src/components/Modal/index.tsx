@@ -99,6 +99,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       style={[
         animatedStyle,
         {
+          opacity: isPopUp ? 1 : 0,
           zIndex: 10,
           right: 0,
           left: 0,
