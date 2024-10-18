@@ -26,7 +26,6 @@ import { CalendarTesting } from './UseComponents/CalendarTesting';
 import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
-import { DonatChartTesting } from './UseComponents/DonatChartTesting';
 
 type RootStackParamList = {
   Home: undefined;
@@ -171,12 +170,6 @@ export default function Testing({ navigation }: Props) {
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'SnackBar'}</Typograph>
           <SnackBarTesting />
-        </View>
-
-        {/* Donat Chart */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'Donat Chart'}</Typograph>
-          <DonatChartTesting />
         </View>
 
         {/* BUTTON */}
