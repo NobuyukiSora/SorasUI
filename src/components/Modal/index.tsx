@@ -64,9 +64,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       alignContent: 'center',
     },
     customButton: {
-      position: 'absolute',
       padding: Metrics[8],
-      right: 0,
       margin: Metrics[8],
     },
     containerBottom: {
@@ -91,6 +89,12 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       borderLeftWidth: 2,
       borderBottomWidth: type === 'center' ? 2 : 0,
       borderColor: themeColors.inActive,
+    },
+    headerModal: {
+      height: 50,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
     },
   });
 
@@ -131,13 +135,15 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
         {customHeader ? (
           customHeader
         ) : (
-          <View style={{ height: 50, justifyContent: 'center' }}>
+          <View style={styles.headerModal}>
             <Typograph style={styles.title}>{title}</Typograph>
-            <Button
-              title="X"
-              onPress={() => onPressClose(false)}
-              customStyleButton={styles.customButton}
-            ></Button>
+            <View style={{ position: 'absolute', right: 0 }}>
+              <Button
+                title="X"
+                onPress={() => onPressClose(false)}
+                customStyleButton={styles.customButton}
+              />
+            </View>
           </View>
         )}
         <View>{children}</View>

@@ -6,6 +6,7 @@ import { DynamicScrollView } from '../DynamicScrollView';
 import { Typograph } from '../Typograph';
 import { PropsCalendar } from './props';
 import moment from 'moment';
+import IconBack from '../../Icon/Ico-Back.svg';
 
 export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const {
@@ -391,7 +392,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       ) : (
         <View style={styles.titleContainer}>
           <TouchableOpacity onPress={() => setCurrentMonth(currentMonth - 1)}>
-            <Typograph>{'<'}</Typograph>
+            <IconBack fill={themeColors.text} height={15} width={15} />
           </TouchableOpacity>
           <View>
             <Typograph style={[styles.titleText, { fontWeight: '800' }]}>
@@ -401,8 +402,11 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
               {currentYear}
             </Typograph>
           </View>
-          <TouchableOpacity onPress={() => setCurrentMonth(currentMonth + 1)}>
-            <Typograph>{'>'}</Typograph>
+          <TouchableOpacity
+            onPress={() => setCurrentMonth(currentMonth + 1)}
+            style={{ transform: [{ rotate: '180deg' }] }}
+          >
+            <IconBack fill={themeColors.text} height={15} width={15} />
           </TouchableOpacity>
         </View>
       )}
