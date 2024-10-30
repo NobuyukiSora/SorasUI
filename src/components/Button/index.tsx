@@ -5,7 +5,6 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { Colors } from '../../theme/colors';
 import { Metrics } from '../../theme/metrics';
 import { themeColors } from '../../theme/themeManagement';
 import { Typograph } from '../Typograph';
@@ -46,7 +45,6 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
     title: {
       fontWeight: '800',
       textAlign: 'center',
-      color: Colors.black,
     },
     button: {
       backgroundColor: themeColors.button,

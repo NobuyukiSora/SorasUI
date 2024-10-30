@@ -8,4 +8,5 @@ export interface propsModal extends TouchableOpacityProps {
   title?: string;
   customStyleModal?: TextStyle;
   customHeader?: ReactNode;
+  customModalContainer?: TextStyle;
 }

@@ -17,6 +17,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
     title,
     onPressClose = () => {},
     customStyleModal = {},
+    customModalContainer = {},
     type = 'bottom',
     isPopUp = false,
     children,
@@ -111,6 +112,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
           bottom: 0,
         },
         type === 'center' && styles.centerStyle,
+        customModalContainer,
       ]}
       {...rest}
     >
