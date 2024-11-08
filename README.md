@@ -1,6 +1,6 @@
 # sora-ui
 
-Its just my personal UI
+Its just profesional personal UI
 
 https://github.com/NobuyukiSora
 

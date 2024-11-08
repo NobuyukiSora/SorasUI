@@ -60,7 +60,6 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
 
   const datesArray = Array.from({ length: lastDate }, (_, index) => index + 1);
   let getSundays = firstDay == 0 ? firstDay + 1 : 7 - firstDay + 1;
-  let dotInRange = false;
 
   const months = [
     'January',
@@ -219,6 +218,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   };
 
   const isDaysRange = (day: number) => {
+    let dotInRange = false;
     const dotStart =
       day === startData?.day &&
       (setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1 ===
@@ -230,10 +230,32 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
         endData?.month &&
       (!!setYearPosition ? setYearPosition : currentYear) == endData?.year;
 
-    if (dotStart && !!startDate && !!endDate) {
-      dotInRange = !dotInRange;
-    } else if (dotEnd && !!startDate && !!endDate) {
-      dotInRange = !dotInRange;
+    if (
+      moment(
+        `${day}/${months[currentMonth]}/${currentYear}`,
+        'D/MMMM/YYYY'
+      ).isBetween(
+        moment(startDate, 'DD/MM/YYYY'),
+        moment(endDate, 'DD/MM/YYYY'),
+        'day',
+        '[]'
+      )
+    ) {
+      dotInRange = true;
+    } else if (
+      moment(
+        `${day}/${months[currentMonth]}/${currentYear}`,
+        'D/MMMM/YYYY'
+      ).isBetween(
+        moment(endDate, 'DD/MM/YYYY'),
+        moment(startDate, 'DD/MM/YYYY'),
+        'day',
+        '[]'
+      )
+    ) {
+      dotInRange = true;
+    } else {
+      dotInRange = false;
     }
 
     return dotStart || dotEnd ? (
