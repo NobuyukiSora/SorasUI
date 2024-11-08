@@ -11,3 +11,4 @@ export { InfinitScrolling } from './InfiniteScrolling';
 export { SnackBar } from './SnackBar';
 export { TriggerProvider } from './SnackBar/trigger';
 export { Modal } from './Modal';
+export { DonutChart } from './DonutChart';

@@ -12,10 +12,10 @@ export const Typograph: React.FunctionComponent<PropsTypograph> = (props) => {
   return (
     <Text
       style={[
-        customStyle,
         {
           color: textStyle.textColors,
         },
+        customStyle,
       ]}
       {...rest}
     >

@@ -2,14 +2,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import { Typograph } from '../Typograph';
-
-interface DonutProps {
-  radius: number;
-  strokeWidth: number;
-  data: { number: number; color: string }[];
-  padding?: number;
-  totalIndicator?: boolean;
-}
+import { DonutProps } from './props';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -18,7 +11,7 @@ export const DonutChart: React.FC<DonutProps> = ({
   strokeWidth,
   data = [],
   padding = 0,
-  totalIndicator = true,
+  showTotal = true,
 }) => {
   const circumference = 2 * Math.PI * radius;
   const totalSize = radius * 2 + strokeWidth + padding * 2;
@@ -95,7 +88,7 @@ export const DonutChart: React.FC<DonutProps> = ({
         })}
       </Svg>
       <View style={styles.labelContainer}>
-        {totalIndicator && (
+        {showTotal && (
           <Typograph customStyle={styles.label}>{`${total}`}</Typograph>
         )}
       </View>
