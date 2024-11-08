@@ -4,6 +4,8 @@ Its just my personal UI
 
 https://github.com/NobuyukiSora
 
+Detail usage soras-ui components: https://jessen.netlify.app/SorasUI
+
 ## Installation
 
 ```sh
@@ -42,6 +44,11 @@ yarn add sora-ui @react-native-async-storage/async-storage react-native-reanimat
         <td>CheckBox</td>
         <td><img src="./image/checkbox.png" alt="CheckBox" ></td>
         <td>can change the icon using the icon command</td>
+    </tr>
+    <tr>
+        <td>DonutChart</td>
+        <td><img src="./image/donutChart.png" alt="DonutChart" ></td>
+        <td>can modify the center content of donut chart</td>
     </tr>
     <tr>
         <td>DynamicScrollView</td>

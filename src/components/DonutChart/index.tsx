@@ -12,6 +12,7 @@ export const DonutChart: React.FC<DonutProps> = ({
   data = [],
   padding = 0,
   showTotal = true,
+  children,
 }) => {
   const circumference = 2 * Math.PI * radius;
   const totalSize = radius * 2 + strokeWidth + padding * 2;
@@ -37,8 +38,6 @@ export const DonutChart: React.FC<DonutProps> = ({
   }, [data, animatedValues]);
 
   useEffect(() => {
-    if (animatedValues.length !== percentages.length) return;
-
     Animated.stagger(
       100,
       percentages
@@ -54,7 +53,7 @@ export const DonutChart: React.FC<DonutProps> = ({
         })
         .filter(Boolean) as Animated.CompositeAnimation[]
     ).start();
-  }, [percentages, animatedValues]);
+  }, [percentages, animatedValues, data, total]);
 
   return (
     <View style={[styles.container, { padding }]}>
@@ -91,6 +90,7 @@ export const DonutChart: React.FC<DonutProps> = ({
         {showTotal && (
           <Typograph customStyle={styles.label}>{`${total}`}</Typograph>
         )}
+        {children}
       </View>
     </View>
   );

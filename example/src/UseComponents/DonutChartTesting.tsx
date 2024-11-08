@@ -1,6 +1,11 @@
 import { View } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, DonutChart, TextInputField } from '../../../src/components';
+import {
+  Button,
+  DonutChart,
+  TextInputField,
+  Typograph,
+} from '../../../src/components';
 import { Metrics } from '../../../src/theme';
 
 type DataItem = {
@@ -47,7 +52,9 @@ export const DonutChartTesting = () => {
         />
         <Button onPress={() => getRandomNumber()} title="Refresh" />
       </View>
-      <DonutChart data={data} radius={100} strokeWidth={40} showTotal={false} />
+      <DonutChart data={data} radius={100} strokeWidth={40} showTotal={false}>
+        <Typograph>{'Test'}</Typograph>
+      </DonutChart>
     </View>
   );
 };
