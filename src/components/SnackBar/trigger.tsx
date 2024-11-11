@@ -9,7 +9,9 @@ interface TriggerContextType {
   setSnackBarTitle: (type: string) => void;
 }
 
-const TriggerContext = createContext<TriggerContextType | undefined>(undefined);
+export const TriggerContext = createContext<TriggerContextType | undefined>(
+  undefined
+);
 
 type TriggerProviderProps = {
   children: ReactNode;
