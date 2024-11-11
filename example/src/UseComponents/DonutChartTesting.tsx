@@ -1,27 +1,38 @@
 import { View } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Button,
-  DonutChart,
-  TextInputField,
-  Typograph,
-} from '../../../src/components';
-import { Metrics } from '../../../src/theme';
+import { Button, DonutChart, TextInputField } from '../../../src/components';
+import { Metrics, themeColors } from '../../../src/theme';
+import { useFont } from '@shopify/react-native-skia';
 
 type DataItem = {
-  number: number;
   color: string;
+  value: number;
+  percentage: number;
 };
 
 export const DonutChartTesting = () => {
   const [data, setData] = useState<DataItem[]>([]);
   const [manyData, setManyData] = useState(6);
+  const font = useFont(require('./Roboto-Bold.ttf'), 20);
 
   const getRandomNumber = useCallback(() => {
-    const newData = [];
+    const newValue = [];
+    let totalValue = 0;
     for (let i = 0; i < manyData; i++) {
-      newData.push({ number: Math.random() * 100, color: getRandomColor() });
+      const randomNumber = Math.random() * 100;
+      newValue.push(randomNumber);
+      totalValue += randomNumber;
     }
+
+    let newData: React.SetStateAction<DataItem[]> = [];
+    newValue.forEach((number) => {
+      newData.push({
+        value: number,
+        color: getRandomColor(),
+        percentage: (number / totalValue) * 100,
+      });
+    });
+
     setData(newData);
   }, [manyData]);
 
@@ -38,6 +49,8 @@ export const DonutChartTesting = () => {
     return color;
   };
 
+  if (!font) return null;
+
   return (
     <View>
       <View
@@ -52,9 +65,17 @@ export const DonutChartTesting = () => {
         />
         <Button onPress={() => getRandomNumber()} title="Refresh" />
       </View>
-      <DonutChart data={data} radius={100} strokeWidth={40} showTotal={false}>
-        <Typograph>{'Test'}</Typograph>
-      </DonutChart>
+      <DonutChart
+        gap={0.07}
+        radius={80}
+        strokeWidth={20}
+        outerStrokeWidth={30}
+        font={font}
+        data={data}
+        outerStrokColor={themeColors.background}
+        totalValueSymbol="Rp"
+        totalValueColor={themeColors.text}
+      />
     </View>
   );
 };
