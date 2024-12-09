@@ -12,7 +12,7 @@ import IconUndo from '../../Icon/Ico-Undo.svg';
 import IconWarning from '../../Icon/Ico-Warning.svg';
 import { Colors } from '../../theme/colors';
 import { Metrics } from '../../theme/metrics';
-import { themeColors } from '../../theme/themeManagement';
+import { themeColors, useTheme } from '../../theme/themeManagement';
 import { Typograph } from '../Typograph';
 import { PropsSnackBar } from './props';
 import { useTrigger } from './trigger';
@@ -25,7 +25,7 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
     onClose = () => {},
     ...rest
   } = props;
-
+  const { theme } = useTheme();
   const { setTrigger, snackBarType, snackBarTitle } = useTrigger();
   const springValue = useSharedValue(0);
 
@@ -55,7 +55,7 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: themeColors.backgroundSecondary,
+      backgroundColor: theme?.isDark ? Colors.darkGrey : Colors.cream,
       marginHorizontal: Metrics[8],
       height: 50,
       borderRadius: Metrics[8],
@@ -77,6 +77,11 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
     centerItem: {
       justifyContent: 'center',
       alignItems: 'center',
+      flexWrap: 'wrap',
+    },
+    text: {
+      flexWrap: 'wrap',
+      color: theme?.isDark ? Colors.lightCream : Colors.black,
     },
   });
 
@@ -84,36 +89,36 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
     switch (snackBarType) {
       case 'success':
         return (
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', flex: 1 }}>
             <View style={[styles.IconBox, { backgroundColor: Colors.green }]}>
               <IconSuccess fill={Colors.lightGreen} />
             </View>
             <View style={styles.centerItem}>
-              <Typograph>{snackBarTitle}</Typograph>
+              <Typograph style={styles.text}>{snackBarTitle}</Typograph>
             </View>
           </View>
         );
       case 'warning':
         return (
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', flex: 1 }}>
             <View
               style={[styles.IconBox, { backgroundColor: Colors.darkCream }]}
             >
               <IconWarning fill={Colors.yellow} />
             </View>
             <View style={styles.centerItem}>
-              <Typograph>{snackBarTitle}</Typograph>
+              <Typograph style={styles.text}>{snackBarTitle}</Typograph>
             </View>
           </View>
         );
       case 'error':
         return (
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', flex: 1 }}>
             <View style={[styles.IconBox, { backgroundColor: Colors.pink }]}>
               <IconCloseBold fill={Colors.red} />
             </View>
             <View style={styles.centerItem}>
-              <Typograph>{snackBarTitle}</Typograph>
+              <Typograph style={styles.text}>{snackBarTitle}</Typograph>
             </View>
           </View>
         );
@@ -121,7 +126,13 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
         return (
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.centerItem}>
-              <Typograph>{'Hellow There'}</Typograph>
+              <Typograph
+                style={{
+                  color: theme?.isDark ? Colors.lightCream : Colors.black,
+                }}
+              >
+                {'Hellow There'}
+              </Typograph>
             </View>
           </View>
         );
