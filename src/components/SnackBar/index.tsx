@@ -21,6 +21,7 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
   const {
     delay = 4000,
     animatedHeight = 100,
+    undoButton = false,
     onUndo = () => {},
     onClose = () => {},
     ...rest
@@ -142,9 +143,11 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
     <Animated.View style={[styles.container, animatedSnackBar]} {...rest}>
       {getIcon()}
       <View style={{ flexDirection: 'row', gap: Metrics[8] }}>
-        <TouchableOpacity style={styles.centerItem} onPress={onUndo}>
-          <IconUndo width={20} fill={themeColors.text} />
-        </TouchableOpacity>
+        {undoButton && (
+          <TouchableOpacity style={styles.centerItem} onPress={onUndo}>
+            <IconUndo width={20} fill={themeColors.text} />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
           style={styles.centerItem}
           onPress={() => {
