@@ -16,3 +16,4 @@ export {
 } from './SnackBar/trigger';
 export { Modal } from './Modal';
 export { DonutChart } from './DonutChart/DonutChart';
+export { Carousel } from './Carousel';

@@ -27,6 +27,7 @@ import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
 import { DonutChartTesting } from './UseComponents/DonutChartTesting';
+import { CarouselTesting } from './UseComponents/CarouselTesting';
 
 type RootStackParamList = {
   Home: undefined;
@@ -152,6 +153,12 @@ export default function Testing({ navigation }: Props) {
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Calendar'}</Typograph>
           <CalendarTesting />
+        </View>
+
+        {/* Carousel */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Carousel'}</Typograph>
+          <CarouselTesting />
         </View>
 
         {/* DonutChart */}
