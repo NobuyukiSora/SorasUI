@@ -156,7 +156,7 @@ export default function Testing({ navigation }: Props) {
         </View>
 
         {/* Carousel */}
-        <View style={styles.box}>
+        <View style={[styles.box, { marginHorizontal: 0 }]}>
           <Typograph customStyle={styles.title}>{'Carousel'}</Typograph>
           <CarouselTesting />
         </View>
