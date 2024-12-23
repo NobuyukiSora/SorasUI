@@ -1,6 +1,6 @@
 {
   "name": "soras-ui",
-  "version": "1.2.6-canary.2",
+  "version": "1.2.7",
   "description": "Profesional personal UI",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

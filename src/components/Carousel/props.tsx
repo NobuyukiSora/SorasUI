@@ -4,7 +4,12 @@ export interface PropsCarousel {
   data: { id: string; title?: string; image: string; onPress?: () => void }[];
   duration?: number;
   overflow?: 'hidden' | 'scroll' | 'visible';
+  width?: number;
+  height?: number;
   title?: string;
-  customStyleButton?: TextStyle;
+
+  customStyleDot?: TextStyle;
   customStyleTitle?: TextStyle;
+  activeDotColor?: string;
+  inactiveDotColor?: string;
 }

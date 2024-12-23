@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Carousel } from '../../../src/components';
+import { Carousel, Typograph } from '../../../src/components';
+import { Metrics } from '../../../src/theme';
 
 export const CarouselTesting = () => {
   const count = () => {
@@ -30,8 +31,23 @@ export const CarouselTesting = () => {
   const duration = 3000;
 
   return (
-    <View>
-      <Carousel data={data} duration={duration} overflow="hidden" />
+    <View
+      style={{
+        alignItems: 'center',
+      }}
+    >
+      <Carousel data={data} duration={duration} />
+      <Typograph customStyle={{ marginTop: Metrics[8], fontWeight: '800' }}>
+        {'Customize'}
+      </Typograph>
+      <Carousel
+        data={data}
+        duration={duration}
+        overflow="hidden"
+        width={300}
+        activeDotColor={'purple'}
+        inactiveDotColor={'grey'}
+      />
     </View>
   );
 };
