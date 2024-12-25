@@ -15,7 +15,6 @@ import {
   CheckBox,
   DynamicScrollView,
   Header,
-  InfinitScrolling,
   Modal,
   RadioButton,
   Typograph,
@@ -23,11 +22,12 @@ import {
 import { Metrics, useTheme } from '../../src/theme';
 import { themeColors } from '../../src/theme/themeManagement';
 import { CalendarTesting } from './UseComponents/CalendarTesting';
+import { CarouselTesting } from './UseComponents/CarouselTesting';
+import { DonutChartTesting } from './UseComponents/DonutChartTesting';
 import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
+import { TextInputSingleBoxTesting } from './UseComponents/TextInputSingleBoxTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
-import { DonutChartTesting } from './UseComponents/DonutChartTesting';
-import { CarouselTesting } from './UseComponents/CarouselTesting';
 
 type RootStackParamList = {
   Home: undefined;
@@ -74,7 +74,7 @@ export default function Testing({ navigation }: Props) {
     const views = [];
     for (let loop = 1; loop <= valueViewScrollView; loop++) {
       views.push(
-        <View style={styles.boxScrollView}>
+        <View style={styles.boxScrollView} key={loop}>
           <Typograph
             style={{
               color: themeColors.text,
@@ -171,6 +171,14 @@ export default function Testing({ navigation }: Props) {
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'TEXT INPUT'}</Typograph>
           <TextInputFieldTesting />
+        </View>
+
+        {/* TEXT INPUT */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>
+            {'TextInputSingleBoxTesting'}
+          </Typograph>
+          <TextInputSingleBoxTesting />
         </View>
 
         {/* THEME SWITCH */}
@@ -287,7 +295,7 @@ export default function Testing({ navigation }: Props) {
           </DynamicScrollView>
         </View>
 
-        {/* InfinityScrolling */}
+        {/* InfinityScrolling
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Radio Button'}</Typograph>
           <Typograph>{`Selected: ${selectedRadioButton.id}`}</Typograph>
@@ -306,7 +314,7 @@ export default function Testing({ navigation }: Props) {
             <Typograph>{` Soras-UI ${version} `}</Typograph>
             <Typograph>{` Soras-UI ${version} `}</Typograph>
           </View>
-        </View>
+        </View> */}
 
         <View style={styles.versionContainer}>
           <Typograph

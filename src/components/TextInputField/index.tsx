@@ -72,13 +72,7 @@ export const TextInputField: React.FunctionComponent<PropsTextInput> = (
   });
 
   return (
-    <View
-      style={[
-        styles.mainContainer,
-        styles.mainContainer,
-        customContainerStyles,
-      ]}
-    >
+    <View style={[styles.mainContainer, customContainerStyles]}>
       <Animated.View
         style={[styles.containerTitle, animatedTitle, customTitleSyle]}
       >
