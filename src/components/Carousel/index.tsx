@@ -118,9 +118,9 @@ export const Carousel: React.FunctionComponent<PropsCarousel> = (props) => {
               })),
             ]}
           >
-            {data.map((item) => (
+            {data.map((item, index) => (
               <TouchableOpacity
-                key={item.id}
+                key={index}
                 disabled={!item?.onPress}
                 onPress={item?.onPress}
               >

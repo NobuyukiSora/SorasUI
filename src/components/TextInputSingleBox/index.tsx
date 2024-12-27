@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import {
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInput,
+  TextInputKeyPressEventData,
+  View,
+} from 'react-native';
 import { Metrics, themeColors } from '../../theme';
 import { PropsTextInputSingleBox } from './props';
 
@@ -10,8 +16,8 @@ export const TextInputSingleBox: React.FunctionComponent<
     onChange = () => {},
     type = 'string',
     length,
-    width,
-    height,
+    width = 30,
+    height = 40,
     customTextinputStyles,
     customContainerStyles,
     ...rest
@@ -21,20 +27,48 @@ export const TextInputSingleBox: React.FunctionComponent<
   const inputs = React.useRef<TextInput[]>([]);
 
   const handleTextChange = (text: string, index: number) => {
+    if (text.length > 1) {
+      // paste
+      const pastedText = text.slice(0, length - index);
+      const newCode = [...code];
+      pastedText.split('').forEach((char, idx) => {
+        if (index + idx < length) {
+          newCode[index + idx] = char;
+        }
+      });
+      setCode(newCode);
+      if (onChange) {
+        onChange(type === 'string' ? newCode.join('') : newCode);
+      }
+
+      // next input
+      const nextInputIndex = index + pastedText.length;
+      if (nextInputIndex < length) {
+        inputs.current[nextInputIndex]?.focus();
+      }
+      return;
+    }
+
+    // single input
     const newCode = [...code];
     newCode[index] = text;
     setCode(newCode);
 
     if (onChange) {
-      onChange(type == 'string' ? code.join('') : code);
+      onChange(type === 'string' ? newCode.join('') : newCode);
     }
 
-    if (text && text.length === 1) {
-      if (index < length - 1) {
-        if (inputs.current[index + 1]) {
-          inputs.current[index + 1]?.focus();
-        }
-      }
+    if (text && text.length === 1 && index < length - 1) {
+      inputs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyPress = (
+    input: NativeSyntheticEvent<TextInputKeyPressEventData>,
+    index: number
+  ) => {
+    if (input.nativeEvent.key === 'Backspace' && index > 0) {
+      inputs.current[index - 1]?.focus();
     }
   };
 
@@ -53,32 +87,30 @@ export const TextInputSingleBox: React.FunctionComponent<
   });
 
   const renderTextInput = () => {
-    const component = code.map((_, index) => {
-      return (
-        <View style={[styles.mainContainer, customContainerStyles]}>
-          <TextInput
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChangeText={(set) => handleTextChange(set, index)}
-            style={[
-              {
-                color: themeColors.text,
-                textAlign: 'center',
-                padding: Metrics[8],
-                fontSize: Metrics[16],
-                width: '100%',
-              },
-              customTextinputStyles,
-            ]}
-            ref={(input) => {
-              !!input && (inputs.current[index] = input);
-            }}
-            {...rest}
-          />
-        </View>
-      );
-    });
-    return component;
+    return code.map((_, index) => (
+      <View style={[styles.mainContainer, customContainerStyles]} key={index}>
+        <TextInput
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChangeText={(text) => handleTextChange(text, index)}
+          onKeyPress={(set) => handleKeyPress(set, index)}
+          style={[
+            {
+              color: themeColors.text,
+              textAlign: 'center',
+              padding: Metrics[8],
+              fontSize: Metrics[16],
+              width: '100%',
+            },
+            customTextinputStyles,
+          ]}
+          ref={(input) => {
+            if (input) inputs.current[index] = input;
+          }}
+          {...rest}
+        />
+      </View>
+    ));
   };
 
   return (
