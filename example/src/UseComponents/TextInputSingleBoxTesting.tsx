@@ -5,6 +5,7 @@ import { Metrics } from '../../../src/theme';
 
 export const TextInputSingleBoxTesting = () => {
   const [code, setCode] = useState();
+  const [code2, setCode2] = useState();
   return (
     <View>
       <Typograph>{`${code}`}</Typograph>
@@ -15,11 +16,17 @@ export const TextInputSingleBoxTesting = () => {
         customTextinputStyles={{ fontSize: Metrics[16] }}
       />
 
+      <Typograph
+        customStyle={{ textAlign: 'center', fontWeight: '800' }}
+      >{`Customize`}</Typograph>
+
+      <Typograph>{`${code2}`}</Typograph>
+
       <TextInputSingleBox
-        onChange={(set) => setCode(set)}
+        onChange={(set) => setCode2(set)}
         type="string"
-        length={5}
-        height={100}
+        length={6}
+        height={50}
         width={50}
         customTextinputStyles={{ fontSize: Metrics[16] }}
       />

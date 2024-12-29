@@ -92,6 +92,7 @@ export const TextInputSingleBox: React.FunctionComponent<
         <TextInput
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
+          maxLength={1}
           onChangeText={(text) => handleTextChange(text, index)}
           onKeyPress={(set) => handleKeyPress(set, index)}
           style={[
