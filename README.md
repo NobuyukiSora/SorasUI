@@ -1,12 +1,13 @@
 # sora-ui
 
-Its just profesional personal UI
+A streamlined and professional personal UI library.
 
-https://github.com/NobuyukiSora
-
-Detail usage soras-ui components: https://jessen.netlify.app/SorasUI
+- **GitHub Repository**: [Sora-UI on GitHub](https://github.com/NobuyukiSora/SorasUI)
+- **Documentation**: [Explore Sora-UI Components](https://jessen.netlify.app/SorasUI)
 
 ## Installation
+
+To get started, install Sora-UI and its dependencies using npm or yarn:
 
 ```sh
 npm install sora-ui @react-native-async-storage/async-storage react-native-reanimated

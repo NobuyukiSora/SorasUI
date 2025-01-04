@@ -18,3 +18,4 @@ export { Modal } from './Modal';
 export { DonutChart } from './DonutChart/DonutChart';
 export { Carousel } from './Carousel';
 export { TextInputSingleBox } from './TextInputSingleBox';
+export { Rating } from './Rating';

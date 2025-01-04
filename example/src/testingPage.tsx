@@ -28,6 +28,7 @@ import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 import { TextInputSingleBoxTesting } from './UseComponents/TextInputSingleBoxTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
+import { RatingTesting } from './UseComponents/RatingTesting';
 
 type RootStackParamList = {
   Home: undefined;
@@ -148,6 +149,12 @@ export default function Testing({ navigation }: Props) {
 
       <ScrollView contentContainerStyle={{ paddingBottom: Metrics[24] }}>
         <View style={styles.box}></View>
+
+        {/* Rating */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Rating'}</Typograph>
+          <RatingTesting />
+        </View>
 
         {/* CALENDAR */}
         <View style={styles.box}>
