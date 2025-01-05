@@ -8,34 +8,60 @@ import { PropsRender } from './props';
 export const Rating: React.FunctionComponent<PropsRender> = (props) => {
   const {
     length = 5,
-    width = 30,
+    width = 20,
     height = 40,
+    value = 0,
+    onChange = () => {},
     // customTextinputStyles,
     customContainerStyles,
   } = props;
   const [code, setCode] = React.useState<number[]>(Array(length).fill(0));
-  let [value, setValue] = React.useState<number>(0);
-  // const inputs = React.useRef<TextInput[]>([]);
+  // let [value, setValue] = React.useState<number>(0);
+
+  const handleSplitNumber = React.useCallback(() => {
+    setCode((prevCode) => {
+      const newCode = [...prevCode];
+      const wholeParts = Math.floor(value);
+      const remainder = value % 1;
+
+      for (let loop = 0; loop <= wholeParts; loop++) {
+        if (loop < wholeParts) {
+          newCode[loop] = 1;
+        } else {
+          if (remainder > 0) {
+            newCode[loop] = remainder;
+          }
+        }
+      }
+
+      return newCode;
+    });
+  }, [value]);
+
+  React.useEffect(() => {
+    handleSplitNumber();
+  }, [handleSplitNumber]);
 
   const handleChange = (number: number, index: number) => {
     const newCode = [...code];
     for (let loop = 0; loop < length; loop++) {
       newCode[loop] = loop <= index ? number : 0;
-      setValue((value = value + 1));
     }
     setCode(newCode);
+    onChange(index + 1);
   };
 
   const styles = StyleSheet.create({
     mainContainer: {
-      borderWidth: 1,
-      borderRadius: Metrics[8],
       alignItems: 'center',
       justifyContent: 'center',
       marginVertical: Metrics[8],
-      backgroundColor: themeColors.background,
       height: height,
       width: width,
+    },
+    center: {
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 
@@ -67,7 +93,29 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
           }}
           {...rest}
         /> */}
-        <IconStar />
+        <View style={[{ width: width }]}>
+          <View
+            style={{ width: width * (code[index] ?? 0), overflow: 'hidden' }}
+          >
+            <IconStar
+              fill={code[index] && 1 ? 'yellow' : 'transparent'}
+              stroke={code[index] && 1 ? 'yellow' : themeColors.text}
+              width={width}
+              height={height}
+            />
+            {/* <Typograph>{`${code[index]}`}</Typograph> */}
+          </View>
+        </View>
+        {code[index] != 1 && (
+          <View style={[{ position: 'absolute', width: width }, styles.center]}>
+            <IconStar
+              fill={code[index] == 1 ? 'yellow' : 'transparent'}
+              stroke={code[index] == 1 ? 'yellow' : themeColors.text}
+              width={width}
+              height={height}
+            />
+          </View>
+        )}
       </TouchableOpacity>
     ));
   };
