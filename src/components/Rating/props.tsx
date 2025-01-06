@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import type { TextStyle } from 'react-native';
 
 export interface PropsRender {
@@ -7,6 +8,16 @@ export interface PropsRender {
   value?: number;
   onChange?: (value: number) => void;
   title?: string;
-  customTextinputStyles?: TextStyle;
+  starColor?: string;
+  customIconActive?: ReactNode;
+  customIconInactive?: ReactNode;
+  justifyContent?:
+    | 'center'
+    | 'flex-start'
+    | 'flex-end'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly';
   customContainerStyles?: TextStyle;
+  disable?: boolean;
 }

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import IconStar from '../../Icon/Ico.Star.svg';
 import { Metrics, themeColors } from '../../theme';
-import { Typograph } from '../Typograph';
 import { PropsRender } from './props';
 
 export const Rating: React.FunctionComponent<PropsRender> = (props) => {
@@ -12,31 +11,35 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
     height = 40,
     value = 0,
     onChange = () => {},
-    // customTextinputStyles,
+    starColor = 'yellow',
+    customIconActive,
+    customIconInactive,
+    justifyContent = 'space-around',
     customContainerStyles,
+    disable = false,
   } = props;
   const [code, setCode] = React.useState<number[]>(Array(length).fill(0));
-  // let [value, setValue] = React.useState<number>(0);
 
   const handleSplitNumber = React.useCallback(() => {
-    setCode((prevCode) => {
-      const newCode = [...prevCode];
-      const wholeParts = Math.floor(value);
-      const remainder = value % 1;
+    if (value != 0) {
+      setCode(() => {
+        const newCode: number[] = Array(length).fill(0);
+        const wholeParts = Math.floor(value);
+        const remainder = value % 1;
 
-      for (let loop = 0; loop <= wholeParts; loop++) {
-        if (loop < wholeParts) {
-          newCode[loop] = 1;
-        } else {
-          if (remainder > 0) {
-            newCode[loop] = remainder;
+        for (let loop = 0; loop <= wholeParts; loop++) {
+          if (loop < wholeParts) {
+            newCode[loop] = 1;
+          } else {
+            if (remainder > 0) {
+              newCode[loop] = remainder;
+            }
           }
         }
-      }
-
-      return newCode;
-    });
-  }, [value]);
+        return newCode;
+      });
+    }
+  }, [value, length]);
 
   React.useEffect(() => {
     handleSplitNumber();
@@ -71,49 +74,36 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
         style={[styles.mainContainer, customContainerStyles]}
         key={index}
         onPress={() => handleChange(1, index)}
+        disabled={disable}
       >
-        {/* <TextInput
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          maxLength={1}
-          onChangeText={(text) => handleChange(text, index)}
-          onKeyPress={(set) => handleKeyPress(set, index)}
-          style={[
-            {
-              color: themeColors.text,
-              textAlign: 'center',
-              padding: Metrics[8],
-              fontSize: Metrics[16],
-              width: '100%',
-            },
-            customTextinputStyles,
-          ]}
-          ref={(input) => {
-            if (input) inputs.current[index] = input;
-          }}
-          {...rest}
-        /> */}
         <View style={[{ width: width }]}>
           <View
             style={{ width: width * (code[index] ?? 0), overflow: 'hidden' }}
           >
-            <IconStar
-              fill={code[index] && 1 ? 'yellow' : 'transparent'}
-              stroke={code[index] && 1 ? 'yellow' : themeColors.text}
-              width={width}
-              height={height}
-            />
-            {/* <Typograph>{`${code[index]}`}</Typograph> */}
+            {!!customIconActive ? (
+              customIconActive
+            ) : (
+              <IconStar
+                fill={code[index] && 1 ? starColor : 'transparent'}
+                stroke={code[index] && 1 ? starColor : themeColors.text}
+                width={width}
+                height={height}
+              />
+            )}
           </View>
         </View>
         {code[index] != 1 && (
           <View style={[{ position: 'absolute', width: width }, styles.center]}>
-            <IconStar
-              fill={code[index] == 1 ? 'yellow' : 'transparent'}
-              stroke={code[index] == 1 ? 'yellow' : themeColors.text}
-              width={width}
-              height={height}
-            />
+            {customIconInactive ? (
+              customIconInactive
+            ) : (
+              <IconStar
+                fill={code[index] == 1 ? starColor : 'transparent'}
+                stroke={code[index] == 1 ? starColor : themeColors.text}
+                width={width}
+                height={height}
+              />
+            )}
           </View>
         )}
       </TouchableOpacity>
@@ -121,8 +111,7 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
   };
 
   return (
-    <View style={{ justifyContent: 'space-around', flexDirection: 'row' }}>
-      <Typograph>{`${code}`}</Typograph>
+    <View style={{ justifyContent: justifyContent, flexDirection: 'row' }}>
       {renderTextInput()}
     </View>
   );
