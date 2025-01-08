@@ -6,14 +6,22 @@ export const RatingTesting = () => {
   const [value, setValue] = useState(4);
   return (
     <View>
-      <Typograph>{value}</Typograph>
+      <Typograph customStyle={{ fontWeight: '800' }}>{`Input mode`}</Typograph>
+      <Typograph>{`The rating: ${value}`}</Typograph>
       <Rating onChange={(value) => setValue(value)} />
+      <Typograph customStyle={{ textAlign: 'center', fontWeight: '800' }}>
+        {'Customize'}
+      </Typograph>
       <Rating
         value={value}
         disable={true}
         customIconActive={<Typograph>{'OK'}</Typograph>}
         customIconInactive={<Typograph>{'X'}</Typograph>}
       />
+      <Typograph
+        customStyle={{ fontWeight: '800' }}
+      >{`Disable input mode`}</Typograph>
+      <Rating value={3.5} disable={true} />
     </View>
   );
 };

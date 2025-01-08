@@ -68,7 +68,7 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
     },
   });
 
-  const renderTextInput = () => {
+  const renderStars = () => {
     return code.map((_, index) => (
       <TouchableOpacity
         style={[styles.mainContainer, customContainerStyles]}
@@ -112,7 +112,7 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
 
   return (
     <View style={{ justifyContent: justifyContent, flexDirection: 'row' }}>
-      {renderTextInput()}
+      {renderStars()}
     </View>
   );
 };

@@ -1,13 +1,6 @@
 import * as React from 'react';
 
-import {
-  // Image,
-  ScrollView,
-  StyleSheet,
-  View,
-  useColorScheme,
-} from 'react-native';
-// import { multiply } from 'sora-ui';
+import { ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -48,7 +41,6 @@ export default function Testing({ navigation }: Props) {
   const [modalVisibleCenter, getModalVisibleCenter] = React.useState(false);
   const [modalVisibleBottom, getModalVisibleBottom] = React.useState(false);
   const [buttonTest, setButtonTest] = React.useState(0);
-  // const [headerBack, setHeaderBack] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
 
   const [valueViewScrollView, setValueViewScrollView] = React.useState(0);
@@ -150,57 +142,6 @@ export default function Testing({ navigation }: Props) {
       <ScrollView contentContainerStyle={{ paddingBottom: Metrics[24] }}>
         <View style={styles.box}></View>
 
-        {/* Rating */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'Rating'}</Typograph>
-          <RatingTesting />
-        </View>
-
-        {/* CALENDAR */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'Calendar'}</Typograph>
-          <CalendarTesting />
-        </View>
-
-        {/* Carousel */}
-        <View style={[styles.box, { marginHorizontal: 0 }]}>
-          <Typograph customStyle={styles.title}>{'Carousel'}</Typograph>
-          <CarouselTesting />
-        </View>
-
-        {/* DonutChart */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'DonutChart'}</Typograph>
-          <DonutChartTesting />
-        </View>
-
-        {/* TEXT INPUT */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'TEXT INPUT'}</Typograph>
-          <TextInputFieldTesting />
-        </View>
-
-        {/* TEXT INPUT */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>
-            {'TextInputSingleBoxTesting'}
-          </Typograph>
-          <TextInputSingleBoxTesting />
-        </View>
-
-        {/* THEME SWITCH */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'THEME SWITCH'}</Typograph>
-          <Typograph>{`systemTheme: ${colorScheme}`}</Typograph>
-          <ThemeSwitchTesting />
-        </View>
-
-        {/* SNACK BAR */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'SnackBar'}</Typograph>
-          <SnackBarTesting />
-        </View>
-
         {/* BUTTON */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Button'}</Typograph>
@@ -230,39 +171,25 @@ export default function Testing({ navigation }: Props) {
           ></CheckBox>
         </View>
 
-        {/* RADIO BUTTON */}
+        {/* CALENDAR */}
         <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'Radio Button'}</Typograph>
-          <Typograph>{`Selected: ${selectedRadioButton.id}`}</Typograph>
-
-          <RadioButton
-            data={radioData}
-            onPress={(set) => setSelectedRadioButton(set)}
-            selectedId={selectedRadioButton.id}
-            directionMode={{ direction: selectedRadioButton.value.toString() }}
-            // icon={(
-            //   <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
-            //     <Image source={require('../assets/Ico.Back.png')} />
-            //   </View>
-            //   )}
-          ></RadioButton>
+          <Typograph customStyle={styles.title}>{'Calendar'}</Typograph>
+          <CalendarTesting />
         </View>
 
-        {/* MODAL */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'Modal'}</Typograph>
-          <Button
-            title="Modal Trigger center"
-            onPress={() => getModalVisibleCenter(!modalVisibleCenter)}
-            customStyleButton={{ marginBottom: Metrics[8] }}
-          />
-          <Button
-            title="Modal Trigger bottom"
-            onPress={() => getModalVisibleBottom(!modalVisibleBottom)}
-            customStyleButton={{ marginBottom: Metrics[8] }}
-          />
+        {/* CAROUSEL */}
+        <View style={[styles.box, { marginHorizontal: 0 }]}>
+          <Typograph customStyle={styles.title}>{'Carousel'}</Typograph>
+          <CarouselTesting />
         </View>
 
+        {/* DONUT CHART */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'DonutChart'}</Typograph>
+          <DonutChartTesting />
+        </View>
+
+        {/* DYNAMIC SCROLL VIEW */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>
             {'DaynamicScrollView'}
@@ -302,26 +229,71 @@ export default function Testing({ navigation }: Props) {
           </DynamicScrollView>
         </View>
 
-        {/* InfinityScrolling
+        {/* MODAL */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Modal'}</Typograph>
+          <Button
+            title="Modal Trigger center"
+            onPress={() => getModalVisibleCenter(!modalVisibleCenter)}
+            customStyleButton={{ marginBottom: Metrics[8] }}
+          />
+          <Button
+            title="Modal Trigger bottom"
+            onPress={() => getModalVisibleBottom(!modalVisibleBottom)}
+            customStyleButton={{ marginBottom: Metrics[8] }}
+          />
+        </View>
+
+        {/* RADIO BUTTON */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Radio Button'}</Typograph>
           <Typograph>{`Selected: ${selectedRadioButton.id}`}</Typograph>
 
-          <InfinitScrolling width={Metrics.screenWidth}>
-            <View style={{ flexDirection: 'row' }}>
-              <Typograph>{` Soras-UI ${version} `}</Typograph>
-              <Typograph>{` Soras-UI ${version} `}</Typograph>
-              <Typograph>{` Soras-UI ${version} `}</Typograph>
-              <Typograph>{` Soras-UI ${version} `}</Typograph>
-            </View>
-          </InfinitScrolling>
-          <View style={{ flexDirection: 'row' }}>
-            <Typograph>{` Soras-UI ${version} `}</Typograph>
-            <Typograph>{` Soras-UI ${version} `}</Typograph>
-            <Typograph>{` Soras-UI ${version} `}</Typograph>
-            <Typograph>{` Soras-UI ${version} `}</Typograph>
-          </View>
-        </View> */}
+          <RadioButton
+            data={radioData}
+            onPress={(set) => setSelectedRadioButton(set)}
+            selectedId={selectedRadioButton.id}
+            directionMode={{ direction: selectedRadioButton.value.toString() }}
+            // icon={(
+            //   <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
+            //     <Image source={require('../assets/Ico.Back.png')} />
+            //   </View>
+            //   )}
+          ></RadioButton>
+        </View>
+
+        {/* RATING */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Rating'}</Typograph>
+          <RatingTesting />
+        </View>
+
+        {/* TEXT INPUT */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'TEXT INPUT'}</Typograph>
+          <TextInputFieldTesting />
+        </View>
+
+        {/* TEXT INPUT SINGLE BOX TESTING */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>
+            {'TextInputSingleBoxTesting'}
+          </Typograph>
+          <TextInputSingleBoxTesting />
+        </View>
+
+        {/* THEME SWITCH */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'THEME SWITCH'}</Typograph>
+          <Typograph>{`systemTheme: ${colorScheme}`}</Typograph>
+          <ThemeSwitchTesting />
+        </View>
+
+        {/* SNACK BAR */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'SnackBar'}</Typograph>
+          <SnackBarTesting />
+        </View>
 
         <View style={styles.versionContainer}>
           <Typograph
