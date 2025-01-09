@@ -15,8 +15,20 @@ export const RatingTesting = () => {
       <Rating
         value={value}
         disable={true}
-        customIconActive={<Typograph>{'OK'}</Typograph>}
-        customIconInactive={<Typograph>{'X'}</Typograph>}
+        customIconActive={
+          <Typograph
+            style={{ textAlign: 'center', fontWeight: '900', color: 'white' }}
+          >
+            {'X'}
+          </Typograph>
+        }
+        customIconInactive={
+          <Typograph
+            style={{ textAlign: 'center', fontWeight: '900', color: 'white' }}
+          >
+            {'-'}
+          </Typograph>
+        }
       />
       <Typograph
         customStyle={{ fontWeight: '800' }}

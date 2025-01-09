@@ -42,6 +42,11 @@ yarn add sora-ui @react-native-async-storage/async-storage react-native-reanimat
         <td>you can get selected date or you can get range dates, and you can modify the calendar as you like </td>
     </tr>
     <tr>
+        <td>Carousel</td>
+        <td><img src="./image/carousel.png" alt="Carousel" ></td>
+        <td>can change the size as you like, and customize the dot color</td>
+    </tr>
+    <tr>
         <td>CheckBox</td>
         <td><img src="./image/checkbox.png" alt="CheckBox" ></td>
         <td>can change the icon using the icon command</td>
@@ -67,6 +72,11 @@ yarn add sora-ui @react-native-async-storage/async-storage react-native-reanimat
         <td>can change the icon using the icon command</td>
     </tr>
     <tr>
+        <td>Rating</td>
+        <td><img src="./image/rating.png" alt="rating"></td>
+        <td>this have 2 mode, input mode that user can do input rating, and display mode to display the rating, and you can customize the icon</td>
+    </tr>
+    <tr>
         <td>SnackBar</td>
         <td><img src="./image/snackBar.png" alt="SnackBar"></td>
         <td>You can run the snackbar using trigger, customize using setSnackBarType and setSnackBarTitle from useTrigger()
@@ -81,6 +91,11 @@ yarn add sora-ui @react-native-async-storage/async-storage react-native-reanimat
         <td>TextInputFiled</td>
         <td><img src="./image/textInput.png" alt="TextInputFiled"></td>
         <td></td>
+    </tr>
+    <tr>
+        <td>TextInputSingleBox</td>
+        <td><img src="./image/textinputsingleboxtesting.png" alt="TextInputSingleBox"></td>
+        <td>An text input that used for input character 1 by 1 each box</td>
     </tr>
     <tr>
         <td>Typograph</td>
