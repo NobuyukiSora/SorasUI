@@ -34,6 +34,7 @@ export const RatingTesting = () => {
         customStyle={{ fontWeight: '800' }}
       >{`Disable input mode`}</Typograph>
       <Rating value={3.5} disable={true} />
+      <Rating value={2.5} disable={true} length={1} />
     </View>
   );
 };

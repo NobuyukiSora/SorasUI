@@ -24,8 +24,9 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
     if (value != 0) {
       setCode(() => {
         const newCode: number[] = Array(length).fill(0);
-        const wholeParts = Math.floor(value);
-        const remainder = value % 1;
+        const calculateValue = (value / 5) * length;
+        const wholeParts = Math.floor(calculateValue);
+        const remainder = calculateValue % 1;
 
         for (let loop = 0; loop <= wholeParts; loop++) {
           if (loop < wholeParts) {
