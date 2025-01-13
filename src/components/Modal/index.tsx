@@ -56,6 +56,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       right: 0,
     },
     bottomstyle: {
+      top: 0,
       flex: 1,
       justifyContent: 'flex-end',
     },
@@ -111,17 +112,15 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
           position: 'absolute',
           bottom: 0,
         },
-        type === 'center' && styles.centerStyle,
+        type === 'center' ? styles.centerStyle : styles.bottomstyle,
         customModalContainer,
       ]}
       {...rest}
     >
-      {type === 'center' && (
-        <TouchableOpacity
-          style={styles.absoluteBack}
-          onPress={() => onPressClose(false)}
-        />
-      )}
+      <TouchableOpacity
+        style={styles.absoluteBack}
+        onPress={() => onPressClose(false)}
+      />
       <View
         style={[
           type === 'bottom' ? styles.containerBottom : styles.containerCenter,
