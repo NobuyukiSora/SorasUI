@@ -17,6 +17,7 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
     justifyContent = 'space-around',
     customContainerStyles,
     disable = false,
+    strokeColor = themeColors.text,
   } = props;
   const [code, setCode] = React.useState<number[]>(Array(length).fill(0));
 
@@ -77,6 +78,20 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
         onPress={() => handleChange(1, index)}
         disabled={disable}
       >
+        {code[index] != 1 && (
+          <View style={[{ position: 'absolute', width: width }, styles.center]}>
+            {customIconInactive ? (
+              customIconInactive
+            ) : (
+              <IconStar
+                fill={code[index] == 1 ? starColor : 'transparent'}
+                stroke={strokeColor}
+                width={width}
+                height={height}
+              />
+            )}
+          </View>
+        )}
         <View style={[{ width: width }]}>
           <View
             style={{ width: width * (code[index] ?? 0), overflow: 'hidden' }}
@@ -86,27 +101,13 @@ export const Rating: React.FunctionComponent<PropsRender> = (props) => {
             ) : (
               <IconStar
                 fill={code[index] && 1 ? starColor : 'transparent'}
-                stroke={code[index] && 1 ? starColor : themeColors.text}
+                stroke={starColor}
                 width={width}
                 height={height}
               />
             )}
           </View>
         </View>
-        {code[index] != 1 && (
-          <View style={[{ position: 'absolute', width: width }, styles.center]}>
-            {customIconInactive ? (
-              customIconInactive
-            ) : (
-              <IconStar
-                fill={code[index] == 1 ? starColor : 'transparent'}
-                stroke={code[index] == 1 ? starColor : themeColors.text}
-                width={width}
-                height={height}
-              />
-            )}
-          </View>
-        )}
       </TouchableOpacity>
     ));
   };

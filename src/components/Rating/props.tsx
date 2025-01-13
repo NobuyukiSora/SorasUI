@@ -20,4 +20,5 @@ export interface PropsRender {
     | 'space-evenly';
   customContainerStyles?: TextStyle;
   disable?: boolean;
+  strokeColor?: string;
 }
