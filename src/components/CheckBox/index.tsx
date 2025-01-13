@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { PropsCheckBox } from './props';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  TouchableOpacity,
+  Vibration,
+  View,
+} from 'react-native';
 import { Typograph } from '../Typograph';
 import IconCheck from '../../Icon/Ico-Check.svg';
 import { themeColors } from '../../theme/themeManagement';
@@ -16,8 +22,17 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
     iconColor = themeColors.text,
     title,
     value,
+    vibrate = true,
+    vibrateDuration = 100,
     ...rest
   } = props;
+
+  const onPressIn = (event: GestureResponderEvent) => {
+    if (vibrate) {
+      Vibration.vibrate(vibrateDuration);
+    }
+    onPress(event);
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -49,7 +64,7 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
   });
 
   return (
-    <TouchableOpacity {...rest} onPress={onPress} style={styles.container}>
+    <TouchableOpacity {...rest} onPress={onPressIn} style={styles.container}>
       <View style={[styles.boxContainer, customBoxContainerStyles]}>
         {value ? (
           <View style={[styles.activeBox, activeBoxStyles]}>

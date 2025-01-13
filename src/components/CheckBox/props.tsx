@@ -10,4 +10,6 @@ export interface PropsCheckBox extends TouchableOpacityProps {
   customBoxContainerStyles?: TextStyle;
   icon?: ReactNode;
   iconColor?: string;
+  vibrate?: boolean;
+  vibrateDuration?: number;
 }

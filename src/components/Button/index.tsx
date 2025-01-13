@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, Vibration } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -17,6 +17,8 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
     customStyleButton = {},
     customStyleTitle = {},
     children,
+    vibrate = true,
+    vibrateDuration = 100,
     ...rest
   } = props;
 
@@ -29,6 +31,7 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
   });
 
   const onPressIn = (type: string) => {
+    vibrate && Vibration.vibrate(vibrateDuration);
     scale.value = withSpring(0.9);
     if (type === 'onPress') {
       setTimeout(() => {

@@ -16,4 +16,6 @@ export interface PropsRadioButton extends TouchableOpacityProps {
     width?: number;
   };
   icon?: ReactNode;
+  vibrate?: boolean;
+  vibrateDuration?: number;
 }

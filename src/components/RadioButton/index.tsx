@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { themeColors } from '../../theme/themeManagement';
 import { Metrics } from '../../theme/metrics';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Vibration,
+  View,
+} from 'react-native';
 import { PropsRadioButton } from './props';
 import { Typograph } from '../Typograph';
 
@@ -18,8 +24,17 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
     icon,
     iconColor = themeColors.active,
     directionMode = { direction: 'column', width: Metrics.screenWidth },
+    vibrate = true,
+    vibrateDuration = 100,
     ...rest
   } = props;
+
+  const onPressIn = (item: { id: string; title: string; value: string }) => {
+    if (vibrate) {
+      Vibration.vibrate(vibrateDuration);
+    }
+    onPress(item);
+  };
 
   const styles = StyleSheet.create({
     circleIcon: {
@@ -73,7 +88,7 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
         {data.map((item) => (
           <TouchableOpacity
             onPress={() => {
-              onPress(item);
+              onPressIn(item);
             }}
             {...rest}
             style={styles.container}

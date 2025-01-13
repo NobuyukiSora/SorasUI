@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, Vibration, View } from 'react-native';
 
 import { PropsSwitch } from './props';
 import { Metrics } from '../../theme/metrics';
@@ -20,6 +20,8 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
     customTrackStyles,
     customThumbStyles,
     icon,
+    vibrate = true,
+    vibrateDuration = 100,
     ...rest
   } = props;
 
@@ -31,6 +33,9 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
   }, [value, springValue]);
 
   const onPressInSwitch = () => {
+    if (vibrate) {
+      Vibration.vibrate(vibrateDuration);
+    }
     squishValue.value = withTiming(0.9, { easing: Easing.inOut(Easing.ease) });
   };
 
