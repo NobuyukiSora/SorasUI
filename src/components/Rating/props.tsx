@@ -7,7 +7,6 @@ export interface PropsRender {
   height?: number;
   value?: number;
   onChange?: (value: number) => void;
-  title?: string;
   starColor?: string;
   customIconActive?: ReactNode;
   customIconInactive?: ReactNode;

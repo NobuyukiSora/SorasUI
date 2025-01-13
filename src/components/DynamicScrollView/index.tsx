@@ -7,12 +7,10 @@ export const DynamicScrollView: React.FunctionComponent<
   PropsDynamicScrollView
 > = (props) => {
   const {
-    directionMode = {
-      direction: 'column',
-      width: Metrics.screenWidth,
-      height: Metrics.screenHeight,
-      justifyContent: 'flex-start',
-    },
+    direction = 'column',
+    width = Metrics.screenWidth,
+    height = Metrics.screenHeight,
+    justifyContent = 'flex-start',
     children,
     ...rest
   } = props;
@@ -20,11 +18,11 @@ export const DynamicScrollView: React.FunctionComponent<
   return (
     <ScrollView
       contentContainerStyle={{
-        flexDirection: directionMode.direction === 'row' ? 'row' : 'column',
+        flexDirection: direction === 'row' ? 'row' : 'column',
         flexWrap: 'wrap',
-        width: directionMode.width,
-        height: directionMode.height,
-        justifyContent: directionMode.justifyContent,
+        width: width,
+        height: height,
+        justifyContent: justifyContent,
       }}
       {...rest}
     >

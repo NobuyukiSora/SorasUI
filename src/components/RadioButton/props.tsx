@@ -9,7 +9,6 @@ export interface PropsRadioButton extends TouchableOpacityProps {
   inactiveCircleStyles?: TextStyle;
   circleContainerStyles?: TextStyle;
   iconColor?: string;
-  direction?: 'column' | 'row';
   width?: number;
   directionMode?: {
     direction: 'column' | 'row' | string;

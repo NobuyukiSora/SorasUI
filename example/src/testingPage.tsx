@@ -224,7 +224,7 @@ export default function Testing({ navigation }: Props) {
             ></Button>
           </View>
 
-          <DynamicScrollView directionMode={{ direction: 'row' }}>
+          <DynamicScrollView direction="row">
             {loopViewScrollView()}
           </DynamicScrollView>
         </View>

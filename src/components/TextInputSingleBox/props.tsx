@@ -6,7 +6,6 @@ export interface PropsTextInputSingleBox {
   length: number;
   width?: number;
   height?: number;
-  title?: string;
   customTextinputStyles?: TextStyle;
   customContainerStyles?: TextStyle;
 }

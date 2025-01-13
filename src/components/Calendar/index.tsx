@@ -434,7 +434,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       )}
 
       <View style={styles.dateContainer}>
-        <DynamicScrollView directionMode={{ direction: 'row' }}>
+        <DynamicScrollView direction="row">
           {weekLoop()}
           {lastMonthDatesLoop()}
           {datesLoop()}

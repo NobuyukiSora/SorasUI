@@ -6,8 +6,6 @@ export interface PropsCarousel {
   overflow?: 'hidden' | 'scroll' | 'visible';
   width?: number;
   height?: number;
-  title?: string;
-
   customStyleDot?: TextStyle;
   customStyleTitle?: TextStyle;
   activeDotColor?: string;
