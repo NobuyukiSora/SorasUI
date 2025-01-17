@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+// import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Button,
   CheckBox,
@@ -22,6 +22,7 @@ import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 import { TextInputSingleBoxTesting } from './UseComponents/TextInputSingleBoxTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
 import { RatingTesting } from './UseComponents/RatingTesting';
+import { ExpandibleViewTesting } from './UseComponents/ExpandibleViewTesting';
 
 type RootStackParamList = {
   Home: undefined;
@@ -59,7 +60,7 @@ export default function Testing({ navigation }: Props) {
 
   const version = require('../../package.json').version;
 
-  const insets = useSafeAreaInsets();
+  // const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
   let { theme, customColors } = useTheme();
 
@@ -91,7 +92,7 @@ export default function Testing({ navigation }: Props) {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      paddingTop: insets.top,
+      // paddingTop: insets.top,
       backgroundColor: themeColors.background,
     },
     box: {
@@ -212,7 +213,8 @@ export default function Testing({ navigation }: Props) {
             <Button
               title="-"
               onPress={() => {
-                setValueViewScrollView(valueViewScrollView - 1);
+                valueViewScrollView > 0 &&
+                  setValueViewScrollView(valueViewScrollView - 1);
               }}
               customStyleButton={{
                 height: 50,
@@ -227,6 +229,12 @@ export default function Testing({ navigation }: Props) {
           <DynamicScrollView direction="row">
             {loopViewScrollView()}
           </DynamicScrollView>
+        </View>
+
+        {/* EXPANDIBLE VIEW */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Expandible View'}</Typograph>
+          <ExpandibleViewTesting />
         </View>
 
         {/* MODAL */}

@@ -9,7 +9,7 @@ export const DynamicScrollView: React.FunctionComponent<
   const {
     direction = 'column',
     width = Metrics.screenWidth,
-    height = Metrics.screenHeight,
+    height,
     justifyContent = 'flex-start',
     children,
     ...rest

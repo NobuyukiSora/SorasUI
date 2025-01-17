@@ -1,3 +1,4 @@
+export { ExpandableView } from './ExpandableView';
 export { TextInputField } from './TextInputField';
 export { Typograph } from './Typograph';
 export { Button } from './Button';
