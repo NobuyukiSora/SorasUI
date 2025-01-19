@@ -23,6 +23,7 @@ export const TextInputField: React.FunctionComponent<PropsTextInput> = (
     multiline = true,
     align = 'left',
     height = 50,
+    RenderItemRight,
     customTextinputStyles,
     customContainerStyles,
     customTitleSyle,
@@ -57,13 +58,14 @@ export const TextInputField: React.FunctionComponent<PropsTextInput> = (
     mainContainer: {
       borderWidth: 1,
       borderRadius: Metrics[8],
-      alignItems:
+      flexDirection: 'row',
+      justifyContent:
         align === 'center'
           ? 'center'
           : align === 'right'
             ? 'flex-end'
             : 'flex-start',
-      justifyContent: 'center',
+      alignItems: 'center',
       marginVertical: Metrics[8],
       borderColor: isFocus ? themeColors.active : themeColors.inActive,
       backgroundColor: themeColors.background,
@@ -93,13 +95,15 @@ export const TextInputField: React.FunctionComponent<PropsTextInput> = (
             color: themeColors.text,
             padding: Metrics[8],
             fontSize: Metrics[16],
-            width: '100%',
+            width: 'auto',
+            flex: 1,
           },
           customTextinputStyles,
         ]}
         editable={editable}
         {...rest}
       />
+      {RenderItemRight}
     </View>
   );
 };

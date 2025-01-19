@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import type { TextInputProps, TextStyle } from 'react-native';
 
 export interface PropsTextInput extends TextInputProps {
@@ -7,6 +8,7 @@ export interface PropsTextInput extends TextInputProps {
   placeHolder?: string;
   height?: number;
   align?: 'right' | 'left' | 'center';
+  RenderItemRight?: ReactNode;
   customTextinputStyles?: TextStyle;
   customContainerStyles?: TextStyle;
   customTitleSyle?: TextStyle;

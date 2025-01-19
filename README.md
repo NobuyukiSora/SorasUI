@@ -62,14 +62,19 @@ yarn add sora-ui @react-native-async-storage/async-storage react-native-reanimat
         <td>this component can help you to wrap the content inside</td>
     </tr>
     <tr>
+        <td>Expandable View</td>
+        <td><img src="./image/ExpandableView.png" alt="ExpandableView"></td>
+        <td>an component that can expand, to show more data to display</td>
+    </tr>
+    <tr>
         <td>Header</td>
         <td><img src="./image/header.png" alt="Header"></td>
-        <td>can change the icon using the icon command</td>
+        <td>an component that used for show back and title of the page or screen</td>
     </tr>
     <tr>
         <td>RadioButton</td>
         <td><img src="./image/radiobutton-column.png" alt="RadioButton-column" style="width: 80px;"><img src="./image/radiobutton-row.png" alt="RadioButton-row"></td>
-        <td>can change the icon using the icon command</td>
+        <td>this component that allows users to select one option from a predefined set of choices.</td>
     </tr>
     <tr>
         <td>Rating</td>
