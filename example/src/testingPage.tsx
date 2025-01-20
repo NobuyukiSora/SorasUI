@@ -23,6 +23,7 @@ import { TextInputSingleBoxTesting } from './UseComponents/TextInputSingleBoxTes
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
 import { RatingTesting } from './UseComponents/RatingTesting';
 import { ExpandibleViewTesting } from './UseComponents/ExpandibleViewTesting';
+import { SkeletonLoaderTesting } from './UseComponents/SkeletonLoaderTesting';
 
 type RootStackParamList = {
   Home: undefined;
@@ -278,7 +279,7 @@ export default function Testing({ navigation }: Props) {
 
         {/* TEXT INPUT */}
         <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'TEXT INPUT'}</Typograph>
+          <Typograph customStyle={styles.title}>{'Text Input Field'}</Typograph>
           <TextInputFieldTesting />
         </View>
 
@@ -295,6 +296,12 @@ export default function Testing({ navigation }: Props) {
           <Typograph customStyle={styles.title}>{'THEME SWITCH'}</Typograph>
           <Typograph>{`systemTheme: ${colorScheme}`}</Typograph>
           <ThemeSwitchTesting />
+        </View>
+
+        {/* SKELETON LOADER */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'Skeleton Loader'}</Typograph>
+          <SkeletonLoaderTesting />
         </View>
 
         {/* SNACK BAR */}

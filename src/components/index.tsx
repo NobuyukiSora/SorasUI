@@ -8,7 +8,6 @@ export { RadioButton } from './RadioButton';
 export { Switch } from './Switch';
 export { DynamicScrollView } from './DynamicScrollView';
 export { Calendar } from './Calendar';
-export { InfinitScrolling } from './InfiniteScrolling';
 export { SnackBar } from './SnackBar';
 export {
   TriggerProvider,
@@ -20,3 +19,4 @@ export { DonutChart } from './DonutChart/DonutChart';
 export { Carousel } from './Carousel';
 export { TextInputSingleBox } from './TextInputSingleBox';
 export { Rating } from './Rating';
+export { SkeletonLoader } from './SkeletonLoader';

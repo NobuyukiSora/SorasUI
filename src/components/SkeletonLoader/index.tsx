@@ -8,18 +8,13 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
+import { themeColors } from '../../theme';
 import { PropsInfinitScrolling } from './props';
-export const InfinitScrolling: React.FunctionComponent<
-  PropsInfinitScrolling
-> = (props) => {
-  const {
-    // title,
-    // customStyleButton = {},
-    // customStyleTitle = {},
-    children,
-    width,
-    ...rest
-  } = props;
+
+export const SkeletonLoader: React.FunctionComponent<PropsInfinitScrolling> = (
+  props
+) => {
+  const { children, width, ...rest } = props;
 
   const translateX = useSharedValue(0);
 
@@ -47,19 +42,14 @@ export const InfinitScrolling: React.FunctionComponent<
       justifyContent: 'center',
       alignItems: 'center',
       overflow: 'hidden',
+      backgroundColor: themeColors.textSecondary,
     },
+    bar: { width: '100%', backgroundColor: themeColors.textThird, height: 10 },
   });
 
   return (
     <View style={styles.container}>
-      <Animated.View
-        style={[
-          animatedStyle,
-          // styles.box,
-          { width: '100%', backgroundColor: 'red' },
-        ]}
-        {...rest}
-      >
+      <Animated.View style={[styles.bar, animatedStyle]} {...rest}>
         {children}
       </Animated.View>
     </View>
