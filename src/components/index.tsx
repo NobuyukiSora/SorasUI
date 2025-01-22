@@ -19,4 +19,8 @@ export { DonutChart } from './DonutChart/DonutChart';
 export { Carousel } from './Carousel';
 export { TextInputSingleBox } from './TextInputSingleBox';
 export { Rating } from './Rating';
-export { SkeletonLoader } from './SkeletonLoader';
+export {
+  SkeletonLoader,
+  CircleSkeletonLoader,
+  CardSkeletonLoader,
+} from './SkeletonLoader';
