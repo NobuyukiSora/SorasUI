@@ -10,6 +10,7 @@ export interface PropsInfinitScrolling extends ViewProps {
 
 export interface PropsInfinitScrollingCircle extends ViewProps {
   width: number;
+  height?: number;
   customContainerStyle?: TextStyle;
   customSkeletonStyle?: TextStyle;
   duration?: number;

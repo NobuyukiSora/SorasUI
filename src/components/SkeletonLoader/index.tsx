@@ -76,6 +76,7 @@ export const CircleSkeletonLoader: React.FunctionComponent<
 > = (props) => {
   const {
     width,
+    height,
     duration = 1000,
     customContainerStyle,
     customSkeletonStyle = { borderRadius: 1000, height: width },
@@ -83,12 +84,17 @@ export const CircleSkeletonLoader: React.FunctionComponent<
   return (
     <View
       style={[
-        { width: width, height: width, borderRadius: 1000, overflow: 'hidden' },
+        {
+          width: width,
+          height: height ?? width,
+          borderRadius: 1000,
+          overflow: 'hidden',
+        },
         customContainerStyle,
       ]}
     >
       <SkeletonLoader
-        width={width}
+        width={height ?? width}
         customSkeletonStyle={customSkeletonStyle}
         duration={duration}
       />
