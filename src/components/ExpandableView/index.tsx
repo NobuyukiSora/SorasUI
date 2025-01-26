@@ -72,6 +72,11 @@ export const ExpandableView: React.FunctionComponent<PropsExpandibleView> = (
       paddingVertical: Metrics[12],
       paddingHorizontal: Metrics[12],
     },
+    headerCustomMode: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
     content: {
       backgroundColor: themeColors.background,
     },
@@ -80,14 +85,17 @@ export const ExpandableView: React.FunctionComponent<PropsExpandibleView> = (
   return (
     <View style={[styles.container, customContainerStyle]}>
       <TouchableOpacity onPress={toggleExpand}>
-        {customHeader ?? (
-          <View style={[styles.header, customHeaderStyle]}>
-            <Typograph>{title}</Typograph>
-            <Animated.View style={animatedStyle}>
-              {customIcon ?? <IcoDown stroke={themeColors.text} />}
-            </Animated.View>
-          </View>
-        )}
+        <View
+          style={[
+            customHeader ? styles.headerCustomMode : styles.header,
+            customHeaderStyle,
+          ]}
+        >
+          {customHeader ?? <Typograph>{title}</Typograph>}
+          <Animated.View style={animatedStyle}>
+            {customIcon ?? <IcoDown stroke={themeColors.text} />}
+          </Animated.View>
+        </View>
       </TouchableOpacity>
       {isExpanded && (
         <View style={[styles.content, customItemContainerStyle]}>

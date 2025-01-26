@@ -16,6 +16,17 @@ export const ExpandibleViewTesting = () => {
         title={'Expand this component'}
         renderItem={renderExpandItem()}
       />
+      <ExpandableView
+        title={'Expand this component'}
+        renderItem={renderExpandItem()}
+        customHeader={
+          <View>
+            <Typograph>{'customize'}</Typograph>
+          </View>
+        }
+        customHeaderStyle={{ backgroundColor: 'grey' }}
+        customContainerStyle={{ marginTop: 10 }}
+      />
     </View>
   );
 };
