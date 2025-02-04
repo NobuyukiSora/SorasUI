@@ -24,6 +24,7 @@ import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
 import { RatingTesting } from './UseComponents/RatingTesting';
 import { ExpandibleViewTesting } from './UseComponents/ExpandibleViewTesting';
 import { SkeletonLoaderTesting } from './UseComponents/SkeletonLoaderTesting';
+import { DropDownTesting } from './UseComponents/DropDownTesting';
 
 type RootStackParamList = {
   Home: undefined;
@@ -171,6 +172,12 @@ export default function Testing({ navigation }: Props) {
             //   </View>
             //   )}
           ></CheckBox>
+        </View>
+
+        {/* DropDown */}
+        <View style={[styles.box, { position: 'relative' }]}>
+          <Typograph customStyle={styles.title}>{'DropDown'}</Typograph>
+          <DropDownTesting />
         </View>
 
         {/* CALENDAR */}
