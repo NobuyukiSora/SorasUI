@@ -48,7 +48,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       color: themeColors.text,
     },
     absoluteBack: {
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      backgroundColor: 'rgba(0, 0, 0, 0.1)',
       position: 'absolute',
       top: 0,
       left: 0,
@@ -77,6 +77,11 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
     containerCenter: {
       borderRadius: Metrics[12],
       margin: Metrics[16],
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 3,
+      elevation: 10,
     },
     modalContainerIOS: {
       shadowColor: theme.isDark ? Colors.darkBlue : Colors.grey,

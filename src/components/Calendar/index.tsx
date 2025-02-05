@@ -242,18 +242,6 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       )
     ) {
       dotInRange = true;
-    } else if (
-      moment(
-        `${day}/${months[currentMonth]}/${currentYear}`,
-        'D/MMMM/YYYY'
-      ).isBetween(
-        moment(endDate, 'DD/MM/YYYY'),
-        moment(startDate, 'DD/MM/YYYY'),
-        'day',
-        '[]'
-      )
-    ) {
-      dotInRange = true;
     } else {
       dotInRange = false;
     }
@@ -434,7 +422,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       )}
 
       <View style={styles.dateContainer}>
-        <DynamicScrollView direction="row">
+        <DynamicScrollView direction="row" width={width}>
           {weekLoop()}
           {lastMonthDatesLoop()}
           {datesLoop()}

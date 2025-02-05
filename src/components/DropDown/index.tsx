@@ -14,13 +14,20 @@ import { themeColors } from '../../theme/themeManagement';
 import { TextInputField } from '../TextInputField';
 import { Typograph } from '../Typograph';
 import { PropsDropDown } from './props';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import { Calendar } from '../Calendar';
 
 export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
   const {
     onSelect = () => {},
     title,
     height = 60,
-    maxDropDownHeight = 250,
+    maxDropDownHeight = 300,
+    mode = 'picker',
     options,
     vibrate = true,
     vibrateDuration = 100,
@@ -29,12 +36,14 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
 
   const [value, setValue] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
-  const inputRef = React.useRef<TouchableOpacity>(null);
   const [dropdownPosition, setDropdownPosition] = React.useState({
     top: 0,
     left: 0,
     width: 0,
   });
+  const inputRef = React.useRef<TouchableOpacity>(null);
+  const translateY = useSharedValue(-10);
+  const opacity = useSharedValue(0);
 
   const measureInput = () => {
     if (inputRef.current) {
@@ -47,6 +56,11 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
       });
     }
   };
+
+  React.useEffect(() => {
+    translateY.value = withTiming(modalVisible ? 0 : -10, { duration: 300 });
+    opacity.value = withTiming(modalVisible ? 1 : 0, { duration: 300 });
+  }, [translateY, opacity, modalVisible]);
 
   const onPressDropDown = () => {
     if (vibrate) {
@@ -62,6 +76,11 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
     setModalVisible(false);
   };
 
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+    opacity: opacity.value,
+  }));
+
   const styles = StyleSheet.create({
     inputContainer: {
       width: '100%',
@@ -72,7 +91,7 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
     },
     dropdownList: {
       position: 'absolute',
-      backgroundColor: themeColors.textThird,
+      backgroundColor: themeColors.background,
       borderRadius: 5,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
@@ -117,7 +136,7 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
       <Modal visible={modalVisible} transparent animationType="fade">
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
           <View style={styles.modalOverlay}>
-            <View
+            <Animated.View
               style={[
                 styles.dropdownList,
                 {
@@ -125,21 +144,27 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
                   left: dropdownPosition.left,
                   width: dropdownPosition.width,
                 },
+                mode == 'calendar' && { alignItems: 'center' },
+                animatedStyle,
               ]}
             >
-              <FlatList
-                data={options}
-                renderItem={({ item, index }) => (
-                  <Pressable
-                    key={index}
-                    style={styles.option}
-                    onPress={() => handleSelect(item.label)}
-                  >
-                    <Typograph>{item.label}</Typograph>
-                  </Pressable>
-                )}
-              />
-            </View>
+              {mode === 'picker' ? (
+                <FlatList
+                  data={options}
+                  renderItem={({ item, index }) => (
+                    <Pressable
+                      key={index}
+                      style={styles.option}
+                      onPress={() => handleSelect(item.label)}
+                    >
+                      <Typograph>{item.label}</Typograph>
+                    </Pressable>
+                  )}
+                />
+              ) : (
+                <Calendar onPressDate={onSelect} />
+              )}
+            </Animated.View>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
