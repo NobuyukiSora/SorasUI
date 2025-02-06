@@ -31,6 +31,10 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
     options,
     vibrate = true,
     vibrateDuration = 100,
+    textInputProps = {},
+    calendarProps = {},
+    modalContainerStyle,
+    pressableStyle,
     ...rest
   } = props;
 
@@ -130,6 +134,7 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
               <IconDown stroke={themeColors.text} />
             </TouchableOpacity>
           }
+          {...textInputProps}
         />
       </TouchableOpacity>
 
@@ -146,6 +151,7 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
                 },
                 mode == 'calendar' && { alignItems: 'center' },
                 animatedStyle,
+                modalContainerStyle,
               ]}
             >
               {mode === 'picker' ? (
@@ -154,7 +160,7 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
                   renderItem={({ item, index }) => (
                     <Pressable
                       key={index}
-                      style={styles.option}
+                      style={[styles.option, pressableStyle]}
                       onPress={() => handleSelect(item.label)}
                     >
                       <Typograph>{item.label}</Typograph>
@@ -162,7 +168,13 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
                   )}
                 />
               ) : (
-                <Calendar onPressDate={onSelect} />
+                <Calendar
+                  onPressDate={(set) => {
+                    setValue(set);
+                    onSelect(set);
+                  }}
+                  {...calendarProps}
+                />
               )}
             </Animated.View>
           </View>
