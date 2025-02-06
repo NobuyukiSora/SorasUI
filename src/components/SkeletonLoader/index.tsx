@@ -8,23 +8,25 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import { Metrics } from '../../theme';
-import { PropsInfinitScrolling, PropsInfinitScrollingCard } from './props';
+import { Colors, Metrics } from '../../theme';
+import { PropsCardSkeleton, PropsCircleSkeleton, PropsSkeleton } from './props';
 
-export const SkeletonLoader: React.FunctionComponent<PropsInfinitScrolling> = (
+export const SkeletonLoader: React.FunctionComponent<PropsSkeleton> = (
   props
 ) => {
   const {
     children,
-    width,
+    width = Metrics.screenWidth,
     height = 10,
     duration = 1000,
     customContainerStyle,
     customSkeletonStyle,
+    animation,
     ...rest
   } = props;
 
   const translateX = useSharedValue(0);
+  const opacity = useSharedValue(1);
 
   translateX.value = withRepeat(
     withSequence(
@@ -38,9 +40,24 @@ export const SkeletonLoader: React.FunctionComponent<PropsInfinitScrolling> = (
     false
   );
 
+  opacity.value = withRepeat(
+    withSequence(
+      withTiming(0, { duration: duration }),
+      withTiming(1, { duration: duration })
+    ),
+    -1,
+    true
+  );
+
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: translateX.value }],
+    };
+  });
+
+  const animatedOpacityStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
     };
   });
 
@@ -50,19 +67,25 @@ export const SkeletonLoader: React.FunctionComponent<PropsInfinitScrolling> = (
       justifyContent: 'center',
       alignItems: 'center',
       overflow: 'hidden',
-      backgroundColor: 'rgba(110, 109, 109, 0.5)',
+      backgroundColor: Colors.grey,
+      opacity: 0.4,
     },
     bar: {
       width: '100%',
-      backgroundColor: 'rgba(148, 148, 148, 0.5)',
+      backgroundColor: Colors.lightCream,
       height: height,
+      opacity: 0.5,
     },
   });
 
   return (
     <View style={[styles.container, customContainerStyle]}>
       <Animated.View
-        style={[styles.bar, animatedStyle, customSkeletonStyle]}
+        style={[
+          styles.bar,
+          animation === 'breathing' ? animatedOpacityStyle : animatedStyle,
+          customSkeletonStyle,
+        ]}
         {...rest}
       >
         {children}
@@ -72,14 +95,15 @@ export const SkeletonLoader: React.FunctionComponent<PropsInfinitScrolling> = (
 };
 
 export const CircleSkeletonLoader: React.FunctionComponent<
-  PropsInfinitScrolling
+  PropsCircleSkeleton
 > = (props) => {
   const {
     width,
     height,
-    duration = 1000,
     customContainerStyle,
-    customSkeletonStyle = { borderRadius: 1000, height: width },
+    skeletonProps = {
+      customSkeletonStyle: { borderRadius: 1000, height: width },
+    },
   } = props;
   return (
     <View
@@ -93,31 +117,26 @@ export const CircleSkeletonLoader: React.FunctionComponent<
         customContainerStyle,
       ]}
     >
-      <SkeletonLoader
-        width={height ?? width}
-        customSkeletonStyle={customSkeletonStyle}
-        duration={duration}
-      />
+      <SkeletonLoader width={height ?? width} {...skeletonProps} />
     </View>
   );
 };
 
-export const CardSkeletonLoader: React.FunctionComponent<
-  PropsInfinitScrollingCard
-> = (props) => {
+export const CardSkeletonLoader: React.FunctionComponent<PropsCardSkeleton> = (
+  props
+) => {
   const {
     width,
-    duration = 1000,
     customCardStyle,
     customContainerStyle,
-    customSkeletonStyle = { borderRadius: 1000 },
+    skeletonProps = {},
   } = props;
   return (
     <View
       style={[
         {
           width: 'auto',
-          backgroundColor: 'rgba(52, 52, 52, 0.5)',
+          backgroundColor: 'rgba(52, 52, 52, 0.3)',
           gap: 10,
           padding: Metrics[12],
           borderRadius: Metrics[8],
@@ -139,8 +158,7 @@ export const CardSkeletonLoader: React.FunctionComponent<
               borderRadius: Metrics[8],
               overflow: 'hidden',
             }}
-            customSkeletonStyle={customSkeletonStyle}
-            duration={duration}
+            {...skeletonProps}
           />
         </View>
         <View style={{ flex: 1 }}></View>
@@ -153,8 +171,7 @@ export const CardSkeletonLoader: React.FunctionComponent<
             borderRadius: Metrics[8],
             overflow: 'hidden',
           }}
-          customSkeletonStyle={customSkeletonStyle}
-          duration={duration}
+          {...skeletonProps}
         />
       </View>
       <View style={[{ width: 'auto', height: 20 }, customContainerStyle]}>
@@ -162,8 +179,7 @@ export const CardSkeletonLoader: React.FunctionComponent<
           width={width}
           height={12}
           customContainerStyle={{ borderRadius: Metrics[8] }}
-          customSkeletonStyle={customSkeletonStyle}
-          duration={duration}
+          {...skeletonProps}
         />
       </View>
     </View>
