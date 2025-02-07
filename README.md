@@ -63,7 +63,7 @@ yarn add sora-ui @react-native-async-storage/async-storage react-native-reanimat
     </tr>
     <tr>
         <td>Expandable View</td>
-        <td><img src="./image/ExpandableView.png" alt="ExpandableView"></td>
+        <td><img src="./image/expandedView.png" alt="ExpandableView"></td>
         <td>an component that can expand, to show more data to display</td>
     </tr>
     <tr>
@@ -80,6 +80,11 @@ yarn add sora-ui @react-native-async-storage/async-storage react-native-reanimat
         <td>Rating</td>
         <td><img src="./image/rating.png" alt="rating"></td>
         <td>this have 2 mode, input mode that user can do input rating, and display mode to display the rating, and you can customize the icon</td>
+    </tr>
+    <tr>
+        <td>Skeleton Loader</td>
+        <td><img src="./image/skeletonLoader.png" alt="SkeletonLoader"></td>
+        <td>a UI placeholder that mimics the layout of actual content while it's loading</td>
     </tr>
     <tr>
         <td>SnackBar</td>
