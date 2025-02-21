@@ -17,7 +17,12 @@ export const SkeletonLoaderTesting = () => {
   return (
     <View style={styles.container}>
       <Typograph>{'SkeletonLoader: '}</Typograph>
-      <SkeletonLoader width={300} />
+      <View style={{ paddingBottom: 10, paddingLeft: 10 }}>
+        <Typograph>{`animation: 'wave'`}</Typograph>
+        <SkeletonLoader width={300} />
+        <Typograph>{`animation: 'breathing'`}</Typograph>
+        <SkeletonLoader width={300} animation="breathing" />
+      </View>
       <Typograph>{'CircleSkeletonLoader: '}</Typograph>
       <CircleSkeletonLoader width={100} />
       <Typograph>{'CardSkeletonLoader: '}</Typograph>

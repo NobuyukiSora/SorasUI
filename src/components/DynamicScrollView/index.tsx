@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Metrics } from '../../theme/metrics';
+// import { Metrics } from '../../theme/metrics';
 import { PropsDynamicScrollView } from './props';
 
 export const DynamicScrollView: React.FunctionComponent<
@@ -8,7 +8,7 @@ export const DynamicScrollView: React.FunctionComponent<
 > = (props) => {
   const {
     direction = 'column',
-    width = Metrics.screenWidth,
+    // width = Metrics.screenWidth,
     height,
     justifyContent = 'flex-start',
     children,
@@ -20,7 +20,7 @@ export const DynamicScrollView: React.FunctionComponent<
       contentContainerStyle={{
         flexDirection: direction === 'row' ? 'row' : 'column',
         flexWrap: 'wrap',
-        width: width,
+        // width: width,
         height: height,
         justifyContent: justifyContent,
       }}

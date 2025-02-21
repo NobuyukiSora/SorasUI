@@ -24,6 +24,7 @@ import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
 import { RatingTesting } from './UseComponents/RatingTesting';
 import { ExpandibleViewTesting } from './UseComponents/ExpandibleViewTesting';
 import { SkeletonLoaderTesting } from './UseComponents/SkeletonLoaderTesting';
+import { DropDownTesting } from './UseComponents/DropDownTesting';
 
 type RootStackParamList = {
   Home: undefined;
@@ -129,7 +130,7 @@ export default function Testing({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      {/* HEADER */}
+      {/* HEADER - 1.0.0 */}
       <Header
         title="testing page"
         onPress={() => navigation.navigate('secondScreen')}
@@ -144,7 +145,7 @@ export default function Testing({ navigation }: Props) {
       <ScrollView contentContainerStyle={{ paddingBottom: Metrics[24] }}>
         <View style={styles.box}></View>
 
-        {/* BUTTON */}
+        {/* BUTTON - 1.0.0 */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Button'}</Typograph>
           <Typograph>{`Button test: ${buttonTest}`}</Typograph>
@@ -157,7 +158,7 @@ export default function Testing({ navigation }: Props) {
           />
         </View>
 
-        {/* CHECKBOX */}
+        {/* CHECKBOX - 1.1.0 */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Check Box'}</Typograph>
           <Typograph>{`Checked: ${checkBox}`}</Typograph>
@@ -191,7 +192,13 @@ export default function Testing({ navigation }: Props) {
           <DonutChartTesting />
         </View>
 
-        {/* DYNAMIC SCROLL VIEW */}
+        {/* DROPDOWN */}
+        <View style={[styles.box, { position: 'relative' }]}>
+          <Typograph customStyle={styles.title}>{'DropDown'}</Typograph>
+          <DropDownTesting />
+        </View>
+
+        {/* DYNAMIC SCROLL VIEW - 1.1.0 */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>
             {'DaynamicScrollView'}
@@ -253,7 +260,7 @@ export default function Testing({ navigation }: Props) {
           />
         </View>
 
-        {/* RADIO BUTTON */}
+        {/* RADIO BUTTON - 1.1.0 */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Radio Button'}</Typograph>
           <Typograph>{`Selected: ${selectedRadioButton.id}`}</Typograph>
@@ -277,7 +284,7 @@ export default function Testing({ navigation }: Props) {
           <RatingTesting />
         </View>
 
-        {/* TEXT INPUT */}
+        {/* TEXT INPUT - 1.0.0 */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Text Input Field'}</Typograph>
           <TextInputFieldTesting />
@@ -291,7 +298,7 @@ export default function Testing({ navigation }: Props) {
           <TextInputSingleBoxTesting />
         </View>
 
-        {/* THEME SWITCH */}
+        {/* THEME SWITCH - 1.1.0 */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'THEME SWITCH'}</Typograph>
           <Typograph>{`systemTheme: ${colorScheme}`}</Typograph>

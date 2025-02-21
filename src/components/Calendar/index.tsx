@@ -101,14 +101,14 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   }, [currentMonth, currentYear]);
 
   React.useEffect(() => {
-    const dateStart = moment(startDate, 'D/M/YYYY');
+    const dateStart = moment(startDate, 'YYYY-MM-DD');
     setStartData({
       day: Number(dateStart.format('D')),
       month: Number(dateStart.format('M')),
       year: Number(dateStart.format('YYYY')),
     });
 
-    const dateEnd = moment(endDate, 'D/M/YYYY');
+    const dateEnd = moment(endDate, 'YYYY-MM-DD');
     setEndData({
       day: Number(dateEnd.format('D')),
       month: Number(dateEnd.format('M')),
@@ -191,27 +191,42 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const selectedStartandEnd = (item: number) => {
     if (!isSelectedStart) {
       setStartDate(
-        `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`
+        moment(
+          `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
+          'YYYY-M-D'
+        ).format('YYYY-MM-DD')
       );
       if (getDatesRange) {
         dateRangeValue({
-          start: `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`,
+          start: moment(
+            `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
+            'YYYY-M-D'
+          ).format('YYYY-MM-DD'),
           end: endDate,
         });
         setIsSelectedStart(true);
       } else {
         onPressDate(
-          `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`
+          moment(
+            `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
+            'YYYY-M-D'
+          ).format('YYYY-MM-DD')
         );
         setEndDate('');
       }
     } else {
       setEndDate(
-        `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`
+        moment(
+          `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
+          'YYYY-M-D'
+        ).format('YYYY-MM-DD')
       );
       dateRangeValue({
         start: startDate,
-        end: `${item}/${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}/${!!setYearPosition ? setYearPosition : currentYear}`,
+        end: moment(
+          `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
+          'YYYY-M-D'
+        ).format('YYYY-MM-DD'),
       });
       setIsSelectedStart(false);
     }
@@ -232,23 +247,14 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
 
     if (
       moment(
-        `${day}/${months[currentMonth]}/${currentYear}`,
-        'D/MMMM/YYYY'
+        moment(
+          `${currentYear}-${months[currentMonth]}-${day}`,
+          'YYYY-MMMM-D'
+        ).format('YYYY-MM-DD'),
+        'YYYY-MM-DD'
       ).isBetween(
-        moment(startDate, 'DD/MM/YYYY'),
-        moment(endDate, 'DD/MM/YYYY'),
-        'day',
-        '[]'
-      )
-    ) {
-      dotInRange = true;
-    } else if (
-      moment(
-        `${day}/${months[currentMonth]}/${currentYear}`,
-        'D/MMMM/YYYY'
-      ).isBetween(
-        moment(endDate, 'DD/MM/YYYY'),
-        moment(startDate, 'DD/MM/YYYY'),
+        moment(startDate, 'YYYY-MM-DD'),
+        moment(endDate, 'YYYY-MM-DD'),
         'day',
         '[]'
       )
@@ -434,7 +440,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       )}
 
       <View style={styles.dateContainer}>
-        <DynamicScrollView direction="row">
+        <DynamicScrollView direction="row" width={width}>
           {weekLoop()}
           {lastMonthDatesLoop()}
           {datesLoop()}
