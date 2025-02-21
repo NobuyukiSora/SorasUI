@@ -16,22 +16,20 @@ export const DonutChartTesting = () => {
   const font = useFont(require('./Roboto-Bold.ttf'), 20);
 
   const getRandomNumber = useCallback(() => {
-    const newValue = [];
+    const newValue: number[] = [];
     let totalValue = 0;
+
     for (let i = 0; i < manyData; i++) {
       const randomNumber = Math.random() * 100;
       newValue.push(randomNumber);
       totalValue += randomNumber;
     }
 
-    let newData: React.SetStateAction<DataItem[]> = [];
-    newValue.forEach((number) => {
-      newData.push({
-        value: number,
-        color: getRandomColor(),
-        percentage: (number / totalValue) * 100,
-      });
-    });
+    const newData: DataItem[] = newValue.map((number) => ({
+      value: number,
+      color: getRandomColor(),
+      percentage: (number / totalValue) * 100,
+    }));
 
     setData(newData);
   }, [manyData]);

@@ -21,9 +21,6 @@
         "backgroundColor": "#ffffff"
       },
       "userInterfaceStyle": "automatic"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     }
   }
 }
