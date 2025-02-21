@@ -264,28 +264,6 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       dotInRange = false;
     }
 
-    console.log(
-      `${moment(
-        moment(
-          `${currentYear}-${months[currentMonth]}-${day}`,
-          'YYYY-MMMM-D'
-        ).format('YYYY-MM-DD'),
-        'YYYY-MM-DD'
-      )}`,
-      moment(
-        moment(
-          `${currentYear}-${months[currentMonth]}-${day}`,
-          'YYYY-MMMM-D'
-        ).format('YYYY-MM-DD'),
-        'YYYY-MM-DD'
-      ).isBetween(
-        moment(startDate, 'YYYY-MM-DD'),
-        moment(endDate, 'YYYY-MM-DD'),
-        'day',
-        '[]'
-      )
-    );
-
     return dotStart || dotEnd ? (
       <View style={styles.daysContainer}>
         <View style={{ position: 'absolute' }}>
