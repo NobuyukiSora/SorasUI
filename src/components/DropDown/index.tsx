@@ -20,6 +20,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Calendar } from '../Calendar';
+import { Metrics } from '../../theme';
 
 export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
   const {
@@ -52,8 +53,14 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
   const measureInput = () => {
     if (inputRef.current) {
       inputRef.current.measureInWindow((x, y, width, height) => {
+        let newTop = y + height;
+
+        if (newTop + maxDropDownHeight > Metrics.screenHeight) {
+          newTop = y - maxDropDownHeight;
+        }
+
         setDropdownPosition({
-          top: y + height,
+          top: newTop,
           left: x,
           width: width,
         });
