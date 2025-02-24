@@ -15,4 +15,6 @@ export interface PropsDropDown extends TouchableOpacityProps {
   calendarProps?: PropsCalendar;
   modalContainerStyle?: TextStyle;
   pressableStyle?: TextStyle;
+  disabled?: boolean;
+  value?: string;
 }

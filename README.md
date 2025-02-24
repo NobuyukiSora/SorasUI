@@ -34,27 +34,32 @@ yarn add sora-ui @react-native-async-storage/async-storage react-native-reanimat
     <tr>
         <td>Button</td>
         <td><img src="./image/button.png" alt="Button" ></td>
-        <td>you can customize using children or just use text as in the image</td>
+        <td>a reusable UI element that provides a customizable button with various styling options. It supports different variants, sizes, and event handling, making it flexible for different use cases.</td>
     </tr>
     <tr>
         <td>Calendar</td>
         <td><img src="./image/calendar.png" alt="calendar" ></td>
-        <td>you can get selected date or you can get range dates, and you can modify the calendar as you like </td>
+        <td>component provides an interactive date selection interface. It allows users to pick a date, navigate between months, and customize the appearance. It is designed to be lightweight, flexible, and easily integrated into different parts of an application.</td>
     </tr>
     <tr>
         <td>Carousel</td>
         <td><img src="./image/carousel.png" alt="Carousel" ></td>
-        <td>can change the size as you like, and customize the dot color</td>
+        <td>a horizontally scrollable component that displays multiple items, one at a time or in a loop. It supports smooth animations, auto-scrolling, and gesture-based swiping. This component is useful for displaying images, product cards, testimonials, or any other content in a visually appealing manner.</td>
     </tr>
     <tr>
         <td>CheckBox</td>
         <td><img src="./image/checkbox.png" alt="CheckBox" ></td>
-        <td>can change the icon using the icon command</td>
+        <td>a simple UI element that allows users to toggle between checked and unchecked states. It is commonly used in forms, settings, and multi-select lists. This component supports custom styling, labels, and controlled/uncontrolled states.</td>
     </tr>
     <tr>
         <td>DonutChart</td>
         <td><img src="./image/donutChart.png" alt="DonutChart" ></td>
-        <td>can modify the center content of donut chart</td>
+        <td>a circular chart that represents data as proportional slices of a donut. It is commonly used to visualize percentages, spending breakdowns, or progress indicators. This component supports custom colors, animations, labels, and dynamic data updates.</td>
+    </tr>
+    <tr>
+        <td>DonutChart</td>
+        <td><img src="./image/dropDown.png" alt="DonutChart" ></td>
+        <td>a UI component that allows users to select an option from a list and calendar. When clicked or tapped, it expands to show multiple choices and collapses after a selection is made.</td>
     </tr>
     <tr>
         <td>DynamicScrollView</td>

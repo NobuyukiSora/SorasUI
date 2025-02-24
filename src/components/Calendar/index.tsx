@@ -33,7 +33,10 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const [currentYear, setCurrentYear] = React.useState(
     new Date().getFullYear()
   );
-  const [startDate, setStartDate] = React.useState('');
+  const [startDate, setStartDate] = React.useState<string>(
+    moment().format('YYYY-MM-DD')
+  );
+  const [endDate, setEndDate] = React.useState<string>();
   const [startData, setStartData] = React.useState<{
     day: number;
     month: number;
@@ -44,7 +47,6 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     month: number;
     year: number;
   } | null>();
-  const [endDate, setEndDate] = React.useState('');
   const [isSelectedStart, setIsSelectedStart] = React.useState(false);
 
   const lastDate = new Date(

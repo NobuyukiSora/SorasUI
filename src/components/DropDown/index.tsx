@@ -36,10 +36,12 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
     calendarProps = {},
     modalContainerStyle,
     pressableStyle,
+    disabled = false,
+    value,
     ...rest
   } = props;
 
-  const [value, setValue] = React.useState('');
+  const [data, setData] = React.useState<string>();
   const [modalVisible, setModalVisible] = React.useState(false);
   const [dropdownPosition, setDropdownPosition] = React.useState({
     top: 0,
@@ -82,7 +84,7 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
   };
 
   const handleSelect = (selectedValue: string) => {
-    setValue(selectedValue);
+    setData(selectedValue);
     onSelect(selectedValue);
     setModalVisible(false);
   };
@@ -126,17 +128,19 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
         ref={inputRef}
         onPress={() => onPressDropDown()}
         style={styles.inputContainer}
+        disabled={disabled}
       >
         <TextInputField
           title={title}
-          value={value}
+          value={data ?? value}
           editable={false}
           customContainerStyles={{ height: height }}
-          onTextChange={(set) => setValue(set)}
+          onTextChange={(set) => setData(set)}
           RenderItemRight={
             <TouchableOpacity
               onPress={() => onPressDropDown()}
               style={{ padding: 10 }}
+              disabled={disabled}
             >
               <IconDown stroke={themeColors.text} />
             </TouchableOpacity>
@@ -177,7 +181,7 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
               ) : (
                 <Calendar
                   onPressDate={(set) => {
-                    setValue(set);
+                    setData(set);
                     onSelect(set);
                   }}
                   {...calendarProps}

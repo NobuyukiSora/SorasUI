@@ -5,6 +5,7 @@ import { DropDown, Typograph } from '../../../src/components';
 export const DropDownTesting = () => {
   const [selectedDropDown, setSelectedDropDown] = useState();
   const [selectedDropDownCalendar, setSelectedDropDownCalendar] = useState();
+  const [selectedDropDownCalendar2, setSelectedDropDownCalendar2] = useState();
 
   return (
     <View>
@@ -28,6 +29,13 @@ export const DropDownTesting = () => {
       <DropDown
         mode="calendar"
         onSelect={(set) => setSelectedDropDownCalendar(set)}
+        title="Select date"
+      />
+      <Typograph>{selectedDropDownCalendar2}</Typograph>
+      <DropDown
+        value="2025-02-01"
+        mode="calendar"
+        onSelect={(set) => setSelectedDropDownCalendar2(set)}
         title="Select date"
       />
     </View>
