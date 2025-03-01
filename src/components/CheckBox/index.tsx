@@ -11,6 +11,7 @@ import { Typograph } from '../Typograph';
 import IconCheck from '../../Icon/Ico-Check.svg';
 import { themeColors } from '../../theme/themeManagement';
 import { Metrics } from '../../theme/metrics';
+import { useVibration } from '../../theme/vibrationManagement';
 
 export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
   const {
@@ -22,14 +23,15 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
     iconColor = themeColors.text,
     title,
     value,
-    vibrate = true,
-    vibrateDuration = 100,
+    vibrate,
+    vibrateDuration,
     ...rest
   } = props;
+  const { isVibrationEnabled, vibrationDuration } = useVibration();
 
   const onPressIn = (event: GestureResponderEvent) => {
-    if (vibrate) {
-      Vibration.vibrate(vibrateDuration);
+    if (vibrate ?? isVibrationEnabled) {
+      Vibration.vibrate(vibrateDuration ?? vibrationDuration);
     }
     onPress(event);
   };
@@ -75,6 +77,7 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
         )}
       </View>
       <View>
+        <Typograph>{`${vibrate} - ${isVibrationEnabled} ${vibrate && isVibrationEnabled}`}</Typograph>
         <Typograph>{title}</Typograph>
       </View>
     </TouchableOpacity>

@@ -11,6 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { themeColors } from '../../theme/themeManagement';
+import { useVibration } from '../../theme/vibrationManagement';
 
 export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
   const {
@@ -20,11 +21,12 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
     customTrackStyles,
     customThumbStyles,
     icon,
-    vibrate = true,
-    vibrateDuration = 100,
+    vibrate,
+    vibrateDuration,
     ...rest
   } = props;
 
+  const { isVibrationEnabled, vibrationDuration } = useVibration();
   const springValue = useSharedValue(0);
   const squishValue = useSharedValue(1);
 
@@ -33,8 +35,8 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
   }, [value, springValue]);
 
   const onPressInSwitch = () => {
-    if (vibrate) {
-      Vibration.vibrate(vibrateDuration);
+    if (vibrate ?? isVibrationEnabled) {
+      Vibration.vibrate(vibrateDuration ?? vibrationDuration);
     }
     squishValue.value = withTiming(0.9, { easing: Easing.inOut(Easing.ease) });
   };

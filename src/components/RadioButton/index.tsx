@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { PropsRadioButton } from './props';
 import { Typograph } from '../Typograph';
+import { useVibration } from '../../theme/vibrationManagement';
 
 export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
   props
@@ -24,14 +25,15 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
     icon,
     iconColor = themeColors.active,
     directionMode = { direction: 'column', width: Metrics.screenWidth },
-    vibrate = true,
-    vibrateDuration = 100,
+    vibrate,
+    vibrateDuration,
     ...rest
   } = props;
+  const { isVibrationEnabled, vibrationDuration } = useVibration();
 
   const onPressIn = (item: { id: string; title: string; value: string }) => {
-    if (vibrate) {
-      Vibration.vibrate(vibrateDuration);
+    if (vibrate ?? isVibrationEnabled) {
+      Vibration.vibrate(vibrateDuration ?? vibrationDuration);
     }
     onPress(item);
   };

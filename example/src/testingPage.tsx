@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Button,
@@ -17,14 +17,15 @@ import { themeColors } from '../../src/theme/themeManagement';
 import { CalendarTesting } from './UseComponents/CalendarTesting';
 import { CarouselTesting } from './UseComponents/CarouselTesting';
 import { DonutChartTesting } from './UseComponents/DonutChartTesting';
+import { DropDownTesting } from './UseComponents/DropDownTesting';
+import { ExpandibleViewTesting } from './UseComponents/ExpandibleViewTesting';
+import { RatingTesting } from './UseComponents/RatingTesting';
+import { SkeletonLoaderTesting } from './UseComponents/SkeletonLoaderTesting';
 import { SnackBarTesting } from './UseComponents/SnackBarTesting';
 import { TextInputFieldTesting } from './UseComponents/TextInputFieldTesting';
 import { TextInputSingleBoxTesting } from './UseComponents/TextInputSingleBoxTesting';
 import { ThemeSwitchTesting } from './UseComponents/ThemeSwitchTesting';
-import { RatingTesting } from './UseComponents/RatingTesting';
-import { ExpandibleViewTesting } from './UseComponents/ExpandibleViewTesting';
-import { SkeletonLoaderTesting } from './UseComponents/SkeletonLoaderTesting';
-import { DropDownTesting } from './UseComponents/DropDownTesting';
+import { VibrationTesting } from './UseComponents/VibrationTesting';
 
 type RootStackParamList = {
   Home: undefined;
@@ -298,13 +299,6 @@ export default function Testing({ navigation }: Props) {
           <TextInputSingleBoxTesting />
         </View>
 
-        {/* THEME SWITCH - 1.1.0 */}
-        <View style={styles.box}>
-          <Typograph customStyle={styles.title}>{'THEME SWITCH'}</Typograph>
-          <Typograph>{`systemTheme: ${colorScheme}`}</Typograph>
-          <ThemeSwitchTesting />
-        </View>
-
         {/* SKELETON LOADER */}
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'Skeleton Loader'}</Typograph>
@@ -315,6 +309,24 @@ export default function Testing({ navigation }: Props) {
         <View style={styles.box}>
           <Typograph customStyle={styles.title}>{'SnackBar'}</Typograph>
           <SnackBarTesting />
+        </View>
+
+        {/* TOOL - 1.1.0 */}
+        <View style={styles.box}>
+          <Typograph customStyle={styles.title}>{'TOOL'}</Typograph>
+          <View>
+            <Typograph customStyle={{ fontWeight: '800' }}>
+              {'- THEME SWITCH'}
+            </Typograph>
+            <Typograph>{`systemTheme: ${colorScheme}`}</Typograph>
+            <ThemeSwitchTesting />
+          </View>
+          <View>
+            <Typograph customStyle={{ fontWeight: '800' }}>
+              {'- VIBRATION'}
+            </Typograph>
+            <VibrationTesting />
+          </View>
         </View>
 
         <View style={styles.versionContainer}>

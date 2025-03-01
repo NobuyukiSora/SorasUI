@@ -21,6 +21,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Calendar } from '../Calendar';
 import { Metrics } from '../../theme';
+import { useVibration } from '../../theme/vibrationManagement';
 
 export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
   const {
@@ -30,8 +31,8 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
     maxDropDownHeight = 300,
     mode = 'picker',
     options,
-    vibrate = true,
-    vibrateDuration = 100,
+    vibrate,
+    vibrateDuration,
     textInputProps = {},
     calendarProps = {},
     modalContainerStyle,
@@ -51,6 +52,7 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
   const inputRef = React.useRef<TouchableOpacity>(null);
   const translateY = useSharedValue(-10);
   const opacity = useSharedValue(0);
+  const { isVibrationEnabled, vibrationDuration } = useVibration();
 
   const measureInput = () => {
     if (inputRef.current) {
@@ -76,8 +78,8 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
   }, [translateY, opacity, modalVisible]);
 
   const onPressDropDown = () => {
-    if (vibrate) {
-      Vibration.vibrate(vibrateDuration);
+    if (vibrate ?? isVibrationEnabled) {
+      Vibration.vibrate(vibrateDuration ?? vibrationDuration);
     }
     measureInput();
     setModalVisible(true);

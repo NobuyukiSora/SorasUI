@@ -9,6 +9,7 @@ import { Metrics } from '../../theme/metrics';
 import { themeColors } from '../../theme/themeManagement';
 import { Typograph } from '../Typograph';
 import type { PropsButton } from './props';
+import { useVibration } from '../../theme/vibrationManagement';
 
 export const Button: React.FunctionComponent<PropsButton> = (props) => {
   const {
@@ -17,12 +18,13 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
     customStyleButton = {},
     customStyleTitle = {},
     children,
-    vibrate = true,
-    vibrateDuration = 100,
+    vibrate,
+    vibrateDuration,
     ...rest
   } = props;
 
   const scale = useSharedValue(1);
+  const { isVibrationEnabled, vibrationDuration } = useVibration();
 
   const animatedStyleOnPress = useAnimatedStyle(() => {
     return {
@@ -31,7 +33,9 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
   });
 
   const onPressIn = (type: string) => {
-    vibrate && Vibration.vibrate(vibrateDuration);
+    if (vibrate ?? isVibrationEnabled) {
+      Vibration.vibrate(vibrateDuration ?? vibrationDuration);
+    }
     scale.value = withSpring(0.9);
     if (type === 'onPress') {
       setTimeout(() => {
