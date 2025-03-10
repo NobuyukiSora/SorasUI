@@ -73,6 +73,10 @@ export const DropDown: React.FunctionComponent<PropsDropDown> = (props) => {
   };
 
   React.useEffect(() => {
+    setData(value);
+  }, [value]);
+
+  React.useEffect(() => {
     translateY.value = withTiming(modalVisible ? 0 : -10, { duration: 300 });
     opacity.value = withTiming(modalVisible ? 1 : 0, { duration: 300 });
   }, [translateY, opacity, modalVisible]);

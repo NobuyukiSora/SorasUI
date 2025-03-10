@@ -23,6 +23,7 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
     icon,
     vibrate,
     vibrateDuration,
+    customContainerStyle,
     ...rest
   } = props;
 
@@ -80,14 +81,17 @@ export const Switch: React.FunctionComponent<PropsSwitch> = (props) => {
 
   return (
     <TouchableOpacity
-      style={{
-        justifyContent: 'center',
-        opacity: disabled ? 0.6 : 1,
-      }}
+      style={[
+        {
+          justifyContent: 'center',
+          opacity: disabled ? 0.6 : 1,
+        },
+        customContainerStyle,
+      ]}
       onPressIn={() => onPressInSwitch()}
       onPressOut={() => onPressOutSwitch()}
-      {...rest}
       disabled={disabled}
+      {...rest}
     >
       <View style={[styles.track, customTrackStyles]} />
       <Animated.View style={[styles.thumb, customThumbStyles, animatedCircle]}>

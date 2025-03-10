@@ -6,6 +6,7 @@ export interface PropsSwitch extends TouchableOpacityProps {
   disabled?: boolean;
   customTrackStyles?: TextStyle;
   customThumbStyles?: TextStyle;
+  customContainerStyle?: TextStyle;
   icon?: ReactNode;
   vibrate?: boolean;
   vibrateDuration?: number;

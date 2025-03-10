@@ -77,7 +77,6 @@ export const CheckBox: React.FunctionComponent<PropsCheckBox> = (props) => {
         )}
       </View>
       <View>
-        <Typograph>{`${vibrate} - ${isVibrationEnabled} ${vibrate && isVibrationEnabled}`}</Typograph>
         <Typograph>{title}</Typograph>
       </View>
     </TouchableOpacity>

@@ -71,6 +71,7 @@ export const SkeletonLoader: React.FunctionComponent<PropsSkeleton> = (
       opacity: 0.4,
     },
     bar: {
+      flex: 1,
       width: '100%',
       backgroundColor: Colors.lightCream,
       height: height,
