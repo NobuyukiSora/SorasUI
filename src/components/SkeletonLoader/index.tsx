@@ -30,14 +30,17 @@ export const SkeletonLoader: React.FunctionComponent<PropsSkeleton> = (
 
   translateX.value = withRepeat(
     withSequence(
-      withTiming(-width, {
-        duration: duration,
+      withTiming(width - 100, {
+        duration: 1000,
         easing: Easing.linear,
       }),
-      withTiming(0, { duration: 500 })
+      withTiming(0, {
+        duration: 1000,
+        easing: Easing.linear,
+      })
     ),
     -1,
-    false
+    true
   );
 
   opacity.value = withRepeat(

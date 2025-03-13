@@ -1,16 +1,18 @@
 import * as React from 'react';
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { Colors } from '../../theme';
 import { Metrics } from '../../theme/metrics';
 import { themeColors, useTheme } from '../../theme/themeManagement';
 import { Button } from '../Button';
 import { Typograph } from '../Typograph';
 import { propsModal } from './props';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
 
 export const Modal: React.FunctionComponent<propsModal> = (props) => {
   const {
@@ -18,6 +20,7 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
     onPressClose = () => {},
     customStyleModal = {},
     customModalContainer = {},
+    customCloseIcon,
     type = 'bottom',
     isPopUp = false,
     children,
@@ -26,20 +29,42 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
   } = props;
 
   const { theme } = useTheme();
-
-  const translateY = useSharedValue(-100);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: translateY.value }],
-    };
-  });
+  const translateY = useSharedValue(Metrics.screenHeight);
 
   React.useEffect(() => {
-    translateY.value = withTiming(isPopUp ? 0 : Metrics.screenHeight * 2, {
-      duration: 500,
-    });
+    if (isPopUp) {
+      translateY.value = withTiming(0, { duration: 300 });
+    } else {
+      translateY.value = withTiming(Metrics.screenHeight);
+    }
   }, [isPopUp, translateY]);
+
+  const swipeGesture = Gesture.Pan()
+    .onUpdate((event) => {
+      if (event.translationY > 0) {
+        translateY.value = event.translationY;
+      }
+    })
+    .onEnd((event) => {
+      if (event.translationY > 100) {
+        translateY.value = withTiming(
+          Metrics.screenHeight,
+          { duration: 300 },
+          () => {
+            runOnJS(onPressClose)(false);
+          }
+        );
+      } else {
+        translateY.value = withTiming(0);
+      }
+    });
+
+  const gestureHandler =
+    type === 'bottom' ? swipeGesture : Gesture.Simultaneous();
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
 
   const styles = StyleSheet.create({
     title: {
@@ -56,7 +81,6 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       right: 0,
     },
     bottomstyle: {
-      top: 0,
       flex: 1,
       justifyContent: 'flex-end',
     },
@@ -83,25 +107,27 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       shadowRadius: 3,
       elevation: 10,
     },
-    modalContainerIOS: {
+    modalContainer: {
       shadowColor: theme.isDark ? Colors.darkBlue : Colors.grey,
       shadowOffset: { width: 0, height: -10 },
       shadowOpacity: 0.5,
       shadowRadius: 50,
       marginHorizontal: Metrics[8],
-    },
-    modalContainerAndroid: {
-      borderTopWidth: 2,
-      borderRightWidth: 2,
-      borderLeftWidth: 2,
-      borderBottomWidth: type === 'center' ? 2 : 0,
-      borderColor: themeColors.inActive,
+      elevation: 5,
     },
     headerModal: {
       height: 50,
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'row',
+    },
+    dragHandle: {
+      width: 40,
+      height: 5,
+      backgroundColor: '#ccc',
+      alignSelf: 'center',
+      borderRadius: 10,
+      marginVertical: 10,
     },
   });
 
@@ -122,38 +148,51 @@ export const Modal: React.FunctionComponent<propsModal> = (props) => {
       ]}
       {...rest}
     >
-      <TouchableOpacity
-        style={styles.absoluteBack}
-        onPress={() => onPressClose(false)}
-      />
-      <View
-        style={[
-          type === 'bottom' ? styles.containerBottom : styles.containerCenter,
-          {
-            backgroundColor: themeColors.backgroundSecondary,
-          },
-          Platform.OS == 'ios'
-            ? styles.modalContainerIOS
-            : styles.modalContainerAndroid,
-          customStyleModal,
-        ]}
-      >
-        {customHeader ? (
-          customHeader
-        ) : (
-          <View style={styles.headerModal}>
-            <Typograph style={styles.title}>{title}</Typograph>
-            <View style={{ position: 'absolute', right: 0 }}>
-              <Button
-                title="X"
-                onPress={() => onPressClose(false)}
-                customStyleButton={styles.customButton}
-              />
+      {type === 'center' && (
+        <TouchableOpacity
+          style={styles.absoluteBack}
+          onPress={() => onPressClose(false)}
+        />
+      )}
+
+      <GestureDetector gesture={gestureHandler}>
+        <Animated.View
+          style={[
+            type === 'bottom' ? styles.containerBottom : styles.containerCenter,
+            styles.modalContainer,
+            {
+              backgroundColor: themeColors.backgroundSecondary,
+            },
+            customStyleModal,
+          ]}
+        >
+          {type === 'bottom' && <View style={styles.dragHandle} />}
+
+          {customHeader ? (
+            customHeader
+          ) : (
+            <View style={styles.headerModal}>
+              <Typograph style={styles.title}>{title}</Typograph>
+              {customCloseIcon ? (
+                customCloseIcon
+              ) : (
+                <View style={{ position: 'absolute', right: 0 }}>
+                  <Button
+                    title="X"
+                    onPress={() => onPressClose(false)}
+                    customStyleButton={{
+                      padding: Metrics[8],
+                      margin: Metrics[8],
+                    }}
+                  />
+                </View>
+              )}
             </View>
-          </View>
-        )}
-        <View>{children}</View>
-      </View>
+          )}
+
+          <View>{children}</View>
+        </Animated.View>
+      </GestureDetector>
     </Animated.View>
   );
 };

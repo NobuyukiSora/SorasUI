@@ -9,4 +9,5 @@ export interface propsModal extends TouchableOpacityProps {
   customStyleModal?: TextStyle;
   customHeader?: ReactNode;
   customModalContainer?: TextStyle;
+  customCloseIcon?: ReactNode;
 }

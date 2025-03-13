@@ -19,14 +19,14 @@ export const SkeletonLoaderTesting = () => {
       <Typograph>{'SkeletonLoader: '}</Typograph>
       <View style={{ paddingBottom: 10, paddingLeft: 10 }}>
         <Typograph>{`animation: 'wave'`}</Typograph>
-        <SkeletonLoader width={300} />
+        <SkeletonLoader width={500} />
         <Typograph>{`animation: 'breathing'`}</Typograph>
         <SkeletonLoader width={300} animation="breathing" />
       </View>
       <Typograph>{'CircleSkeletonLoader: '}</Typograph>
-      <CircleSkeletonLoader width={100} />
+      <CircleSkeletonLoader width={300} />
       <Typograph>{'CardSkeletonLoader: '}</Typograph>
-      <CardSkeletonLoader width={100} />
+      <CardSkeletonLoader width={500} />
     </View>
   );
 };

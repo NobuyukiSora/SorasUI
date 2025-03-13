@@ -349,7 +349,18 @@ export default function Testing({ navigation }: Props) {
         isPopUp={modalVisibleBottom}
         onPressClose={getModalVisibleBottom}
         title="Test"
-      />
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: 200,
+            flex: 1,
+          }}
+        >
+          <Typograph>{'Bottom'}</Typograph>
+        </View>
+      </Modal>
     </View>
   );
 }
