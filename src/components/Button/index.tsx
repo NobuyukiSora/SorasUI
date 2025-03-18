@@ -20,6 +20,7 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
     children,
     vibrate,
     vibrateDuration,
+    propsTypograph,
     ...rest
   } = props;
 
@@ -77,7 +78,13 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
         {!!children ? (
           children
         ) : (
-          <Typograph style={[styles.title, customStyleTitle]}>
+          <Typograph
+            customStyle={[
+              styles.title,
+              ...(customStyleTitle ? [customStyleTitle] : []),
+            ]}
+            {...propsTypograph}
+          >
             {title}
           </Typograph>
         )}

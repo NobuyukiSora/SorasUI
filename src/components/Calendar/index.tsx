@@ -12,6 +12,8 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const {
     width = 300,
     height = 300,
+    valueStartDate,
+    valueEndDate,
     getDatesRange = false,
     setYearPosition = 0,
     setMonthPosition = -1,
@@ -91,6 +93,11 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     short: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     supaShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   };
+
+  React.useEffect(() => {
+    setStartDate(moment(valueStartDate, 'YYYY-MM-DD').format('YYYY-MM-DD'));
+    setEndDate(moment(valueEndDate, 'YYYY-MM-DD').format('YYYY-MM-DD'));
+  }, [valueStartDate, valueEndDate]);
 
   React.useEffect(() => {
     if (currentMonth < 0) {

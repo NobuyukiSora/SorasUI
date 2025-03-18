@@ -4,6 +4,8 @@ import { TextStyle } from 'react-native';
 export interface PropsCalendar {
   width?: number;
   height?: number;
+  valueStartDate?: string;
+  valueEndDate?: string;
   getDatesRange?: boolean;
   setMonthPosition?: number;
   setYearPosition?: number;
