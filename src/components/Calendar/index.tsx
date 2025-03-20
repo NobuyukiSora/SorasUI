@@ -429,7 +429,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       ) : (
         <View style={styles.titleContainer}>
           <TouchableOpacity onPress={() => setCurrentMonth(currentMonth - 1)}>
-            <IconBack fill={themeColors.text} height={15} width={15} />
+            <IconBack stroke={themeColors.text} height={15} width={15} />
           </TouchableOpacity>
           <View>
             <Typograph style={[styles.titleText, { fontWeight: '800' }]}>
@@ -443,7 +443,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
             onPress={() => setCurrentMonth(currentMonth + 1)}
             style={{ transform: [{ rotate: '180deg' }] }}
           >
-            <IconBack fill={themeColors.text} height={15} width={15} />
+            <IconBack stroke={themeColors.text} height={15} width={15} />
           </TouchableOpacity>
         </View>
       )}

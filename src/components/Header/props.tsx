@@ -7,4 +7,5 @@ export interface PropsHeader extends TouchableOpacityProps {
   customTitleStyles?: TextStyle;
   iconColor?: string;
   icon?: ReactNode;
+  renderRightComponent?: ReactNode;
 }

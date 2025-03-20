@@ -13,6 +13,7 @@ export const Header: React.FunctionComponent<PropsHeader> = (props) => {
     customButtonStyles,
     customTitleStyles,
     iconColor = themeColors.text,
+    renderRightComponent,
     icon,
     ...rest
   } = props;
@@ -48,6 +49,7 @@ export const Header: React.FunctionComponent<PropsHeader> = (props) => {
           </View>
         )}
       </TouchableOpacity>
+      <View style={[styles.button, { right: 0 }]}>{renderRightComponent}</View>
     </View>
   );
 };
