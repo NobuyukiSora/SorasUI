@@ -9,6 +9,7 @@ import {
   DynamicScrollView,
   Header,
   Modal,
+  ModalSheet,
   RadioButton,
   Typograph,
 } from '../../src/components';
@@ -44,6 +45,10 @@ type Props = {
 export default function Testing({ navigation }: Props) {
   const [modalVisibleCenter, getModalVisibleCenter] = React.useState(false);
   const [modalVisibleBottom, getModalVisibleBottom] = React.useState(false);
+  const [modalSheetVisibleCenter, getModalSheetVisibleCenter] =
+    React.useState(false);
+  const [modalSheetVisibleBottom, getModalSheetVisibleBottom] =
+    React.useState(false);
   const [buttonTest, setButtonTest] = React.useState(0);
   const [checkBox, setCheckBox] = React.useState(false);
 
@@ -259,6 +264,17 @@ export default function Testing({ navigation }: Props) {
             onPress={() => getModalVisibleBottom(!modalVisibleBottom)}
             customStyleButton={{ marginBottom: Metrics[8] }}
           />
+          <Typograph customStyle={styles.title}>{'Modal'}</Typograph>
+          <Button
+            title="Modal Trigger center"
+            onPress={() => getModalSheetVisibleCenter(!modalSheetVisibleCenter)}
+            customStyleButton={{ marginBottom: Metrics[8] }}
+          />
+          <Button
+            title="Modal Trigger bottom"
+            onPress={() => getModalSheetVisibleBottom(!modalSheetVisibleBottom)}
+            customStyleButton={{ marginBottom: Metrics[8] }}
+          />
         </View>
 
         {/* RADIO BUTTON - 1.1.0 */}
@@ -361,6 +377,28 @@ export default function Testing({ navigation }: Props) {
           <Typograph>{'Bottom'}</Typograph>
         </View>
       </Modal>
+      <ModalSheet
+        type="center"
+        isVisible={modalSheetVisibleCenter}
+        onClose={() => getModalSheetVisibleCenter(false)}
+      >
+        <Typograph>{'THIS IS MODAL SHEET CENTER'}</Typograph>
+      </ModalSheet>
+      <ModalSheet
+        type="bottom"
+        isVisible={modalSheetVisibleBottom}
+        onClose={() => getModalSheetVisibleBottom(false)}
+      >
+        <View
+          style={{
+            backgroundColor: themeColors.active,
+            height: Metrics[50] * 3,
+            width: Metrics.screenWidth * 0.8,
+          }}
+        >
+          <Typograph>{'THIS IS MODAL SHEET BOTTOM'}</Typograph>
+        </View>
+      </ModalSheet>
     </View>
   );
 }

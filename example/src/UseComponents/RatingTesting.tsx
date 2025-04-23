@@ -35,6 +35,14 @@ export const RatingTesting = () => {
       >{`Disable input mode`}</Typograph>
       <Rating value={3.5} disable={true} />
       <Rating value={2.5} disable={true} length={1} />
+      <View style={{ width: 100 }}>
+        <Rating
+          value={2.3}
+          disable={true}
+          starColor={'yellow'}
+          strokeColor={'black'}
+        />
+      </View>
     </View>
   );
 };

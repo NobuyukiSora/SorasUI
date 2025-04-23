@@ -1,6 +1,6 @@
 {
   "name": "soras-ui",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Profesional personal UI",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
