@@ -1,198 +1,228 @@
-import * as React from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
+  withSpring,
 } from 'react-native-reanimated';
-import { Colors } from '../../theme';
-import { Metrics } from '../../theme/metrics';
-import { themeColors, useTheme } from '../../theme/themeManagement';
+import { Metrics, themeColors } from '../../theme';
 import { Button } from '../Button';
+import { ModalProps } from './props';
+import IconClose from '../../Icon/Ico-Close.svg';
 import { Typograph } from '../Typograph';
-import { propsModal } from './props';
 
-export const Modal: React.FunctionComponent<propsModal> = (props) => {
+export const Modal: React.FC<ModalProps> = (props) => {
   const {
-    title,
-    onPressClose = () => {},
-    customStyleModal = {},
-    customModalContainer = {},
-    customCloseIcon,
-    type = 'bottom',
-    isPopUp = false,
     children,
-    customHeader,
-    ...rest
+    onPressClose,
+    isPopUp,
+    title,
+    type = 'bottom',
+    customModalContainer,
+    customStyleHeader,
+    customStyleTitle = { fontWeight: '800', fontSize: Metrics[16] },
   } = props;
+  const screenHeight = Metrics.screenHeight;
+  const centerModalWidth = Metrics.screenWidth * 0.8;
+  const translateY = useSharedValue(screenHeight);
+  const scale = useSharedValue(type === 'center' ? 0.8 : 1);
+  const context = useSharedValue({ y: 0 });
 
-  const { theme } = useTheme();
-  const translateY = useSharedValue(Metrics.screenHeight);
+  const scrollTo = useCallback(
+    (destination: number) => {
+      'worklet';
+      translateY.value = withSpring(destination, { damping: 50 });
+    },
+    [translateY]
+  );
 
-  React.useEffect(() => {
-    if (isPopUp) {
-      translateY.value = withTiming(0, { duration: 300 });
-    } else {
-      translateY.value = withTiming(Metrics.screenHeight);
-    }
-  }, [isPopUp, translateY]);
+  const scaleTo = useCallback(
+    (destination: number) => {
+      'worklet';
+      scale.value = withSpring(destination, { damping: 20 });
+    },
+    [scale]
+  );
 
-  const swipeGesture = Gesture.Pan()
-    .onUpdate((event) => {
-      if (event.translationY > 0) {
-        translateY.value = event.translationY;
-      }
-    })
-    .onEnd((event) => {
-      if (event.translationY > 100) {
-        translateY.value = withTiming(
-          Metrics.screenHeight,
-          { duration: 300 },
-          () => {
-            runOnJS(onPressClose)(false);
-          }
+  const panGesture = useMemo(() => {
+    const modalCloseTreshold = 100;
+
+    return Gesture.Pan()
+      .onStart(() => {
+        context.value = { y: translateY.value };
+      })
+      .onUpdate((event) => {
+        translateY.value = event.translationY + context.value.y;
+        translateY.value = Math.max(
+          0,
+          Math.min(translateY.value, screenHeight)
         );
-      } else {
-        translateY.value = withTiming(0);
+      })
+      .onEnd(() => {
+        'worklet';
+        if (translateY.value - context.value.y > modalCloseTreshold) {
+          scrollTo(screenHeight);
+          if (onPressClose) {
+            runOnJS(onPressClose)();
+          }
+        } else {
+          scrollTo(0);
+        }
+      });
+  }, [onPressClose, scrollTo, screenHeight, context, translateY]);
+
+  useEffect(() => {
+    'worklet';
+    if (isPopUp) {
+      if (type === 'bottom') {
+        scrollTo(0);
+        scaleTo(1);
+      } else if (type === 'center') {
+        scrollTo((screenHeight - screenHeight) / 2);
+        scaleTo(1);
       }
-    });
+    } else {
+      if (type === 'bottom') {
+        scrollTo(screenHeight);
+        scaleTo(1);
+      } else if (type === 'center') {
+        scaleTo(0.8);
+        setTimeout(() => {
+          runOnJS(scrollTo)(screenHeight);
+        }, 200);
+      }
+    }
+  }, [isPopUp, scrollTo, scaleTo, type, screenHeight]);
 
-  const gestureHandler =
-    type === 'bottom' ? swipeGesture : Gesture.Simultaneous();
+  const reanimatedStyle = useAnimatedStyle(() => {
+    if (type === 'bottom') {
+      return {
+        transform: [{ translateY: translateY.value }],
+      };
+    } else if (type === 'center') {
+      return {
+        transform: [{ translateY: translateY.value }, { scale: scale.value }],
+        width: centerModalWidth,
+      };
+    }
+    return {};
+  });
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
-  }));
+  if (!isPopUp) {
+    return null;
+  }
 
   const styles = StyleSheet.create({
-    title: {
-      fontWeight: '800',
-      textAlign: 'center',
-      color: themeColors.text,
+    bottomSheetContainer: {
+      width: '100%',
+      backgroundColor: themeColors.backgroundSecondary,
+      position: 'absolute',
+      bottom: 0,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: -2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+      paddingHorizontal: 16,
+      paddingBottom: 16,
     },
-    absoluteBack: {
-      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    overlay: {
+      flex: 1,
       position: 'absolute',
       top: 0,
       left: 0,
-      bottom: 0,
       right: 0,
-    },
-    bottomstyle: {
-      flex: 1,
-      justifyContent: 'flex-end',
-    },
-    centerStyle: {
-      top: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
       justifyContent: 'center',
-      alignContent: 'center',
+      alignItems: 'center',
     },
-    customButton: {
-      padding: Metrics[8],
-      margin: Metrics[8],
-    },
-    containerBottom: {
-      borderTopLeftRadius: Metrics[12],
-      borderTopRightRadius: Metrics[12],
-      marginHorizontal: Metrics[16],
-    },
-    containerCenter: {
-      borderRadius: Metrics[12],
-      margin: Metrics[16],
+    centerModalContainer: {
+      backgroundColor: themeColors.backgroundSecondary,
+      borderRadius: 10,
       shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.2,
-      shadowRadius: 3,
-      elevation: 10,
-    },
-    modalContainer: {
-      shadowColor: theme.isDark ? Colors.darkBlue : Colors.grey,
-      shadowOffset: { width: 0, height: -10 },
-      shadowOpacity: 0.5,
-      shadowRadius: 50,
-      marginHorizontal: Metrics[8],
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
       elevation: 5,
+      overflow: 'hidden',
     },
-    headerModal: {
-      height: 50,
+    header: {
+      height: Metrics[30],
       justifyContent: 'center',
+      alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: themeColors.textThird,
+      padding: 8,
+    },
+    centerHeader: {
+      padding: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: themeColors.textThird,
+      justifyContent: 'space-between',
       alignItems: 'center',
       flexDirection: 'row',
     },
-    dragHandle: {
-      width: 40,
-      height: 5,
-      backgroundColor: '#ccc',
-      alignSelf: 'center',
-      borderRadius: 10,
-      marginVertical: 10,
+    gestureDot: {
+      width: Metrics[50],
+      height: Metrics[4],
+      backgroundColor: themeColors.textThird,
+      borderRadius: Metrics[12],
     },
   });
 
-  return (
-    <Animated.View
-      style={[
-        animatedStyle,
-        {
-          opacity: isPopUp ? 1 : 0,
-          zIndex: 10,
-          right: 0,
-          left: 0,
-          position: 'absolute',
-          bottom: 0,
-        },
-        type === 'center' ? styles.centerStyle : styles.bottomstyle,
-        customModalContainer,
-      ]}
-      {...rest}
-    >
-      {type === 'center' && (
-        <TouchableOpacity
-          style={styles.absoluteBack}
-          onPress={() => onPressClose(false)}
-        />
-      )}
-
-      <GestureDetector gesture={gestureHandler}>
+  if (type === 'bottom') {
+    return (
+      <Animated.View
+        style={[
+          styles.bottomSheetContainer,
+          customModalContainer,
+          reanimatedStyle,
+        ]}
+      >
+        {panGesture && (
+          <GestureDetector gesture={panGesture}>
+            <View style={[styles.header, customStyleHeader]}>
+              <View style={styles.gestureDot} />
+            </View>
+          </GestureDetector>
+        )}
+        <View>{children}</View>
+      </Animated.View>
+    );
+  } else if (type === 'center') {
+    return (
+      <View style={styles.overlay}>
+        <TouchableOpacity style={styles.overlay} onPress={onPressClose} />
         <Animated.View
           style={[
-            type === 'bottom' ? styles.containerBottom : styles.containerCenter,
-            styles.modalContainer,
-            {
-              backgroundColor: themeColors.backgroundSecondary,
-            },
-            customStyleModal,
+            styles.centerModalContainer,
+            customModalContainer,
+            reanimatedStyle,
           ]}
         >
-          {type === 'bottom' && <View style={styles.dragHandle} />}
-
-          {customHeader ? (
-            customHeader
-          ) : (
-            <View style={styles.headerModal}>
-              <Typograph style={styles.title}>{title}</Typograph>
-              {customCloseIcon ? (
-                customCloseIcon
-              ) : (
-                <View style={{ position: 'absolute', right: 0 }}>
-                  <Button
-                    title="X"
-                    onPress={() => onPressClose(false)}
-                    customStyleButton={{
-                      padding: Metrics[8],
-                      margin: Metrics[8],
-                    }}
-                  />
-                </View>
-              )}
-            </View>
-          )}
-
+          <View style={styles.centerHeader}>
+            <Typograph customStyle={customStyleTitle}>{title}</Typograph>
+            <Button title="X" onPress={onPressClose}>
+              {' '}
+              <IconClose height={15} fill={themeColors.text} />
+            </Button>
+          </View>
           <View>{children}</View>
         </Animated.View>
-      </GestureDetector>
-    </Animated.View>
-  );
+      </View>
+    );
+  }
+
+  return null;
 };

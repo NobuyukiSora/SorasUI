@@ -25,4 +25,3 @@ export {
   CardSkeletonLoader,
 } from './SkeletonLoader';
 export { DropDown } from './DropDown';
-export { ModalSheet } from './ModalSheet';

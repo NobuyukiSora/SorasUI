@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
-import type { TextStyle, TouchableOpacityProps } from 'react-native';
+import { TextStyle } from 'react-native';
 
-export interface propsModal extends TouchableOpacityProps {
-  type: 'bottom' | 'center';
+export interface ModalProps {
+  children?: ReactNode;
+  onPressClose?: () => void;
   isPopUp: boolean;
-  onPressClose: (text: boolean) => void;
+  type?: 'bottom' | 'center';
   title?: string;
   customStyleModal?: TextStyle;
-  customHeader?: ReactNode;
+  customStyleHeader?: TextStyle;
+  customStyleTitle?: TextStyle;
   customModalContainer?: TextStyle;
-  customCloseIcon?: ReactNode;
 }
