@@ -214,7 +214,6 @@ export const Modal: React.FC<ModalProps> = (props) => {
           <View style={styles.centerHeader}>
             <Typograph customStyle={customStyleTitle}>{title}</Typograph>
             <Button title="X" onPress={onPressClose}>
-              {' '}
               <IconClose height={15} fill={themeColors.text} />
             </Button>
           </View>
