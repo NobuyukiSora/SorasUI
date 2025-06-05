@@ -45,7 +45,7 @@ export const Header: React.FunctionComponent<PropsHeader> = (props) => {
           icon
         ) : (
           <View style={{ justifyContent: 'center', padding: Metrics[4] }}>
-            <IconBack stroke={iconColor} />
+            <IconBack stroke={iconColor} height={30} width={30} />
           </View>
         )}
       </TouchableOpacity>

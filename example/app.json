@@ -15,7 +15,8 @@
     "ios": {
       "newArchEnabled": true,
       "supportsTablet": true,
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "bundleIdentifier": "com.nobuyukisora.example"
     },
     "android": {
       "adaptiveIcon": {
