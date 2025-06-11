@@ -1,14 +1,10 @@
-import { StyleSheet, View } from 'react-native';
+import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 import React from 'react';
-import {
-  useDerivedValue,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
-import { Canvas, Path, Skia, Text } from '@shopify/react-native-skia';
+import { StyleSheet, View } from 'react-native';
+import { useSharedValue, withTiming } from 'react-native-reanimated';
+import { themeColors } from '../../theme';
 import DonutPath from './DonutPath';
 import { PropsDonutChart } from './props';
-import { themeColors } from '../../theme';
 
 export const DonutChart: React.FunctionComponent<PropsDonutChart> = (props) => {
   const {
@@ -17,11 +13,7 @@ export const DonutChart: React.FunctionComponent<PropsDonutChart> = (props) => {
     outerStrokeWidth = 46,
     outerStrokColor = themeColors.backgroundSecondary,
     radius = 160,
-    font,
     data,
-    displayTotalValue = true,
-    totalValueSymbol = '',
-    totalValueColor = 'black',
   } = props;
 
   const decimals = useSharedValue<number[]>([]);
@@ -36,18 +28,6 @@ export const DonutChart: React.FunctionComponent<PropsDonutChart> = (props) => {
   const path = Skia.Path.Make();
   path.addCircle(radius, radius, innerRadius);
 
-  const targetText = useDerivedValue(
-    () => `${totalValueSymbol}${Math.round(totalValue.value)}`,
-    []
-  );
-
-  const fontSize = font ? font.measureText('$00') : { width: 0, height: 0 };
-  const textX = useDerivedValue(() => {
-    if (!font) return 0;
-    const measuredText = font.measureText(targetText.value);
-    return radius - measuredText.width / 2;
-  }, []);
-
   const generateDecimals = data.map(
     (number) => Number(number?.percentage.toFixed(0)) / 100
   );
@@ -59,8 +39,6 @@ export const DonutChart: React.FunctionComponent<PropsDonutChart> = (props) => {
       height: radius * 2,
     },
   });
-
-  if (!font) return null;
 
   return (
     <View style={styles.container}>
@@ -90,17 +68,6 @@ export const DonutChart: React.FunctionComponent<PropsDonutChart> = (props) => {
             gap={gap}
           />
         ))}
-
-        {/* Total value text display */}
-        {displayTotalValue && (
-          <Text
-            x={textX}
-            y={radius + fontSize.height / 3}
-            text={targetText}
-            font={font}
-            color={totalValueColor}
-          />
-        )}
       </Canvas>
     </View>
   );

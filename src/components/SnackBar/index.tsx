@@ -4,6 +4,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 import IconClose from '../../Icon/Ico-Close.svg';
 import IconCloseBold from '../../Icon/Ico-CloseBold.svg';
@@ -29,9 +30,11 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
   const { theme } = useTheme();
   const { setTrigger, snackBarType, snackBarTitle } = useTrigger();
   const springValue = useSharedValue(0);
+  const opacityValue = useSharedValue(0);
 
   const animatedSnackBar = useAnimatedStyle(() => ({
     transform: [{ translateY: springValue.value }],
+    opacity: opacityValue.value,
   }));
 
   const isTriggeredClose = React.useCallback(() => {
@@ -40,15 +43,18 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
       damping: 10,
       mass: 1,
     });
-  }, [springValue]);
+    setTimeout(() => {
+      opacityValue.value = withTiming(0, { duration: 200 });
+    }, 100);
+  }, [springValue, opacityValue]);
 
   const isTriggered = React.useCallback(() => {
     springValue.value = withSpring(animatedHeight - animatedHeight * 2);
-
+    opacityValue.value = withTiming(1, { duration: 400 });
     setTimeout(() => {
       isTriggeredClose();
     }, delay);
-  }, [animatedHeight, delay, isTriggeredClose, springValue]);
+  }, [animatedHeight, delay, isTriggeredClose, springValue, opacityValue]);
 
   React.useEffect(() => {
     setTrigger(() => isTriggered);
@@ -58,7 +64,7 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
     container: {
       backgroundColor: theme?.isDark ? Colors.darkGrey : Colors.cream,
       marginHorizontal: Metrics[8],
-      height: 50,
+      minHeight: 50,
       borderRadius: Metrics[8],
       paddingHorizontal: Metrics[12],
       flexDirection: 'row',
@@ -69,19 +75,23 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
       left: 0,
     },
     IconBox: {
-      height: 50,
+      minHeight: 50,
       width: 50,
+      height: '100%',
       justifyContent: 'center',
       alignItems: 'center',
       marginRight: Metrics[16],
     },
     centerItem: {
+      paddingVertical: Metrics[8],
       justifyContent: 'center',
       alignItems: 'center',
       flexWrap: 'wrap',
+      flex: 1,
     },
     text: {
       flexWrap: 'wrap',
+      maxWidth: '100%',
       color: theme?.isDark ? Colors.lightCream : Colors.black,
     },
   });
@@ -141,8 +151,15 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
   };
   return (
     <Animated.View style={[styles.container, animatedSnackBar]} {...rest}>
-      {getIcon()}
-      <View style={{ flexDirection: 'row', gap: Metrics[8] }}>
+      <View style={{ flex: 1 }}>{getIcon()}</View>
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: Metrics[8],
+          height: '100%',
+          minWidth: 25,
+        }}
+      >
         {undoButton && (
           <TouchableOpacity style={styles.centerItem} onPress={onUndo}>
             <IconUndo width={20} fill={themeColors.text} />

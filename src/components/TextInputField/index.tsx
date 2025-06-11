@@ -75,11 +75,13 @@ export const TextInputField: React.FunctionComponent<PropsTextInput> = (
 
   return (
     <View style={[styles.mainContainer, customContainerStyles]}>
-      <Animated.View
-        style={[styles.containerTitle, animatedTitle, customTitleSyle]}
-      >
-        <Typograph>{title}</Typograph>
-      </Animated.View>
+      {title && (
+        <Animated.View
+          style={[styles.containerTitle, animatedTitle, customTitleSyle]}
+        >
+          <Typograph>{title}</Typograph>
+        </Animated.View>
+      )}
       <TextInput
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
