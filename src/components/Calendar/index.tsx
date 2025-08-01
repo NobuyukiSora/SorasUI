@@ -1,12 +1,156 @@
+import moment from 'moment';
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
+import IconBack from '../../Icon/Ico-Back.svg';
 import { Metrics } from '../../theme/metrics';
 import { themeColors } from '../../theme/themeManagement';
-import { DynamicScrollView } from '../DynamicScrollView';
 import { Typograph } from '../Typograph';
 import { PropsCalendar } from './props';
-import moment from 'moment';
-import IconBack from '../../Icon/Ico-Back.svg';
+
+const DateItem: React.FunctionComponent<{
+  day: number;
+  isDotStart: boolean;
+  isDotEnd: boolean;
+  isDotInRange: boolean;
+  onPress: () => void;
+  customSelectedDot?: React.ReactNode;
+  customRangeDot?: React.ReactNode;
+  customizeSelectedTextStyles?: object;
+  customDateTextStyles?: object;
+  getSundays: number;
+  styles: any;
+}> = ({
+  day,
+  isDotStart,
+  isDotEnd,
+  isDotInRange,
+  onPress,
+  customSelectedDot,
+  customRangeDot,
+  customizeSelectedTextStyles,
+  customDateTextStyles,
+  getSundays,
+  styles,
+}) => {
+  const selectedDotScale = useSharedValue(0);
+  const selectedDotOpacity = useSharedValue(0);
+  const rangeDotScale = useSharedValue(0);
+  const rangeDotOpacity = useSharedValue(0);
+
+  React.useEffect(() => {
+    if (isDotStart || isDotEnd) {
+      selectedDotScale.value = withSpring(1, { damping: 10, stiffness: 100 });
+      selectedDotOpacity.value = withTiming(1, { duration: 300 });
+      rangeDotScale.value = withTiming(0);
+      rangeDotOpacity.value = withTiming(0);
+    } else if (isDotInRange) {
+      rangeDotScale.value = withSpring(1, { damping: 10, stiffness: 100 });
+      rangeDotOpacity.value = withTiming(1, { duration: 300 });
+      selectedDotScale.value = withTiming(0);
+      selectedDotOpacity.value = withTiming(0);
+    } else {
+      selectedDotScale.value = withTiming(0);
+      selectedDotOpacity.value = withTiming(0);
+      rangeDotScale.value = withTiming(0);
+      rangeDotOpacity.value = withTiming(0);
+    }
+  }, [
+    isDotStart,
+    isDotEnd,
+    isDotInRange,
+    rangeDotOpacity,
+    rangeDotScale,
+    selectedDotOpacity,
+    selectedDotScale,
+  ]);
+
+  const animatedSelectedDotStyle = useAnimatedStyle(() => {
+    return {
+      opacity: selectedDotOpacity.value,
+      transform: [{ scale: selectedDotScale.value }],
+    };
+  });
+
+  const animatedRangeDotStyle = useAnimatedStyle(() => {
+    return {
+      opacity: rangeDotOpacity.value,
+      transform: [{ scale: rangeDotScale.value }],
+    };
+  });
+
+  return (
+    <TouchableOpacity style={styles.daysContainer} onPress={onPress}>
+      {isDotStart || isDotEnd ? (
+        <View style={styles.daysContainer}>
+          <Animated.View
+            style={[{ position: 'absolute' }, animatedSelectedDotStyle]}
+          >
+            {!!customSelectedDot ? (
+              customSelectedDot
+            ) : (
+              <View style={styles.selectedDot}></View>
+            )}
+          </Animated.View>
+          <Typograph
+            style={[
+              styles.daysText,
+              {
+                color: themeColors.white,
+              },
+              customDateTextStyles,
+              customizeSelectedTextStyles,
+            ]}
+          >
+            {day}
+          </Typograph>
+        </View>
+      ) : isDotInRange ? (
+        <View style={styles.daysContainer}>
+          <Animated.View
+            style={[{ position: 'absolute' }, animatedRangeDotStyle]}
+          >
+            {!!customRangeDot ? (
+              customRangeDot
+            ) : (
+              <View style={styles.rangeDot}></View>
+            )}
+          </Animated.View>
+          <Typograph
+            style={[
+              styles.daysText,
+              {
+                color: day === getSundays ? themeColors.red : themeColors.text,
+              },
+              customDateTextStyles,
+            ]}
+          >
+            {day}
+          </Typograph>
+        </View>
+      ) : (
+        <View>
+          <Typograph
+            style={[
+              styles.daysText,
+              {
+                color: day === getSundays ? themeColors.red : themeColors.text,
+              },
+              customDateTextStyles,
+            ]}
+          >
+            {day}
+          </Typograph>
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+};
 
 export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   const {
@@ -63,7 +207,6 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   ).getDay();
 
   const datesArray = Array.from({ length: lastDate }, (_, index) => index + 1);
-  let getSundays = firstDay == 0 ? firstDay + 1 : 7 - firstDay + 1;
 
   const months = [
     'January',
@@ -95,8 +238,27 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   };
 
   React.useEffect(() => {
-    setStartDate(moment(valueStartDate, 'YYYY-MM-DD').format('YYYY-MM-DD'));
-    setEndDate(moment(valueEndDate, 'YYYY-MM-DD').format('YYYY-MM-DD'));
+    if (
+      startDate &&
+      endDate &&
+      moment(startDate, 'YYYY-MM-DD').isAfter(moment(endDate, 'YYYY-MM-DD'))
+    ) {
+      const tempStartDate = startDate;
+      const tempStartData = startData;
+      setStartDate(endDate);
+      setEndDate(tempStartDate);
+      setStartData(endData);
+      setEndData(tempStartData);
+    }
+  }, [startDate, endDate, startData, endData]);
+
+  React.useEffect(() => {
+    if (valueStartDate) {
+      setStartDate(moment(valueStartDate, 'YYYY-MM-DD').format('YYYY-MM-DD'));
+    }
+    if (valueEndDate) {
+      setEndDate(moment(valueEndDate, 'YYYY-MM-DD').format('YYYY-MM-DD'));
+    }
   }, [valueStartDate, valueEndDate]);
 
   React.useEffect(() => {
@@ -110,19 +272,27 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   }, [currentMonth, currentYear]);
 
   React.useEffect(() => {
-    const dateStart = moment(startDate, 'YYYY-MM-DD');
-    setStartData({
-      day: Number(dateStart.format('D')),
-      month: Number(dateStart.format('M')),
-      year: Number(dateStart.format('YYYY')),
-    });
+    if (startDate) {
+      const dateStart = moment(startDate, 'YYYY-MM-DD');
+      setStartData({
+        day: Number(dateStart.format('D')),
+        month: Number(dateStart.format('M')),
+        year: Number(dateStart.format('YYYY')),
+      });
+    } else {
+      setStartData(null);
+    }
 
-    const dateEnd = moment(endDate, 'YYYY-MM-DD');
-    setEndData({
-      day: Number(dateEnd.format('D')),
-      month: Number(dateEnd.format('M')),
-      year: Number(dateEnd.format('YYYY')),
-    });
+    if (endDate) {
+      const dateEnd = moment(endDate, 'YYYY-MM-DD');
+      setEndData({
+        day: Number(dateEnd.format('D')),
+        month: Number(dateEnd.format('M')),
+        year: Number(dateEnd.format('YYYY')),
+      });
+    } else {
+      setEndData(null);
+    }
   }, [startDate, endDate]);
 
   const weekLoop = () => {
@@ -134,7 +304,7 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
           <Typograph
             style={[
               styles.daysText,
-              { color: weekCount == 0 ? themeColors.red : themeColors.text },
+              { color: weekCount === 0 ? themeColors.red : themeColors.text },
               customWeekTextStyles,
             ]}
           >
@@ -155,225 +325,155 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     const datesView = [];
 
     if (customStyles.showLastNextDate) {
-      const lastMonth =
+      const lastMonthIndex =
         (setMonthPosition >= 0 ? setMonthPosition : currentMonth) - 1 < 0
           ? 11
           : (setMonthPosition >= 0 ? setMonthPosition : currentMonth) - 1;
-      const getYear =
+      const getYearForLastMonth =
         (setMonthPosition >= 0 ? setMonthPosition : currentMonth) - 1 < 0
           ? (!!setYearPosition ? setYearPosition : currentYear) - 1
           : !!setYearPosition
             ? setYearPosition
             : currentYear;
-      const lastMonthDates = new Date(getYear, lastMonth + 1, 0).getDate();
-      let lastMonthDatesCount =
-        new Date(getYear, lastMonth + 1, 0).getDate() - (firstDay - 1);
-      if (firstDay != 0) {
-        do {
+      const lastMonthDatesCountTotal = new Date(
+        getYearForLastMonth,
+        lastMonthIndex + 1,
+        0
+      ).getDate();
+      let lastMonthDatesStart = lastMonthDatesCountTotal - (firstDay - 1);
+
+      if (firstDay !== 0) {
+        for (let i = lastMonthDatesStart; i <= lastMonthDatesCountTotal; i++) {
           datesView.push(
-            <View style={styles.daysContainer} key={lastMonthDatesCount}>
+            <View style={styles.daysContainer} key={`last-month-${i}`}>
               <Typograph
                 style={[styles.daysText, { color: themeColors.inActive }]}
               >
-                {lastMonthDatesCount}
+                {i}
               </Typograph>
             </View>
           );
-          lastMonthDatesCount++;
-        } while (lastMonthDatesCount <= lastMonthDates);
+        }
       }
     } else {
-      let lastMonthDatesCount = 1;
-      if (firstDay != 0) {
-        do {
+      if (firstDay !== 0) {
+        for (let i = 0; i < firstDay; i++) {
           datesView.push(
-            <View style={styles.daysContainer} key={lastMonthDatesCount} />
+            <View style={styles.daysContainer} key={`empty-${i}`} />
           );
-          lastMonthDatesCount++;
-        } while (lastMonthDatesCount <= firstDay);
+        }
       }
     }
-
     return datesView;
   };
 
   const selectedStartandEnd = (item: number) => {
+    const selectedDateMoment = moment(
+      `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
+      'YYYY-M-D'
+    );
+    const formattedSelectedDate = selectedDateMoment.format('YYYY-MM-DD');
+
     if (!isSelectedStart) {
-      setStartDate(
-        moment(
-          `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
-          'YYYY-M-D'
-        ).format('YYYY-MM-DD')
-      );
+      setStartDate(formattedSelectedDate);
       if (getDatesRange) {
         dateRangeValue({
-          start: moment(
-            `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
-            'YYYY-M-D'
-          ).format('YYYY-MM-DD'),
+          start: formattedSelectedDate,
           end: endDate,
         });
         setIsSelectedStart(true);
       } else {
-        onPressDate(
-          moment(
-            `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
-            'YYYY-M-D'
-          ).format('YYYY-MM-DD')
-        );
-        setEndDate('');
+        onPressDate(formattedSelectedDate);
+        setEndDate(undefined);
       }
     } else {
-      setEndDate(
-        moment(
-          `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
-          'YYYY-M-D'
-        ).format('YYYY-MM-DD')
-      );
-      dateRangeValue({
-        start: startDate,
-        end: moment(
-          `${!!setYearPosition ? setYearPosition : currentYear}-${(setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1}-${item}`,
-          'YYYY-M-D'
-        ).format('YYYY-MM-DD'),
-      });
+      setEndDate(formattedSelectedDate);
+      if (getDatesRange) {
+        dateRangeValue({
+          start: startDate,
+          end: formattedSelectedDate,
+        });
+      } else {
+        onPressDate(formattedSelectedDate);
+      }
       setIsSelectedStart(false);
     }
   };
 
-  const isDaysRange = (day: number) => {
-    let dotInRange = false;
-    const dotStart =
-      day === startData?.day &&
-      (setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1 ===
-        startData?.month &&
-      (!!setYearPosition ? setYearPosition : currentYear) == startData?.year;
-    const dotEnd =
-      day === endData?.day &&
-      (setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1 ===
-        endData?.month &&
-      (!!setYearPosition ? setYearPosition : currentYear) == endData?.year;
+  const datesLoop = () =>
+    datesArray.map((item) => {
+      const currentDayMoment = moment(
+        `${currentYear}-${months[currentMonth]}-${item}`,
+        'YYYY-MMMM-D'
+      );
+      const formattedCurrentDay = currentDayMoment.format('YYYY-MM-DD');
 
-    if (
-      moment(
-        moment(
-          `${currentYear}-${months[currentMonth]}-${day}`,
-          'YYYY-MMMM-D'
-        ).format('YYYY-MM-DD'),
-        'YYYY-MM-DD'
-      ).isBetween(
+      const dotStart =
+        item === startData?.day &&
+        (setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1 ===
+          startData?.month &&
+        (!!setYearPosition ? setYearPosition : currentYear) === startData?.year;
+
+      const dotEnd =
+        item === endData?.day &&
+        (setMonthPosition >= 0 ? setMonthPosition : currentMonth) + 1 ===
+          endData?.month &&
+        (!!setYearPosition ? setYearPosition : currentYear) === endData?.year;
+
+      const dotInRange = moment(formattedCurrentDay).isBetween(
         moment(startDate, 'YYYY-MM-DD'),
         moment(endDate, 'YYYY-MM-DD'),
         'day',
         '[]'
-      )
-    ) {
-      dotInRange = true;
-    } else {
-      dotInRange = false;
-    }
+      );
 
-    return dotStart || dotEnd ? (
-      <View style={styles.daysContainer}>
-        <View style={{ position: 'absolute' }}>
-          {!!customSelectedDot ? (
-            customSelectedDot
-          ) : (
-            <View style={styles.selectedDot}></View>
-          )}
-        </View>
-        <Typograph
-          style={[
-            styles.daysText,
-            {
-              color: themeColors.white,
-            },
-            customDateTextStyles,
-            customizeSelectedTextStyles,
-          ]}
-        >
-          {day}
-        </Typograph>
-      </View>
-    ) : dotInRange ? (
-      <View style={styles.daysContainer}>
-        <View style={{ position: 'absolute' }}>
-          {!!customRangeDot ? (
-            customRangeDot
-          ) : (
-            <View style={styles.rangeDot}></View>
-          )}
-        </View>
-        <Typograph
-          style={[
-            styles.daysText,
-            {
-              color: day == getSundays ? themeColors.red : themeColors.text,
-            },
-            customDateTextStyles,
-          ]}
-        >
-          {day}
-        </Typograph>
-      </View>
-    ) : (
-      <View>
-        <Typograph
-          style={[
-            styles.daysText,
-            {
-              color: day == getSundays ? themeColors.red : themeColors.text,
-            },
-            customDateTextStyles,
-          ]}
-        >
-          {day}
-        </Typograph>
-      </View>
-    );
-  };
+      const isSunday = currentDayMoment.day() === 0;
 
-  const datesLoop = () =>
-    datesArray.map((item) => {
-      if (item - 1 == getSundays) {
-        getSundays = getSundays + 7;
-      }
       return (
-        <TouchableOpacity
-          style={styles.daysContainer}
+        <DateItem
           key={item}
-          onPress={() => {
-            selectedStartandEnd(item);
-          }}
-        >
-          {isDaysRange(item)}
-        </TouchableOpacity>
+          day={item}
+          isDotStart={dotStart}
+          isDotEnd={dotEnd}
+          isDotInRange={dotInRange}
+          onPress={() => selectedStartandEnd(item)}
+          customSelectedDot={customSelectedDot}
+          customRangeDot={customRangeDot}
+          customizeSelectedTextStyles={customizeSelectedTextStyles}
+          customDateTextStyles={customDateTextStyles}
+          getSundays={isSunday ? item : -1}
+          styles={styles}
+        />
       );
     });
 
   const nextMonthDatesLoop = () => {
     const datesView = [];
+    const totalDaysInGrid = 42;
+    const currentMonthDays = lastDate;
+    const previousMonthEmptyDays = firstDay;
+    const filledDays = currentMonthDays + previousMonthEmptyDays;
+    const remainingDates = totalDaysInGrid - filledDays;
 
-    if (customStyles.showLastNextDate) {
-      const remainingDates = 7 - ((lastDate + firstDay) % 7);
-      let datesCount = 1;
-
-      if (remainingDates < 7) {
-        do {
-          datesView.push(
-            <View style={styles.daysContainer} key={datesCount}>
-              <Typograph
-                style={[styles.daysText, { color: themeColors.inActive }]}
-              >
-                {datesCount}
-              </Typograph>
-            </View>
-          );
-          datesCount++;
-        } while (datesCount <= remainingDates);
+    if (customStyles.showLastNextDate && remainingDates > 0) {
+      for (let i = 1; i <= remainingDates; i++) {
+        datesView.push(
+          <View style={styles.daysContainer} key={`next-month-${i}`}>
+            <Typograph
+              style={[styles.daysText, { color: themeColors.inActive }]}
+            >
+              {i}
+            </Typograph>
+          </View>
+        );
+      }
+    } else if (!customStyles.showLastNextDate && remainingDates > 0) {
+      for (let i = 0; i < remainingDates; i++) {
+        datesView.push(
+          <View style={styles.daysContainer} key={`empty-next-${i}`} />
+        );
       }
     }
-
     return datesView;
   };
 
@@ -389,6 +489,8 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     },
     dateContainer: {
       width: width,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
     },
     calendarContainer: {
       width: width,
@@ -449,12 +551,13 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
       )}
 
       <View style={styles.dateContainer}>
-        <DynamicScrollView direction="row" width={width}>
-          {weekLoop()}
-          {lastMonthDatesLoop()}
-          {datesLoop()}
-          {nextMonthDatesLoop()}
-        </DynamicScrollView>
+        {weekLoop()}
+
+        {lastMonthDatesLoop()}
+
+        {datesLoop()}
+
+        {nextMonthDatesLoop()}
       </View>
     </View>
   );

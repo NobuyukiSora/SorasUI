@@ -25,11 +25,12 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
   } = props;
 
   const scale = useSharedValue(1);
+  const moveY = useSharedValue(0);
   const { isVibrationEnabled, vibrationDuration } = useVibration();
 
   const animatedStyleOnPress = useAnimatedStyle(() => {
     return {
-      transform: [{ scale: scale.value }],
+      transform: [{ scale: scale.value }, { translateY: moveY.value }],
     };
   });
 
@@ -37,16 +38,20 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
     if (vibrate ?? isVibrationEnabled) {
       Vibration.vibrate(vibrateDuration ?? vibrationDuration);
     }
-    scale.value = withSpring(0.9);
     if (type === 'onPress') {
+      scale.value = withSpring(0.95);
       setTimeout(() => {
         onPressOut();
       }, 400);
+    } else if (type === 'onLongPress') {
+      scale.value = withSpring(0.9);
     }
+    moveY.value = withSpring(3);
   };
 
   const onPressOut = () => {
     scale.value = withSpring(1);
+    moveY.value = withSpring(0);
   };
 
   const styles = StyleSheet.create({

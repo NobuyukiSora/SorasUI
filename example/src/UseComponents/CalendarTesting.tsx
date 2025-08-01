@@ -3,6 +3,7 @@ import { View } from 'react-native';
 // import { multiply } from 'sora-ui';
 import { Button, Calendar, Typograph } from '../../../src/components';
 import { themeColors } from '../../../src/theme/themeManagement';
+import moment from 'moment';
 
 export const CalendarTesting = () => {
   const [calendarType, setCalendarType] = React.useState(false);
@@ -12,8 +13,12 @@ export const CalendarTesting = () => {
     end: '',
   });
   const [calendarDate, setCalendarDate] = React.useState('');
-  const [monthPosition, setMonthPosition] = React.useState(0);
-  const [yearPosition, setYearPosition] = React.useState(2024);
+  const [monthPosition, setMonthPosition] = React.useState(
+    Number(moment().format('M'))
+  );
+  const [yearPosition, setYearPosition] = React.useState(
+    Number(moment().format('YYYY'))
+  );
 
   const months = [
     'Jan',

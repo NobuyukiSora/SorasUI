@@ -6,12 +6,13 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
 } from 'react-native-reanimated';
+import IconClose from '../../Icon/Ico-Close.svg';
 import { Metrics, themeColors } from '../../theme';
 import { Button } from '../Button';
-import { ModalProps } from './props';
-import IconClose from '../../Icon/Ico-Close.svg';
 import { Typograph } from '../Typograph';
+import { ModalProps } from './props';
 
 export const Modal: React.FC<ModalProps> = (props) => {
   const {
@@ -29,6 +30,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
   const translateY = useSharedValue(screenHeight);
   const scale = useSharedValue(type === 'center' ? 0.8 : 1);
   const context = useSharedValue({ y: 0 });
+  const overlayOpacity = useSharedValue(0);
 
   const scrollTo = useCallback(
     (destination: number) => {
@@ -70,8 +72,16 @@ export const Modal: React.FC<ModalProps> = (props) => {
         } else {
           scrollTo(0);
         }
+        overlayOpacity.value = withTiming(0, { duration: 300 });
       });
-  }, [onPressClose, scrollTo, screenHeight, context, translateY]);
+  }, [
+    onPressClose,
+    scrollTo,
+    screenHeight,
+    context,
+    translateY,
+    overlayOpacity,
+  ]);
 
   useEffect(() => {
     'worklet';
@@ -83,18 +93,9 @@ export const Modal: React.FC<ModalProps> = (props) => {
         scrollTo((screenHeight - screenHeight) / 2);
         scaleTo(1);
       }
-    } else {
-      if (type === 'bottom') {
-        scrollTo(screenHeight);
-        scaleTo(1);
-      } else if (type === 'center') {
-        scaleTo(0.8);
-        setTimeout(() => {
-          runOnJS(scrollTo)(screenHeight);
-        }, 200);
-      }
+      overlayOpacity.value = withTiming(1, { duration: 300 });
     }
-  }, [isPopUp, scrollTo, scaleTo, type, screenHeight]);
+  }, [isPopUp, scrollTo, scaleTo, type, screenHeight, overlayOpacity]);
 
   const reanimatedStyle = useAnimatedStyle(() => {
     if (type === 'bottom') {
@@ -108,6 +109,28 @@ export const Modal: React.FC<ModalProps> = (props) => {
       };
     }
     return {};
+  });
+
+  const handleCloseModal = () => {
+    if (onPressClose) {
+      if (type === 'bottom') {
+        scrollTo(screenHeight);
+        scaleTo(1);
+      } else if (type === 'center') {
+        scaleTo(0.8);
+        setTimeout(() => {
+          runOnJS(scrollTo)(screenHeight);
+        }, 200);
+      }
+      overlayOpacity.value = withTiming(0, { duration: 300 });
+      onPressClose();
+    }
+  };
+
+  const reanimatedOverlayStyle = useAnimatedStyle(() => {
+    return {
+      opacity: overlayOpacity.value,
+    };
   });
 
   if (!isPopUp) {
@@ -140,7 +163,6 @@ export const Modal: React.FC<ModalProps> = (props) => {
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.2)',
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -183,43 +205,71 @@ export const Modal: React.FC<ModalProps> = (props) => {
 
   if (type === 'bottom') {
     return (
-      <Animated.View
-        style={[
-          styles.bottomSheetContainer,
-          customModalContainer,
-          reanimatedStyle,
-        ]}
-      >
-        {panGesture && (
-          <GestureDetector gesture={panGesture}>
-            <View style={[styles.header, customStyleHeader]}>
-              <View style={styles.gestureDot} />
-            </View>
-          </GestureDetector>
-        )}
-        <View>{children}</View>
-      </Animated.View>
-    );
-  } else if (type === 'center') {
-    return (
-      <View style={styles.overlay}>
-        <TouchableOpacity style={styles.overlay} onPress={onPressClose} />
+      <>
         <Animated.View
           style={[
-            styles.centerModalContainer,
+            { backgroundColor: 'rgba(0, 0, 0, 0.1)' },
+            styles.overlay,
+            reanimatedOverlayStyle,
+          ]}
+        >
+          <TouchableOpacity
+            style={styles.overlay}
+            onPress={handleCloseModal}
+          ></TouchableOpacity>
+        </Animated.View>
+        <Animated.View
+          style={[
+            styles.bottomSheetContainer,
             customModalContainer,
             reanimatedStyle,
           ]}
         >
-          <View style={styles.centerHeader}>
-            <Typograph customStyle={customStyleTitle}>{title}</Typograph>
-            <Button title="X" onPress={onPressClose}>
-              <IconClose height={15} fill={themeColors.text} />
-            </Button>
-          </View>
+          {panGesture && (
+            <GestureDetector gesture={panGesture}>
+              <View style={[styles.header, customStyleHeader]}>
+                <View style={styles.gestureDot} />
+              </View>
+            </GestureDetector>
+          )}
           <View>{children}</View>
         </Animated.View>
-      </View>
+      </>
+    );
+  } else if (type === 'center') {
+    return (
+      <>
+        <Animated.View
+          style={[
+            { backgroundColor: 'rgba(0, 0, 0, 0.1)' },
+            styles.overlay,
+            reanimatedOverlayStyle,
+          ]}
+        >
+          <TouchableOpacity
+            style={styles.overlay}
+            onPress={handleCloseModal}
+          ></TouchableOpacity>
+        </Animated.View>
+        <Animated.View style={[styles.overlay]}>
+          <TouchableOpacity style={styles.overlay} onPress={handleCloseModal} />
+          <Animated.View
+            style={[
+              styles.centerModalContainer,
+              customModalContainer,
+              reanimatedStyle,
+            ]}
+          >
+            <View style={styles.centerHeader}>
+              <Typograph customStyle={customStyleTitle}>{title}</Typograph>
+              <Button title="X" onPress={handleCloseModal}>
+                <IconClose height={15} fill={themeColors.text} />
+              </Button>
+            </View>
+            <View>{children}</View>
+          </Animated.View>
+        </Animated.View>
+      </>
     );
   }
 

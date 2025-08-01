@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
-  LayoutAnimation,
   Platform,
   StyleSheet,
   TouchableOpacity,
@@ -39,18 +38,46 @@ export const ExpandableView: React.FunctionComponent<PropsExpandibleView> = (
   } = props;
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const rotation = useSharedValue(0);
+  const contentHeight = useSharedValue(0);
+  const contentOpacity = useSharedValue(0);
+  const measuredContentHeight = useRef(0);
+
+  useEffect(() => {
+    if (isExpanded) {
+      if (measuredContentHeight.current > 0) {
+        contentHeight.value = withTiming(measuredContentHeight.current, {
+          duration: 300,
+          easing: Easing.inOut(Easing.ease),
+        });
+        contentOpacity.value = withTiming(1, {
+          duration: 300,
+          easing: Easing.inOut(Easing.ease),
+        });
+      }
+
+      rotation.value = withTiming(180, {
+        duration: 500,
+        easing: Easing.inOut(Easing.ease),
+      });
+    } else {
+      contentHeight.value = withTiming(0, {
+        duration: 300,
+        easing: Easing.inOut(Easing.ease),
+      });
+      contentOpacity.value = withTiming(0, {
+        duration: 300,
+        easing: Easing.inOut(Easing.ease),
+      });
+
+      rotation.value = withTiming(0, {
+        duration: 500,
+        easing: Easing.inOut(Easing.ease),
+      });
+    }
+  }, [isExpanded, rotation, contentHeight, contentOpacity]);
 
   const toggleExpand = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    toggleRotation();
     setIsExpanded((prev) => !prev);
-  };
-
-  const toggleRotation = () => {
-    rotation.value = withTiming(isExpanded ? 0 : 180, {
-      duration: 500,
-      easing: Easing.inOut(Easing.ease),
-    });
   };
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -58,6 +85,37 @@ export const ExpandableView: React.FunctionComponent<PropsExpandibleView> = (
       transform: [{ rotate: `${rotation.value}deg` }],
     };
   });
+
+  const contentAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      height: contentHeight.value,
+      opacity: contentOpacity.value,
+    };
+  });
+
+  const onContentLayout = (event: {
+    nativeEvent: { layout: { height: any } };
+  }) => {
+    const newHeight = event.nativeEvent.layout.height;
+
+    if (
+      measuredContentHeight.current === 0 ||
+      measuredContentHeight.current !== newHeight
+    ) {
+      measuredContentHeight.current = newHeight;
+
+      if (isExpanded) {
+        contentHeight.value = withTiming(measuredContentHeight.current, {
+          duration: 300,
+          easing: Easing.inOut(Easing.ease),
+        });
+        contentOpacity.value = withTiming(1, {
+          duration: 300,
+          easing: Easing.inOut(Easing.ease),
+        });
+      }
+    }
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -77,8 +135,16 @@ export const ExpandableView: React.FunctionComponent<PropsExpandibleView> = (
       justifyContent: 'space-between',
       alignItems: 'center',
     },
-    content: {
-      backgroundColor: themeColors.background,
+
+    animatedContentWrapper: {
+      overflow: 'hidden',
+    },
+
+    innerContentContainer: {
+      position: 'absolute',
+      width: '100%',
+      top: 0,
+      left: 0,
     },
   });
 
@@ -97,11 +163,17 @@ export const ExpandableView: React.FunctionComponent<PropsExpandibleView> = (
           </Animated.View>
         </View>
       </TouchableOpacity>
-      {isExpanded && (
-        <View style={[styles.content, customItemContainerStyle]}>
+
+      <Animated.View
+        style={[styles.animatedContentWrapper, contentAnimatedStyle]}
+      >
+        <View
+          onLayout={onContentLayout}
+          style={[styles.innerContentContainer, customItemContainerStyle]}
+        >
           {renderItem}
         </View>
-      )}
+      </Animated.View>
     </View>
   );
 };
