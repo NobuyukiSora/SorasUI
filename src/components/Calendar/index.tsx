@@ -238,21 +238,6 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
   };
 
   React.useEffect(() => {
-    if (
-      startDate &&
-      endDate &&
-      moment(startDate, 'YYYY-MM-DD').isAfter(moment(endDate, 'YYYY-MM-DD'))
-    ) {
-      const tempStartDate = startDate;
-      const tempStartData = startData;
-      setStartDate(endDate);
-      setEndDate(tempStartDate);
-      setStartData(endData);
-      setEndData(tempStartData);
-    }
-  }, [startDate, endDate, startData, endData]);
-
-  React.useEffect(() => {
     if (valueStartDate) {
       setStartDate(moment(valueStartDate, 'YYYY-MM-DD').format('YYYY-MM-DD'));
     }
@@ -374,28 +359,36 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
     );
     const formattedSelectedDate = selectedDateMoment.format('YYYY-MM-DD');
 
-    if (!isSelectedStart) {
-      setStartDate(formattedSelectedDate);
-      if (getDatesRange) {
+    if (getDatesRange) {
+      if (!isSelectedStart || !startDate) {
+        setStartDate(formattedSelectedDate);
+        setEndDate(undefined);
+        setIsSelectedStart(true);
         dateRangeValue({
           start: formattedSelectedDate,
-          end: endDate,
+          end: undefined,
         });
-        setIsSelectedStart(true);
       } else {
-        onPressDate(formattedSelectedDate);
-        setEndDate(undefined);
+        let newStartDate = startDate;
+        let newEndDate = formattedSelectedDate;
+
+        if (moment(formattedSelectedDate).isBefore(moment(startDate))) {
+          newStartDate = formattedSelectedDate;
+          newEndDate = startDate;
+        }
+
+        setStartDate(newStartDate);
+        setEndDate(newEndDate);
+        setIsSelectedStart(false);
+        dateRangeValue({
+          start: newStartDate,
+          end: newEndDate,
+        });
       }
     } else {
-      setEndDate(formattedSelectedDate);
-      if (getDatesRange) {
-        dateRangeValue({
-          start: startDate,
-          end: formattedSelectedDate,
-        });
-      } else {
-        onPressDate(formattedSelectedDate);
-      }
+      setStartDate(formattedSelectedDate);
+      setEndDate(undefined);
+      onPressDate(formattedSelectedDate);
       setIsSelectedStart(false);
     }
   };
@@ -552,11 +545,8 @@ export const Calendar: React.FunctionComponent<PropsCalendar> = (props) => {
 
       <View style={styles.dateContainer}>
         {weekLoop()}
-
         {lastMonthDatesLoop()}
-
         {datesLoop()}
-
         {nextMonthDatesLoop()}
       </View>
     </View>
