@@ -117,6 +117,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
         scrollTo(screenHeight);
         scaleTo(1);
       } else if (type === 'center') {
+        scrollTo(screenHeight);
         scaleTo(0.8);
         setTimeout(() => {
           runOnJS(scrollTo)(screenHeight);

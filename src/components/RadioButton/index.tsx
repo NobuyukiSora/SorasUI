@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { themeColors } from '../../theme/themeManagement';
-import { Metrics } from '../../theme/metrics';
 import {
   ScrollView,
   StyleSheet,
@@ -8,22 +6,109 @@ import {
   Vibration,
   View,
 } from 'react-native';
-import { PropsRadioButton } from './props';
-import { Typograph } from '../Typograph';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
+import { Metrics } from '../../theme/metrics';
+import { themeColors } from '../../theme/themeManagement';
 import { useVibration } from '../../theme/vibrationManagement';
+import { Typograph } from '../Typograph';
+import { PropsRadioButton, PropsRadioButtonItem } from './props';
+
+const RadioButtonItem: React.FunctionComponent<PropsRadioButtonItem> = ({
+  item,
+  selectedId,
+  onItemPress,
+  icon,
+  styles,
+  frontDotStyle,
+  backDotStyle,
+  circleContainerStyles,
+  ...rest
+}) => {
+  const innerCircleScale = useSharedValue(0);
+  const outerCircleScale = useSharedValue(1);
+
+  React.useEffect(() => {
+    if (selectedId === item.id) {
+      innerCircleScale.value = withSpring(1, {
+        damping: 10,
+        stiffness: 100,
+      });
+
+      outerCircleScale.value = withSpring(0.6, {
+        damping: 10,
+        stiffness: 100,
+      });
+    } else {
+      innerCircleScale.value = withTiming(0, { duration: 200 });
+
+      outerCircleScale.value = withSpring(1, {
+        damping: 10,
+        stiffness: 100,
+      });
+    }
+  }, [selectedId, item.id, innerCircleScale, outerCircleScale]);
+
+  const animatedInnerCircleStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: innerCircleScale.value }],
+    };
+  });
+
+  const animatedOuterCircleStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: outerCircleScale.value }],
+    };
+  });
+
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        onItemPress(item);
+      }}
+      {...rest}
+      style={styles.container}
+      key={item.id}
+    >
+      <View style={[styles.circleContainer, circleContainerStyles]}>
+        {selectedId === item.id &&
+          (!!icon ? (
+            <Animated.View style={animatedInnerCircleStyle}>
+              {icon}
+            </Animated.View>
+          ) : (
+            <Animated.View
+              style={[
+                styles.circleIcon,
+                backDotStyle,
+                animatedInnerCircleStyle,
+              ]}
+            />
+          ))}
+        <Animated.View
+          style={[styles.activeCircle, frontDotStyle, animatedOuterCircleStyle]}
+        ></Animated.View>
+      </View>
+      <Typograph>{item.title}</Typograph>
+    </TouchableOpacity>
+  );
+};
 
 export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
   props
 ) => {
   const {
     data,
-    onPress = () => {},
+    onPress: onRadioButtonPress = () => {},
     selectedId,
-    activeCircleStyles,
-    inactiveCircleStyles,
+    frontDotStyle,
+    backDotStyle,
     circleContainerStyles,
     icon,
-    iconColor = themeColors.active,
     directionMode = { direction: 'column', width: Metrics.screenWidth },
     vibrate,
     vibrateDuration,
@@ -35,26 +120,26 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
     if (vibrate ?? isVibrationEnabled) {
       Vibration.vibrate(vibrateDuration ?? vibrationDuration);
     }
-    onPress(item);
+
+    onRadioButtonPress(item);
   };
 
   const styles = StyleSheet.create({
     circleIcon: {
-      backgroundColor: iconColor,
+      backgroundColor: themeColors.active,
       borderRadius: Metrics[16],
-      height: Metrics[16],
-      width: Metrics[16],
+      height: Metrics[24],
+      width: Metrics[24],
     },
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: Metrics[8],
-      height: Metrics[24],
-      marginVertical: Metrics[2],
+      gap: Metrics[4],
       marginHorizontal: directionMode.direction === 'row' ? Metrics[4] : 0,
     },
     activeCircle: {
       backgroundColor: themeColors.inActive,
+      position: 'absolute',
       height: Metrics[24],
       width: Metrics[24],
       borderRadius: Metrics[20],
@@ -62,7 +147,6 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
       alignItems: 'center',
     },
     inactiveCircle: {
-      backgroundColor: themeColors.inActive,
       height: Metrics[24],
       width: Metrics[24],
       borderRadius: Metrics[20],
@@ -72,8 +156,8 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
     circleContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-      height: Metrics[24],
-      width: Metrics[24],
+      height: Metrics[30],
+      width: Metrics[30],
     },
   });
 
@@ -85,30 +169,22 @@ export const RadioButton: React.FunctionComponent<PropsRadioButton> = (
           flexWrap: 'wrap',
           width: directionMode.width,
           justifyContent: 'space-between',
+          gap: Metrics[4],
         }}
       >
         {data.map((item) => (
-          <TouchableOpacity
-            onPress={() => {
-              onPressIn(item);
-            }}
-            {...rest}
-            style={styles.container}
+          <RadioButtonItem
             key={item.id}
-          >
-            <View style={[styles.circleContainer, circleContainerStyles]}>
-              {selectedId === item.id ? (
-                <View style={[styles.inactiveCircle, inactiveCircleStyles]}>
-                  {!!icon ? icon : <View style={styles.circleIcon}></View>}
-                </View>
-              ) : (
-                <View style={[styles.activeCircle, activeCircleStyles]}></View>
-              )}
-            </View>
-            <View>
-              <Typograph>{item.title}</Typograph>
-            </View>
-          </TouchableOpacity>
+            item={item}
+            selectedId={selectedId}
+            onItemPress={onPressIn}
+            icon={icon}
+            styles={styles}
+            frontDotStyle={frontDotStyle}
+            backDotStyle={backDotStyle}
+            circleContainerStyles={circleContainerStyles}
+            {...rest}
+          />
         ))}
       </ScrollView>
     </View>
