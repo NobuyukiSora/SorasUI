@@ -132,8 +132,9 @@ export default function Testing({ navigation }: Props) {
   return (
     <View style={styles.container}>
       {/* HEADER - 1.0.0 */}
+
       <Header
-        title="testing page"
+        title={`Soras UI - ${version}`}
         onPress={() => navigation.navigate('secondScreen')}
         // customButtonStyles={{backgroundColor: 'red'}}
         // icon={(
@@ -361,28 +362,6 @@ export default function Testing({ navigation }: Props) {
           <Typograph>{'Bottom'}</Typograph>
         </View>
       </Modal>
-      {/* <ModalSheet
-        type="center"
-        isPopUp={modalSheetVisibleCenter}
-        onPressClose={() => getModalSheetVisibleCenter(false)}
-      >
-        <Typograph>{'THIS IS MODAL SHEET CENTER'}</Typograph>
-      </ModalSheet>
-      <ModalSheet
-        type="bottom"
-        isPopUp={modalSheetVisibleBottom}
-        onPressClose={() => getModalSheetVisibleBottom(false)}
-      >
-        <View
-          style={{
-            backgroundColor: themeColors.active,
-            height: Metrics[50] * 3,
-            width: Metrics.screenWidth * 0.8,
-          }}
-        >
-          <Typograph>{'THIS IS MODAL SHEET BOTTOM'}</Typograph>
-        </View>
-      </ModalSheet> */}
     </View>
   );
 }

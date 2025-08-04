@@ -1,12 +1,21 @@
 import React from 'react';
 import { View } from 'react-native';
 import { ExpandableView, Typograph } from '../../../src/components';
+import { Metrics, themeColors } from '../../../src/theme';
 
 export const ExpandibleViewTesting = () => {
   const renderExpandItem = () => {
     return (
-      <View>
-        <Typograph>{'Expanded'}</Typograph>
+      <View
+        style={{
+          backgroundColor: themeColors.button,
+          flex: 1,
+          height: Metrics[50],
+        }}
+      >
+        <Typograph customStyle={{ color: themeColors.background }}>
+          {'Expanded'}
+        </Typograph>
       </View>
     );
   };

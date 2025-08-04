@@ -6,8 +6,91 @@ import {
   TextInputKeyPressEventData,
   View,
 } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import { Metrics, themeColors } from '../../theme';
-import { PropsTextInputSingleBox } from './props';
+import { PropsSingleCodeBox, PropsTextInputSingleBox } from './props';
+
+const SingleCodeBox: React.FunctionComponent<PropsSingleCodeBox> = ({
+  value,
+  index,
+  onTextChange,
+  onKeyPress,
+  inputRef,
+  width,
+  height,
+  customTextinputStyles,
+  customContainerStyles,
+  ...textInputProps
+}) => {
+  const scale = useSharedValue(1);
+  const borderColor = useSharedValue(themeColors.inActive);
+
+  const onFocus = () => {
+    scale.value = withSpring(1.05, { damping: 10, stiffness: 100 });
+    borderColor.value = themeColors.active;
+  };
+
+  const onBlur = () => {
+    scale.value = withSpring(1, { damping: 10, stiffness: 100 });
+    borderColor.value = themeColors.inActive;
+  };
+
+  const animatedContainerStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+      borderColor: borderColor.value,
+    };
+  });
+
+  const styles = StyleSheet.create({
+    mainContainer: {
+      borderWidth: 1,
+      borderRadius: Metrics[8],
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: Metrics[8],
+      backgroundColor: themeColors.background,
+      height: height,
+      width: width,
+    },
+    textInput: {
+      color: themeColors.text,
+      textAlign: 'center',
+      padding: Metrics[8],
+      fontSize: Metrics[16],
+      width: '100%',
+    },
+  });
+
+  return (
+    <Animated.View
+      style={[
+        styles.mainContainer,
+        customContainerStyles,
+        animatedContainerStyle,
+      ]}
+      key={index}
+    >
+      <TextInput
+        onFocus={onFocus}
+        onBlur={onBlur}
+        maxLength={1}
+        onChangeText={(text) => onTextChange(text, index)}
+        onKeyPress={(e) => onKeyPress(e, index)}
+        style={[styles.textInput, customTextinputStyles]}
+        ref={(input) => {
+          if (input) inputRef.current[index] = input;
+        }}
+        value={value}
+        {...textInputProps}
+      />
+    </Animated.View>
+  );
+};
 
 export const TextInputSingleBox: React.FunctionComponent<
   PropsTextInputSingleBox
@@ -23,12 +106,10 @@ export const TextInputSingleBox: React.FunctionComponent<
     ...rest
   } = props;
   const [code, setCode] = React.useState<string[]>(Array(length).fill(''));
-  const [isFocus, setIsFocus] = React.useState(false);
   const inputs = React.useRef<TextInput[]>([]);
 
   const handleTextChange = (text: string, index: number) => {
     if (text.length > 1) {
-      // paste
       const pastedText = text.slice(0, length - index);
       const newCode = [...code];
       pastedText.split('').forEach((char, idx) => {
@@ -41,15 +122,15 @@ export const TextInputSingleBox: React.FunctionComponent<
         onChange(type === 'string' ? newCode.join('') : newCode);
       }
 
-      // next input
       const nextInputIndex = index + pastedText.length;
       if (nextInputIndex < length) {
         inputs.current[nextInputIndex]?.focus();
+      } else {
+        inputs.current[length - 1]?.blur();
       }
       return;
     }
 
-    // single input
     const newCode = [...code];
     newCode[index] = text;
     setCode(newCode);
@@ -60,6 +141,8 @@ export const TextInputSingleBox: React.FunctionComponent<
 
     if (text && text.length === 1 && index < length - 1) {
       inputs.current[index + 1]?.focus();
+    } else if (!text && index > 0) {
+      inputs.current[index - 1]?.focus();
     }
   };
 
@@ -67,56 +150,28 @@ export const TextInputSingleBox: React.FunctionComponent<
     input: NativeSyntheticEvent<TextInputKeyPressEventData>,
     index: number
   ) => {
-    if (input.nativeEvent.key === 'Backspace' && index > 0) {
+    if (input.nativeEvent.key === 'Backspace' && index > 0 && !code[index]) {
       inputs.current[index - 1]?.focus();
     }
   };
 
-  const styles = StyleSheet.create({
-    mainContainer: {
-      borderWidth: 1,
-      borderRadius: Metrics[8],
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginVertical: Metrics[8],
-      borderColor: isFocus ? themeColors.active : themeColors.inActive,
-      backgroundColor: themeColors.background,
-      height: height,
-      width: width,
-    },
-  });
-
-  const renderTextInput = () => {
-    return code.map((_, index) => (
-      <View style={[styles.mainContainer, customContainerStyles]} key={index}>
-        <TextInput
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          maxLength={1}
-          onChangeText={(text) => handleTextChange(text, index)}
-          onKeyPress={(set) => handleKeyPress(set, index)}
-          style={[
-            {
-              color: themeColors.text,
-              textAlign: 'center',
-              padding: Metrics[8],
-              fontSize: Metrics[16],
-              width: '100%',
-            },
-            customTextinputStyles,
-          ]}
-          ref={(input) => {
-            if (input) inputs.current[index] = input;
-          }}
-          {...rest}
-        />
-      </View>
-    ));
-  };
-
   return (
     <View style={{ justifyContent: 'space-around', flexDirection: 'row' }}>
-      {renderTextInput()}
+      {code.map((value, index) => (
+        <SingleCodeBox
+          key={index}
+          value={value}
+          index={index}
+          onTextChange={handleTextChange}
+          onKeyPress={handleKeyPress}
+          inputRef={inputs}
+          width={width}
+          height={height}
+          customTextinputStyles={customTextinputStyles}
+          customContainerStyles={customContainerStyles}
+          {...rest}
+        />
+      ))}
     </View>
   );
 };

@@ -17,6 +17,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 
@@ -31,7 +32,7 @@ export const Carousel: React.FunctionComponent<PropsCarousel> = (props) => {
     overflow,
     height = 200,
     width = Metrics.screenWidth,
-    customStyleDot,
+    customStyleDot = { width: 8, height: 8 },
     customStyleTitle,
     activeDotColor = themeColors.active,
     inactiveDotColor = themeColors.inActive,
@@ -40,7 +41,6 @@ export const Carousel: React.FunctionComponent<PropsCarousel> = (props) => {
   const translateX = useSharedValue(0);
   const currentIndex = useSharedValue(0);
 
-  // Derived value to track the active index
   const activeIndex = useDerivedValue(() => {
     return Math.round(-translateX.value / width);
   });
@@ -75,26 +75,75 @@ export const Carousel: React.FunctionComponent<PropsCarousel> = (props) => {
     })
     .onEnd(() => {
       const index = Math.round(-translateX.value / width);
-      translateX.value = withTiming(-index * width, { duration: 500 }, () =>
+      translateX.value = withTiming(-index * width, { duration: 700 }, () =>
         runOnJS(updateCurrentIndex)()
       );
     });
 
   const navigateToSlide = (index: number) => {
-    translateX.value = withTiming(-index * width, { duration: 500 }, () =>
+    translateX.value = withTiming(-index * width, { duration: 700 }, () =>
       runOnJS(updateCurrentIndex)()
     );
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      left: 0,
+    },
+    slider: {
+      flexDirection: 'row',
+    },
+    slide: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    image: {
+      width: '100%',
+    },
+    title: {
+      position: 'absolute',
+      bottom: 10,
+      left: 10,
+      color: 'white',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      padding: 5,
+      borderRadius: 5,
+    },
+    indicatorContainer: {
+      marginVertical: Metrics[4],
+      justifyContent: 'center',
+      flexDirection: 'row',
+    },
+    indicator: {
+      borderRadius: 4,
+      backgroundColor: 'gray',
+      marginHorizontal: 4,
+    },
+  });
+
   const AnimatedDot = (index: number) => {
+    const baseWidth =
+      typeof customStyleDot.width === 'number' ? customStyleDot.width : 8;
+    const baseHeight =
+      typeof customStyleDot.height === 'number' ? customStyleDot.height : 8;
+
     const animatedStyle = useAnimatedStyle(() => ({
       backgroundColor:
         activeIndex.value === index ? activeDotColor : inactiveDotColor,
       transform: [
         {
-          scale: activeIndex.value === index ? 1.2 : 1,
+          scale: withSpring(activeIndex.value === index ? 1.2 : 1),
         },
       ],
+
+      width: withSpring(
+        activeIndex.value === index ? baseWidth * 2 : baseWidth
+      ),
+
+      borderRadius: withSpring(
+        activeIndex.value === index ? baseHeight / 2 : baseHeight / 2
+      ),
     }));
 
     return (
@@ -146,41 +195,3 @@ export const Carousel: React.FunctionComponent<PropsCarousel> = (props) => {
     </GestureHandlerRootView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    left: 0,
-  },
-  slider: {
-    flexDirection: 'row',
-  },
-  slide: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    width: '100%',
-  },
-  title: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    color: 'white',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 5,
-    borderRadius: 5,
-  },
-  indicatorContainer: {
-    marginVertical: Metrics[4],
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  indicator: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'gray',
-    marginHorizontal: 4,
-  },
-});
