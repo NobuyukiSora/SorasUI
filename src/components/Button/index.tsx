@@ -21,6 +21,7 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
     vibrate,
     vibrateDuration,
     propsTypograph,
+    disabled,
     ...rest
   } = props;
 
@@ -60,7 +61,7 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
       textAlign: 'center',
     },
     button: {
-      backgroundColor: themeColors.button,
+      backgroundColor: disabled ? themeColors.inActive : themeColors.active,
       borderRadius: Metrics[8],
       justifyContent: 'center',
       padding: Metrics[16],
@@ -75,6 +76,7 @@ export const Button: React.FunctionComponent<PropsButton> = (props) => {
       }}
       onLongPress={() => onPressIn('onLongPress')}
       onPressOut={onPressOut}
+      disabled={disabled}
       {...rest}
     >
       <Animated.View

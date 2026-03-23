@@ -62,7 +62,7 @@ export const SnackBar: React.FunctionComponent<PropsSnackBar> = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: theme?.isDark ? Colors.darkGrey : Colors.cream,
+      backgroundColor: themeColors.backgroundSecondary,
       marginHorizontal: Metrics[8],
       minHeight: 50,
       borderRadius: Metrics[8],
