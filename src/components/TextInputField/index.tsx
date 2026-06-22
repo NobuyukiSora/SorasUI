@@ -90,7 +90,7 @@ export const TextInputField: React.FunctionComponent<PropsTextInput> = (
         placeholder={thePlaceHolder}
         placeholderTextColor={themeColors.textThird}
         textAlign={align}
-        multiline={multiline}
+        multiline={secureTextEntry ? false : multiline}
         secureTextEntry={secureTextEntry}
         style={[
           {
